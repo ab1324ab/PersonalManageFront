@@ -1,11 +1,11 @@
 <template>
-    <div>excel文档</div>
+    <div>文本文档</div>
 </template>
 
 <script>
     export default {
-        name: 'excel-document'
-    };
+        name: "text-document"
+    }
 </script>
 
 <style scoped>

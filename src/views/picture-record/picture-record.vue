@@ -1,11 +1,11 @@
 <template>
-    <div>excel文档</div>
+    <div>图片记录</div>
 </template>
 
 <script>
     export default {
-        name: 'excel-document'
-    };
+        name: "picture-record"
+    }
 </script>
 
 <style scoped>

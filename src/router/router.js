@@ -67,6 +67,16 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     {
+        path: '/home',
+        icon:'ios-home-outline',
+        title: {i18n: 'home'},
+        name: 'home',
+        component: Main,
+        children:[
+            { path: 'home',icon:'ios-home-outline', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') },
+        ]
+    },
+    {
         path: '/personal-document',
         icon: 'android-sad',
         title: '个人文档',
@@ -74,41 +84,51 @@ export const appRouter = [
         component: Main,
         children: [
             { path: 'excel-document',icon: 'compose', title: 'Excel文档', name: 'excel-document', component: () => import('@/views/personal-document/excel-document.vue') },
-            { path: 'errorpage_index2',icon: 'compose', title: 'Word文档', name: 'errorpage_index2', component: () => import('@/views/error-page/error-page.vue') },
-            { path: 'errorpage_index3',icon: 'compose', title: 'Texts文档', name: 'errorpage_index3', component: () => import('@/views/error-page/error-page.vue') }
+            { path: 'word-document',icon: 'compose', title: 'Word文档', name: 'word-document', component: () => import('@/views/personal-document/word-document.vue') },
+            { path: 'text-document',icon: 'document', title: 'Text文档', name: 'text-document', component: () => import('@/views/personal-document/text-document.vue') }
         ]
     },
     {
-        path: '/access',
-        icon: 'key',
-        name: 'access',
-        title: '权限管理',
+        path: '/picture-record',
+        icon: 'android-sad',
+        title: '图片记录',
+        name: 'picturerecord',
         component: Main,
         children: [
-            { path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
+            { path: 'picture-record',icon: 'compose', title: '问题解决图片', name: 'picture-record', component: () => import('@/views/picture-record/picture-record.vue') },
         ]
     },
-    {
-        path: '/access-test',
-        icon: 'lock-combination',
-        title: '权限测试页',
-        name: 'accesstest',
-        access: 0,
-        component: Main,
-        children: [
-            { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: () => import('@/views/access/access-test.vue') }
-        ]
-    },
-    {
-        path: '/international',
-        icon: 'earth',
-        title: {i18n: 'international'},
-        name: 'international',
-        component: Main,
-        children: [
-            { path: 'index', title: {i18n: 'international'}, name: 'international_index', component: () => import('@/views/international/international.vue') }
-        ]
-    },
+    // {
+    //     path: '/access',
+    //     icon: 'key',
+    //     name: 'access',
+    //     title: '权限管理',
+    //     component: Main,
+    //     children: [
+    //         { path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
+    //     ]
+    // },
+    // {
+    //     path: '/access-test',
+    //     icon: 'lock-combination',
+    //     title: '权限测试页',
+    //     name: 'accesstest',
+    //     access: 0,
+    //     component: Main,
+    //     children: [
+    //         { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: () => import('@/views/access/access-test.vue') }
+    //     ]
+    // },
+    // {
+    //     path: '/international',
+    //     icon: 'earth',
+    //     title: {i18n: 'international'},
+    //     name: 'international',
+    //     component: Main,
+    //     children: [
+    //         { path: 'index', title: {i18n: 'international'}, name: 'international_index', component: () => import('@/views/international/international.vue') }
+    //     ]
+    // },
     {
         path: '/component',
         icon: 'social-buffer',
@@ -234,16 +254,16 @@ export const appRouter = [
             { path: 'argument-page', title: '带参页面', name: 'argument-page', icon: 'android-send', component: () => import('@/views/advanced-router/argument-page.vue') }
         ]
     },
-    // {
-    //     path: '/error-page',
-    //     icon: 'android-sad',
-    //     title: '错误页面',
-    //     name: 'errorpage',
-    //     component: Main,
-    //     children: [
-    //         { path: 'index', title: '错误页面', name: 'errorpage_index', component: () => import('@/views/error-page/error-page.vue') }
-    //     ]
-    // },
+    {
+        path: '/error-page',
+        icon: 'android-sad',
+        title: '错误页面',
+        name: 'errorpage',
+        component: Main,
+        children: [
+            { path: 'index', title: '错误页面', name: 'errorpage_index', component: () => import('@/views/error-page/error-page.vue') }
+        ]
+    },
 ];
 
 // 所有上面定义的路由都要写在下面的routers里

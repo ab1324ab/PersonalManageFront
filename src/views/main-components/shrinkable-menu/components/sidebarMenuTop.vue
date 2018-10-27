@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <Menu   style="margin-left: 100px;width: 850px" mode="horizontal" :active-name="$route.name" :open-names="openNames" :theme="menuTheme"  @on-select="changeMenu">
+    <Menu   style="margin-left: 100px;width: 800px" mode="horizontal" :active-name="$route.name" :open-names="openNames" :theme="menuTheme"  @on-select="changeMenu">
         <template v-for="item in menuList">
             <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <!--<Icon :type="item.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>-->
