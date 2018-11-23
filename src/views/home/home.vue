@@ -169,7 +169,7 @@
                 <!--</Card>-->
             <!--</Col>-->
         <!--</Row>-->
-        <Row class="margin-top-10">
+        <Row>
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="android-checkbox-outline"></Icon>

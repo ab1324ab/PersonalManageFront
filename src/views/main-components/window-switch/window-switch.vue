@@ -2,7 +2,7 @@
     <div style="display:inline-block;padding:0 6px;">
         <Dropdown trigger="click" @on-click="windowSwitch">
             <a href="javascript:void(0)">
-                <Icon :style="{marginTop: '-2px', verticalAlign: 'middle'}" type="social-windows" :size="18" :color="menuTheme == 'dark'? '#657180':'#495060'"></Icon>
+                <Icon :style="{marginTop: '-2px', verticalAlign: 'middle'}" type="social-windows" :size="18" color="#657180"></Icon>
                 <Icon type="arrow-down-b"></Icon>
             </a>
             <DropdownMenu slot="list">
@@ -27,10 +27,7 @@
     export default {
         name: 'windowSwitch',
         props: {
-            menuTheme: {
-                type: String,
-                default: 'dark'
-            }
+
         },
         data () {
             return {
@@ -47,12 +44,10 @@
                     this.$emit('mainWindowSwitch', 'left');
                 }
             },
-            xuanzhhong () {
-
-            }
         },
         created () {
-
+            let windowSwitch = localStorage.getItem("windowSwitch");
+            this.$emit('mainWindowSwitch', windowSwitch);
         }
     };
 </script>

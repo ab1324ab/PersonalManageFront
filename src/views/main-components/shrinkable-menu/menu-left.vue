@@ -156,9 +156,9 @@
             '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
                 let pathArr = util.setCurrentPath(this, to.name);
+                // 清理打开菜单列表
+                this.$store.commit('clearOpenedSubmenu');
                 if (pathArr.length > 2) {
-                    // 清理打开菜单列表
-                    this.$store.commit('clearOpenedSubmenu');
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.checkTag(to.name);

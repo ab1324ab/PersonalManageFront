@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
@@ -12,15 +13,19 @@ util.title = function (title) {
 };
 
 const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
+    ? 'http://localhost:8081/'
     : env === 'production'
-        ? 'https://www.url.com'
-        : 'https://debug.url.com';
+        ? 'https://www.url.com/'
+        : 'https://debug.url.com/';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
     timeout: 30000
 });
+
+util.getWebUrl = function () {
+    return ajaxUrl;
+};
 
 util.inOf = function (arr, targetArr) {
     let res = true;
@@ -249,6 +254,71 @@ util.fullscreenEvent = function (vm) {
     // 权限菜单过滤相关
     vm.$store.commit('updateMenulist');
     // 全屏相关
+};
+
+// 请求时的拦截
+axios.interceptors.request.use(function (config) {
+    // 请求之前做一些处理
+    return config;
+}, function (error) {
+    // 当请求异常时做一些处理
+    return Promise.reject(error);
+});
+
+// 响应时拦截
+axios.interceptors.response.use(function (response) {
+    // 返回响应时做一些处理
+    console.info(response)
+    return response;
+}, function (error) {
+    // 当响应异常时做一些处理
+    return Promise.reject(error);
+});
+
+util.get = function (url) {
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+        .then(res => { resolve(res); })
+        .catch(err => { reject(err); });
+    });
+};
+
+util.post = function (url, data) {
+    return new Promise((resolve, reject) => {
+        axios.post(ajaxUrl + url,data)
+            .then(res => { resolve(res); })
+            .catch(err => { reject(err); });
+    });
+};
+
+util.httpErrorMsg = function(vm,status){
+    if(status == '403'){
+        vm.$router.push({
+            name: 'error-403',
+        });
+        return;
+    }else if(status == '404'){
+        vm.$router.push({
+            name: 'error-404',
+        });
+        return;
+    }else if(status == '500'){
+        vm.$router.push({
+            name: 'error-500',
+        });
+        return;
+    }
+    vm.$Message.error({
+        duration: 2,
+        content: '系统繁忙请稍后再试！'
+    })
+};
+
+util.successMsg = function(vm,time,content){
+    vm.$Message.success({
+        duration: time,
+        content: content
+    });
 };
 
 util.checkUpdate = function (vm) {
