@@ -12,8 +12,8 @@
                 </p>
                 <div class="form-con">
                     <Form ref="loginForm" :model="form" :rules="rules">
-                        <FormItem prop="userName">
-                            <Input v-model="form.userName" placeholder="请输入用户名">
+                        <FormItem prop="account">
+                            <Input v-model="form.account" placeholder="请输入用户名">
                                 <span slot="prepend">
                                     <Icon :size="16" type="person"></Icon>
                                 </span>
@@ -39,15 +39,16 @@
 
 <script>
 import Cookies from 'js-cookie';
+import $util from '@/libs/util.js';
 export default {
     data () {
         return {
             form: {
-                userName: 'iview_admin',
+                account: 'iview_admin',
                 password: ''
             },
             rules: {
-                userName: [
+                account: [
                     { required: true, message: '账号不能为空', trigger: 'blur' }
                 ],
                 password: [
@@ -60,17 +61,29 @@ export default {
         handleSubmit () {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                    if (this.form.userName === 'iview_admin') {
-                        Cookies.set('access', 0);
-                    } else {
-                        Cookies.set('access', 1);
-                    }
-                    this.$router.push({
-                        name: 'home_index'
-                    });
+                    let url = "login";
+                    let _this = this;
+                    $util.post(url,this.form)
+                        .then(function (response) {
+                            if(response.status == "200"){
+                                if(response.data.statusCode == "10000"){
+                                    Cookies.set('user', response.data.data.account);
+                                    //_this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
+                                    _this.$store.commit('setAvator', response.data.data.imgurl);
+                                    Cookies.set('access', 0); // 权限页 0：有权 1：没权
+                                    _this.$router.push({
+                                        name: 'home_index'
+                                    });
+                                }else {
+                                    $util.responseMsg(_this,response.data);
+                                }
+                            }else{
+                                $util.httpErrorMsg(_this,response.data)
+                            }
+                        })
+                        .catch(function (error) {
+                            $util.httpErrorMsg(_this,error.data)
+                        })
                 }
             });
         }

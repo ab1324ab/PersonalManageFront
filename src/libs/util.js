@@ -267,8 +267,7 @@ axios.interceptors.request.use(function (config) {
 
 // 响应时拦截
 axios.interceptors.response.use(function (response) {
-    // 返回响应时做一些处理
-    console.info(response)
+    //console.info(response)
     return response;
 }, function (error) {
     // 当响应异常时做一些处理
@@ -291,18 +290,25 @@ util.post = function (url, data) {
     });
 };
 
+util.responseMsg = function(vm,status){
+    vm.$Message.error({
+        duration: 2,
+        content: status.msg
+    })
+};
+
 util.httpErrorMsg = function(vm,status){
-    if(status == '403'){
+    if(status.statusCode == '403'){
         vm.$router.push({
             name: 'error-403',
         });
         return;
-    }else if(status == '404'){
+    }else if(status.statusCode == '404'){
         vm.$router.push({
             name: 'error-404',
         });
         return;
-    }else if(status == '500'){
+    }else if(status.statusCode == '500'){
         vm.$router.push({
             name: 'error-500',
         });

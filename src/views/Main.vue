@@ -10,7 +10,7 @@
 
     import menuLeft from './main-components/shrinkable-menu/menu-left';
     import menuTop from './main-components/shrinkable-menu/menu-top';
-    // import Cookies from 'js-cookie';
+    import Cookies from 'js-cookie';
     // import util from '@/libs/util.js';
 
     export default {
@@ -29,6 +29,13 @@
         methods: {
             mainWindowSwitch (style) {
                 this.winSwitch = style;
+                let themeList = JSON.parse(localStorage.theme);
+                localStorage.theme = JSON.stringify([{
+                    userName: themeList[0].userName,
+                    mainTheme: themeList[0].mainTheme,
+                    menuTheme: themeList[0].menuTheme,
+                    winSwitch: style
+                }]);
             }
         },
         handleSubmenuChange (val) {
@@ -46,7 +53,9 @@
             // console.log(isFullScreen);
         },
         created () {
-            this.winSwitch = localStorage.getItem('windowSwitch');
+            let themeList = JSON.parse(localStorage.theme);
+            console.info("winSwitch",themeList[0].winSwitch);
+            this.winSwitch = themeList[0].winSwitch;
         }
     };
 </script>

@@ -23,7 +23,7 @@
 
 <script>
     /* eslint-disable no-empty,quotes,eqeqeq */
-
+    import Cookies from 'js-cookie';
     export default {
         name: 'windowSwitch',
         props: {
@@ -37,17 +37,14 @@
         methods: {
             windowSwitch (name) {
                 if (name == "top") {
-                    localStorage.setItem("windowSwitch", "top");
                     this.$emit('mainWindowSwitch', "top");
                 } else {
-                    localStorage.setItem("windowSwitch", "left");
-                    this.$emit('mainWindowSwitch', 'left');
+                    this.$emit('mainWindowSwitch', "left");
                 }
             },
         },
         created () {
-            let windowSwitch = localStorage.getItem("windowSwitch");
-            this.$emit('mainWindowSwitch', windowSwitch);
+
         }
     };
 </script>
