@@ -68,8 +68,8 @@ export default {
                             if(response.status == "200"){
                                 if(response.data.statusCode == "10000"){
                                     Cookies.set('user', response.data.data.account);
-                                    //_this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                                    _this.$store.commit('setAvator', response.data.data.imgurl);
+                                    _this.$store.commit('setAvator', '../images/default.jpg');
+                                    //_this.$store.commit('setAvator', response.data.data.imgurl);
                                     Cookies.set('access', 0); // 权限页 0：有权 1：没权
                                     _this.$router.push({
                                         name: 'home_index'

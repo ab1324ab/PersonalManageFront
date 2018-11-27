@@ -298,26 +298,33 @@ util.responseMsg = function(vm,status){
 };
 
 util.httpErrorMsg = function(vm,status){
-    if(status.statusCode == '403'){
-        vm.$router.push({
-            name: 'error-403',
-        });
-        return;
-    }else if(status.statusCode == '404'){
-        vm.$router.push({
-            name: 'error-404',
-        });
-        return;
-    }else if(status.statusCode == '500'){
-        vm.$router.push({
-            name: 'error-500',
-        });
-        return;
+    try {
+        if(status.statusCode == '403'){
+            vm.$router.push({
+                name: 'error-403',
+            });
+            return;
+        }else if(status.statusCode == '404'){
+            vm.$router.push({
+                name: 'error-404',
+            });
+            return;
+        }else if(status.statusCode == '500'){
+            vm.$router.push({
+                name: 'error-500',
+            });
+            return;
+        }
+        vm.$Message.error({
+            duration: 2,
+            content: '系统繁忙,请稍后再试！'
+        })
+    }catch (e) {
+        vm.$Message.error({
+            duration: 2,
+            content: '系统繁忙,请稍后再试！'
+        })
     }
-    vm.$Message.error({
-        duration: 2,
-        content: '系统繁忙请稍后再试！'
-    })
 };
 
 util.successMsg = function(vm,time,content){
