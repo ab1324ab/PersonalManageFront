@@ -276,7 +276,7 @@ axios.interceptors.response.use(function (response) {
 
 util.get = function (url) {
     return new Promise((resolve, reject) => {
-        axios.get(url)
+        axios.get(ajaxUrl + url)
         .then(res => { resolve(res); })
         .catch(err => { reject(err); });
     });

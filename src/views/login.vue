@@ -37,7 +37,7 @@
                                     </Input>
                                 </Col>
                                 <Col :span="12" style="height: 32px">
-                                    <img src="../images/default.jpg" style="margin-left: 10px;width: 90%;height: 32px" @click="resetPicCode"/>
+                                    <img :src="imgCode" style="margin-left: 10px;width: 90%;height: 32px" @click="resetPicCode"/>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -66,6 +66,7 @@ export default {
             }
         };
         return {
+            imgCode:"",
             imgCodeShow: 0,
             form: {
                 account: 'iview_admin',
@@ -119,11 +120,18 @@ export default {
             });
         },
         resetPicCode(){
-            this.$Message.error({
-                duration: 2,
-                content: "ccccccccccccccccc"
-            })
+            let url = "getCodeImg";
+            let _this = this;
+            $util.get(url)
+                .then(function (response) {
+                    _this.imgCode = response.data;
+                }).catch(function (error) {
+                    $util.httpErrorMsg(_this,error.data)
+                })
         }
+    },
+    created (){
+        this.resetPicCode();
     }
 };
 </script>
