@@ -291,6 +291,13 @@ util.post = function (url, data) {
 };
 
 util.responseMsg = function(vm,status){
+    if(status == null || status == ""){
+        vm.$Message.error({
+            duration: 2,
+            content: '系统繁忙,请稍后再试！'
+        });
+        return;
+    }
     vm.$Message.error({
         duration: 2,
         content: status.msg

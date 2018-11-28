@@ -26,6 +26,22 @@
                                 </span>
                             </Input>
                         </FormItem>
+
+                        <FormItem prop="checkCode" v-if="imgCodeShow == 1">
+                            <Row>
+                                <Col :span="12">
+                                    <Input type="password" v-model="form.checkCode" placeholder="请输入验证码">
+                                        <span slot="prepend">
+                                            <Icon :size="14" type="image"></Icon>
+                                        </span>
+                                    </Input>
+                                </Col>
+                                <Col :span="12" style="height: 32px">
+                                    <img src="../images/default.jpg" style="margin-left: 10px;width: 90%;height: 32px" @click="resetPicCode"/>
+                                </Col>
+                            </Row>
+                        </FormItem>
+
                         <FormItem>
                             <Button @click="handleSubmit" type="primary" long>登录</Button>
                         </FormItem>
@@ -42,10 +58,19 @@ import Cookies from 'js-cookie';
 import $util from '@/libs/util.js';
 export default {
     data () {
+        const validateCheckCode = (rule, value, callback) => {
+            if (this.imgCodeShow == 1 && value === '') {
+                callback(new Error('验证码不能为空'));
+            } else {
+                callback();
+            }
+        };
         return {
+            imgCodeShow: 0,
             form: {
                 account: 'iview_admin',
-                password: ''
+                password: '',
+                checkCode:''
             },
             rules: {
                 account: [
@@ -53,7 +78,10 @@ export default {
                 ],
                 password: [
                     { required: true, message: '密码不能为空', trigger: 'blur' }
-                ]
+                ],
+                checkCode: [
+                    { validator: validateCheckCode, trigger: 'blur' }
+                ],
             }
         };
     },
@@ -65,7 +93,10 @@ export default {
                     let _this = this;
                     $util.post(url,this.form)
                         .then(function (response) {
-                            if(response.status == "200"){
+                            if(response.status == 200){
+                                if(response.data.data != null){
+                                    _this.imgCodeShow = parseInt(response.data.data.imgCodeShow);
+                                }
                                 if(response.data.statusCode == "10000"){
                                     Cookies.set('user', response.data.data.account);
                                     _this.$store.commit('setAvator', '../images/default.jpg');
@@ -86,6 +117,12 @@ export default {
                         })
                 }
             });
+        },
+        resetPicCode(){
+            this.$Message.error({
+                duration: 2,
+                content: "ccccccccccccccccc"
+            })
         }
     }
 };
