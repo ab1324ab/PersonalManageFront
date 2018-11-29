@@ -30,7 +30,7 @@
                         <FormItem prop="checkCode" v-if="imgCodeShow == 1">
                             <Row>
                                 <Col :span="12">
-                                    <Input type="password" v-model="form.checkCode" placeholder="请输入验证码">
+                                    <Input v-model="form.checkCode" maxlength="4" placeholder="请输入验证码">
                                         <span slot="prepend">
                                             <Icon :size="14" type="image"></Icon>
                                         </span>
@@ -61,7 +61,9 @@ export default {
         const validateCheckCode = (rule, value, callback) => {
             if (this.imgCodeShow == 1 && value === '') {
                 callback(new Error('验证码不能为空'));
-            } else {
+            } else if(value.length < 4){
+                callback(new Error('验证码至少4位'));
+            }else {
                 callback();
             }
         };
@@ -96,11 +98,12 @@ export default {
                         .then(function (response) {
                             if(response.status == 200){
                                 if(response.data.data != null){
+                                    _this.resetPicCode();
                                     _this.imgCodeShow = parseInt(response.data.data.imgCodeShow);
                                 }
                                 if(response.data.statusCode == "10000"){
                                     Cookies.set('user', response.data.data.account);
-                                    _this.$store.commit('setAvator', '../images/default.jpg');
+                                    _this.$store.commit('setAvator', response.data.data.imgurl);
                                     //_this.$store.commit('setAvator', response.data.data.imgurl);
                                     Cookies.set('access', 0); // 权限页 0：有权 1：没权
                                     _this.$router.push({

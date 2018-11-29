@@ -298,6 +298,12 @@ util.responseMsg = function(vm,status){
         });
         return;
     }
+    if(status.statusCode == '400001'){
+        vm.$router.push({
+            name: 'login',
+        });
+        return;
+    }
     vm.$Message.error({
         duration: 2,
         content: status.msg
