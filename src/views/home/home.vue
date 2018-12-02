@@ -29,11 +29,15 @@
                             <div class="line-gray"></div>
                             <Row class="margin-top-9">
                                 <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
-                                <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
+                                <Col span="16" class="padding-left-8">{{loginObj.oldLoginTime}}</Col>
+                            </Row>
+                            <Row class="margin-top-9">
+                                <Col span="8"><p class="notwrap">上次登录IP:</p></Col>
+                                <Col span="16" class="padding-left-8">{{loginObj.oldIp}}</Col>
                             </Row>
                             <Row class="margin-top-9">
                                 <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
-                                <Col span="16" class="padding-left-8">北京</Col>
+                                <Col span="16" class="padding-left-8">{{loginObj.oldIpAddress}}</Col>
                             </Row>
                         </Card>
                     </Col>
@@ -228,6 +232,11 @@ export default {
     },
     data () {
         return {
+            loginObj: {
+                oldIp: "",
+                oldIpAddress: "",
+                oldLoginTime: ""
+            },
             toDoList: [
                 {
                     title: '去iView官网学习完整的iView组件'
@@ -282,6 +291,12 @@ export default {
             this.showAddNewTodo = false;
             this.newToDoItemValue = '';
         }
+    },
+    created () {
+        this.loginObj.oldIp = localStorage.getItem("oldIp");
+        this.loginObj.oldIpAddress = localStorage.getItem("oldIpAddress");
+        this.loginObj.oldLoginTime = localStorage.getItem("oldLoginTime");
+
     }
 };
 </script>
