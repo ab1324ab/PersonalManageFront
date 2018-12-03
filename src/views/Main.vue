@@ -54,10 +54,8 @@
         },
         created () {
             let theme = localStorage.theme;
-            console.info("localStorage.theme=","["+localStorage.theme+"]")
             if(theme != null){
                 let themeList = JSON.parse(theme);
-                console.info("winSwitch",themeList[0].winSwitch);
                 this.winSwitch = themeList[0].winSwitch;
             }
         }

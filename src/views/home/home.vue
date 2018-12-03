@@ -25,7 +25,7 @@
                                             <Row class-name="made-child-con-middle" type="flex" align="middle">
                                                 <div class="margin-auto">
                                                     <b class="card-user-infor-name">Admin</b>
-                                                    <p>super admin</p>
+                                                    <p>{{loginObj.nickname}}</p>
                                                 </div>
                                             </Row>
                                         </Col>
@@ -82,39 +82,39 @@
                 <Row :gutter="5">
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
-                            id-name="user_created_count"
-                            :end-val="count.createUser"
+                            id-name="excel_count"
+                            :end-val="count.excelCount"
                             iconType="android-person-add"
                             color="#2d8cf0"
-                            intro-text="今日新增用户"
+                            intro-text="表格文档总数"
                         ></infor-card>
                     </Col>
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
-                            id-name="visit_count"
-                            :end-val="count.visit"
+                            id-name="word_count"
+                            :end-val="count.wordCount"
                             iconType="ios-eye"
                             color="#64d572"
                             :iconSize="50"
-                            intro-text="今日浏览量"
+                            intro-text="文本文档总数"
                         ></infor-card>
                     </Col>
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
-                            id-name="collection_count"
-                            :end-val="count.collection"
+                            id-name="img_count"
+                            :end-val="count.imgCount"
                             iconType="upload"
                             color="#ffd572"
-                            intro-text="今日数据采集量"
+                            intro-text="图片总数"
                         ></infor-card>
                     </Col>
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
-                            id-name="transfer_count"
-                            :end-val="count.transfer"
+                            id-name="plan_count"
+                            :end-val="count.planCount"
                             iconType="shuffle"
                             color="#f25e43"
-                            intro-text="今日服务调用量"
+                            intro-text="计划总数"
                         ></infor-card>
                     </Col>
                 </Row>
@@ -201,7 +201,7 @@
                         <Button type="primary" @click="addNew">确定</Button>
                     </Row>
                 </Modal>
-                <div class="to-do-list-con" style="height: 400px">
+                <div class="to-do-list-con" :style="{height:toDoListCon}">
                     <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
                         <to-do-list-item :content="item.title"></to-do-list-item>
                     </div>
@@ -222,6 +222,7 @@ import countUp from './components/countUp.vue';
 import inforCard from './components/inforCard.vue';
 import mapDataTable from './components/mapDataTable.vue';
 import toDoListItem from './components/toDoListItem.vue';
+import $util from '@/libs/util.js';
 
 export default {
     name: 'home',
@@ -238,10 +239,12 @@ export default {
     },
     data () {
         return {
+            toDoListCon:'400px',
             loginObj: {
                 oldIp: "",
                 oldIpAddress: "",
-                oldLoginTime: ""
+                oldLoginTime: "",
+                nickname:''
             },
             toDoList: [
                 {
@@ -261,10 +264,10 @@ export default {
                 }
             ],
             count: {
-                createUser: 496,
-                visit: 3264,
-                collection: 24389305,
-                transfer: 39503498
+                excelCount: 0,
+                wordCount: 0,
+                imgCount: 0,
+                planCount: 0
             },
             cityData: cityData,
             showAddNewTodo: false,
@@ -296,13 +299,36 @@ export default {
         cancelAdd () {
             this.showAddNewTodo = false;
             this.newToDoItemValue = '';
+        },
+        init(){
+            let url = "initHomeInfo";
+            let _this = this;
+            $util.post(url,{})
+                .then(function (response) {
+                    if(response.status == 200){
+                        if(response.data.statusCode == "10000"){
+                            _this.count.excelCount = parseInt(response.data.data.excelCount);
+                            _this.count.imgCount = parseInt(response.data.data.imgCount);
+                            _this.count.wordCount = parseInt(response.data.data.wordCount);
+                            _this.count.planCount = parseInt(response.data.data.planCount);
+                        }else {
+                            $util.responseMsg(_this,response.data);
+                        }
+                    }else{
+                        $util.httpErrorMsg(_this,response.data)
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this,error.data)
+                })
         }
     },
     created () {
         this.loginObj.oldIp = localStorage.getItem("oldIp");
         this.loginObj.oldIpAddress = localStorage.getItem("oldIpAddress");
         this.loginObj.oldLoginTime = localStorage.getItem("oldLoginTime");
-
+        this.loginObj.nickname = localStorage.getItem("nickname");
+        this.init();
     }
 };
 </script>

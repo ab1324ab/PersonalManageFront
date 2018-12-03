@@ -159,7 +159,6 @@
         created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
-            console.info('menuTheme2',this.$store.state.app.menuTheme);
         }
     };
 </script>

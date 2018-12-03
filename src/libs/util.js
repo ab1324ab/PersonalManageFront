@@ -3,6 +3,7 @@ import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
+import Cookies from 'js-cookie';
 
 let util = {
 
@@ -299,6 +300,8 @@ util.responseMsg = function(vm,status){
         return;
     }
     if(status.statusCode == '400001'){
+        Cookies.remove('user');
+        Cookies.remove('access');
         vm.$router.push({
             name: 'login',
         });

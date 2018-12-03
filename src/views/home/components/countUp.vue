@@ -98,10 +98,14 @@ export default {
     },
     watch: {
         endVal (val) {
-            let res = transformValue(val);
-            let endVal = res.val;
-            this.unit = res.unit;
-            this.demo.update(endVal);
+            try {
+                let res = transformValue(val);
+                let endVal = res.val;
+                this.unit = res.unit;
+                this.demo.update(endVal);
+            }catch (e) {
+                console.info("endVal","endVal error...")
+            }
         }
     }
 };

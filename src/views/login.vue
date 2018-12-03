@@ -111,6 +111,8 @@ export default {
                                     localStorage.setItem("oldIp",oldIp);
                                     let oldIpAddress = response.data.data.oldIpAddress;
                                     localStorage.setItem("oldIpAddress",oldIpAddress);
+                                    let nickname = response.data.data.nickname;
+                                    localStorage.setItem("nickname",nickname);
                                     _this.$router.push({
                                         name: 'home_index'
                                     });

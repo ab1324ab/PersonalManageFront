@@ -53,13 +53,13 @@ export default {
                         name: '访问量',
                         type: 'bar',
                         data: [
-                            {value: 453682, name: 'Mon', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 879545, name: 'Tues', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 2354678, name: 'Wed', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1598403, name: 'Thur', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 543250, name: 'Fri', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1305923, name: 'Sat', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1103456, name: 'Sun', itemStyle: {normal: {color: '#2d8cf0'}}}
+                            {value: 50, name: 'Mon', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 100, name: 'Tues', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 200, name: 'Wed', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 500, name: 'Thur', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 300, name: 'Fri', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 400, name: 'Sat', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 100, name: 'Sun', itemStyle: {normal: {color: '#2d8cf0'}}}
                         ]
                     }
                 ]
