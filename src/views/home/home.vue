@@ -9,23 +9,29 @@
                 <Row class-name="home-page-row1" :gutter="10">
                     <Col :md="24" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
-                            <Row type="flex" class="user-infor-img">
-                                <Col span="24">
-                                    <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                        <img class="avator-img margin-auto" :src="avatorPath" />
+                            <!--<Row>-->
+                                <!--<Col :md="12" :lg="12">-->
+                                    <Row type="flex" class="user-infor-img">
+                                        <Col span="24">
+                                            <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                                <img class="avator-img margin-auto" :src="avatorPath" />
+                                            </Row>
+                                        </Col>
                                     </Row>
-                                </Col>
-                            </Row>
-                            <Row type="flex" class="user-infor">
-                                <Col span="24" style="padding-left:6px;">
-                                    <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                        <div class="margin-auto">
-                                            <b class="card-user-infor-name">Admin</b>
-                                            <p>super admin</p>
-                                        </div>
+                                <!--</Col>-->
+                                <!--<Col :md="12" :lg="12">-->
+                                    <Row type="flex" class="user-infor">
+                                        <Col span="24" style="padding-left:6px;">
+                                            <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                                <div class="margin-auto">
+                                                    <b class="card-user-infor-name">Admin</b>
+                                                    <p>super admin</p>
+                                                </div>
+                                            </Row>
+                                        </Col>
                                     </Row>
-                                </Col>
-                            </Row>
+                                <!--</Col>-->
+                            <!--</Row>-->
                             <div class="line-gray"></div>
                             <Row class="margin-top-9">
                                 <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
@@ -195,7 +201,7 @@
                         <Button type="primary" @click="addNew">确定</Button>
                     </Row>
                 </Modal>
-                <div class="to-do-list-con">
+                <div class="to-do-list-con" style="height: 400px">
                     <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
                         <to-do-list-item :content="item.title"></to-do-list-item>
                     </div>
