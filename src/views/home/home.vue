@@ -84,7 +84,7 @@
                         <infor-card
                             id-name="excel_count"
                             :end-val="count.excelCount"
-                            iconType="android-person-add"
+                            iconType="ios-grid-view-outline"
                             color="#2d8cf0"
                             intro-text="表格文档总数"
                         ></infor-card>
@@ -93,7 +93,7 @@
                         <infor-card
                             id-name="word_count"
                             :end-val="count.wordCount"
-                            iconType="ios-eye"
+                            iconType="ios-paper-outline"
                             color="#64d572"
                             :iconSize="50"
                             intro-text="文本文档总数"
@@ -103,7 +103,7 @@
                         <infor-card
                             id-name="img_count"
                             :end-val="count.imgCount"
-                            iconType="upload"
+                            iconType="images"
                             color="#ffd572"
                             intro-text="图片总数"
                         ></infor-card>
@@ -112,7 +112,7 @@
                         <infor-card
                             id-name="plan_count"
                             :end-val="count.planCount"
-                            iconType="shuffle"
+                            iconType="ios-barcode-outline"
                             color="#f25e43"
                             intro-text="计划总数"
                         ></infor-card>
@@ -123,10 +123,10 @@
                         <Card>
                             <p slot="title" class="card-title">
                                 <Icon type="android-map"></Icon>
-                                上周每日来访量统计
+                                数量分类统计
                             </p>
                             <div class="data-source-row">
-                                <visite-volume></visite-volume>
+                                <visite-volume :counts="count"></visite-volume>
                             </div>
                         </Card>
                     </Col>
@@ -137,7 +137,7 @@
                                 数据来源统计
                             </p>
                             <div class="data-source-row">
-                                <data-source-pie></data-source-pie>
+                                <data-source-pie :counts="count"></data-source-pie>
                             </div>
                         </Card>
                     </Col>
@@ -277,7 +277,13 @@ export default {
     computed: {
         avatorPath () {
             return localStorage.avatorImgPath;
-        }
+        },
+        // toDoListCon (){
+        //     let clientHeight = document.body.clientHeight;
+        //     console.info(clientHeight - 510)
+        //     return (clientHeight - 510) +'px'
+        // }
+
     },
     methods: {
         addNewToDoItem () {
@@ -323,11 +329,26 @@ export default {
                 })
         }
     },
+    mounted: function () {
+        this.$nextTick(function () {
+            const _this = this
+            window.onresize = () => {
+                return (() => {
+                    let clientHeight = document.body.clientHeight - 614;
+                    if(clientHeight < 300){
+                        clientHeight = 300
+                    }
+                    _this.toDoListCon = (clientHeight) +"px"
+                })()
+            }
+        })
+    },
     created () {
         this.loginObj.oldIp = localStorage.getItem("oldIp");
         this.loginObj.oldIpAddress = localStorage.getItem("oldIpAddress");
         this.loginObj.oldLoginTime = localStorage.getItem("oldLoginTime");
         this.loginObj.nickname = localStorage.getItem("nickname");
+
         this.init();
     }
 };

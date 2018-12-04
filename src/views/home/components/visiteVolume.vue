@@ -6,14 +6,39 @@
 import echarts from 'echarts';
 export default {
     name: 'visiteVolume',
+    props:{
+        counts:{
+            excelCount: {
+                type: Number,
+                default: 0
+            },
+            wordCount: {
+                type: Number,
+                default: 0
+            },
+            imgCount: {
+                type: Number,
+                default: 0
+            },
+            planCount: {
+                type: Number,
+                default: 0
+            }
+        }
+    },
     data () {
         return {
-            //
+            visiteVolume :{},
         };
+    },
+    methods:{
+
     },
     mounted () {
         this.$nextTick(() => {
             let visiteVolume = echarts.init(document.getElementById('visite_volume_con'));
+            this.visiteVolume = visiteVolume;
+            this.visiteVolume.showLoading();
             let xAxisData = [];
             let data1 = [];
             let data2 = [];
@@ -22,7 +47,6 @@ export default {
                 data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
                 data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
             }
-
             const option = {
                 tooltip: {
                     trigger: 'axis',
@@ -43,34 +67,51 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                    data: ['图片', '文档', '表格', '计划'],
                     nameTextStyle: {
                         color: '#c3c3c3'
                     }
                 },
                 series: [
                     {
-                        name: '访问量',
+                        name: '总数量',
                         type: 'bar',
                         data: [
-                            {value: 50, name: 'Mon', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 100, name: 'Tues', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 200, name: 'Wed', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 500, name: 'Thur', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 300, name: 'Fri', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 400, name: 'Sat', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 100, name: 'Sun', itemStyle: {normal: {color: '#2d8cf0'}}}
+                            {value: 0, name: '图片', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 0, name: '文档', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 0, name: '表格', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 0, name: '计划', itemStyle: {normal: {color: '#2d8cf0'}}},
                         ]
                     }
                 ]
             };
-
-            visiteVolume.setOption(option);
-
+            this.visiteVolume.setOption(option);
             window.addEventListener('resize', function () {
-                visiteVolume.resize();
+                this.visiteVolume.resize();
             });
         });
+    },
+    created(){
+
+    },
+    watch:{
+        counts:{
+            handler: function (val) {
+                this.visiteVolume.hideLoading();
+                this.visiteVolume.setOption({
+                    series: [{
+                            data: [
+                                {value: val.imgCount, name: '图片', itemStyle: {normal: {color: '#2d8cf0'}}},
+                                {value: val.wordCount, name: '文档', itemStyle: {normal: {color: '#2d8cf0'}}},
+                                {value: val.excelCount, name: '表格', itemStyle: {normal: {color: '#2d8cf0'}}},
+                                {value: val.planCount, name: '计划', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            ]
+                        }
+                    ]
+                });
+            },
+            deep: true
+        }
     }
 };
 </script>

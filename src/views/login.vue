@@ -30,7 +30,7 @@
                         <FormItem prop="checkCode" v-if="imgCodeShow == 1">
                             <Row>
                                 <Col :span="12">
-                                    <Input v-model="form.checkCode" maxlength="4" placeholder="请输入验证码">
+                                    <Input v-model="form.checkCode" :maxlength="4" placeholder="请输入验证码">
                                         <span slot="prepend">
                                             <Icon :size="14" type="image"></Icon>
                                         </span>
