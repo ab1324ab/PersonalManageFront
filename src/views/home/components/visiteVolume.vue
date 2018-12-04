@@ -87,7 +87,7 @@ export default {
             };
             this.visiteVolume.setOption(option);
             window.addEventListener('resize', function () {
-                this.visiteVolume.resize();
+                visiteVolume.resize();
             });
         });
     },

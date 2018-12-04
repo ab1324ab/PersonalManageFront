@@ -203,7 +203,7 @@
                 </Modal>
                 <div class="to-do-list-con" :style="{height:toDoListCon}">
                     <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
-                        <to-do-list-item :content="item.title"></to-do-list-item>
+                        <to-do-list-item :contentObj="item"></to-do-list-item>
                     </div>
                 </div>
             </Card>
@@ -246,23 +246,7 @@ export default {
                 oldLoginTime: "",
                 nickname:''
             },
-            toDoList: [
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                }
-            ],
+            toDoList: [],
             count: {
                 excelCount: 0,
                 wordCount: 0,
@@ -317,6 +301,7 @@ export default {
                             _this.count.imgCount = parseInt(response.data.data.imgCount);
                             _this.count.wordCount = parseInt(response.data.data.wordCount);
                             _this.count.planCount = parseInt(response.data.data.planCount);
+                            _this.toDoList = response.data.data.todoList;
                         }else {
                             $util.responseMsg(_this,response.data);
                         }
