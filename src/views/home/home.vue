@@ -223,6 +223,7 @@ import inforCard from './components/inforCard.vue';
 import mapDataTable from './components/mapDataTable.vue';
 import toDoListItem from './components/toDoListItem.vue';
 import $util from '@/libs/util.js';
+var qs = require('qs');
 
 export default {
     name: 'home',
@@ -274,17 +275,38 @@ export default {
             this.showAddNewTodo = true;
         },
         addNew () {
-            if (this.newToDoItemValue.length !== 0) {
-                this.toDoList.unshift({
-                    title: this.newToDoItemValue
-                });
-                setTimeout(() => {
-                    this.newToDoItemValue = '';
-                }, 200);
-                this.showAddNewTodo = false;
-            } else {
+            if (this.newToDoItemValue.length == 0) {
                 this.$Message.error('请输入待办事项内容');
+                return;
             }
+            let url = "addTodo";
+            let _this = this;
+            let data = qs.stringify({
+                "content":this.newToDoItemValue
+            });
+            $util.post(url,data)
+                .then(function (response) {
+                    if(response.status == 200){
+                        if(response.data.statusCode == "10000"){
+                            _this.toDoList.unshift({
+                                content: response.data.data.content,
+                                id: response.data.data.id,
+                                isFinished: response.data.data.isFinished
+                            });
+                            setTimeout(() => {
+                                _this.newToDoItemValue = '';
+                            }, 200);
+                            _this.showAddNewTodo = false;
+                        }else {
+                            $util.responseMsg(_this,response.data);
+                        }
+                    }else{
+                        $util.httpErrorMsg(_this,response.data)
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this,error.data)
+                });
         },
         cancelAdd () {
             this.showAddNewTodo = false;
