@@ -343,8 +343,15 @@ util.httpErrorMsg = function(vm,status){
     }
 };
 
-util.successMsg = function(vm,time,content){
+util.frontSuccMsg = function(vm,time,content){
     vm.$Message.success({
+        duration: time,
+        content: content
+    });
+};
+
+util.frontErrMsg = function(vm,time,content){
+    vm.$Message.error({
         duration: time,
         content: content
     });

@@ -43,7 +43,7 @@
                         </FormItem>
 
                         <FormItem>
-                            <Button @click="handleSubmit" type="primary" long>登录</Button>
+                            <Button @click="handleSubmit" :loading="loginLoading" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
                     <p class="login-tip">输入任意用户名和密码即可</p>
@@ -68,6 +68,7 @@ export default {
             }
         };
         return {
+            loginLoading: false,
             imgCode:"",
             imgCodeShow: 0,
             form: {
@@ -92,10 +93,12 @@ export default {
         handleSubmit () {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
+                    this.loginLoading = true;
                     let url = "login";
                     let _this = this;
                     $util.post(url,this.form)
                         .then(function (response) {
+                            _this.loginLoading = false;
                             if(response.status == 200){
                                 if(response.data.data != null){
                                     _this.resetPicCode();
@@ -124,6 +127,7 @@ export default {
                             }
                         })
                         .catch(function (error) {
+                            _this.loginLoading = false;
                             $util.httpErrorMsg(_this,error.data)
                         })
                 }
