@@ -33,7 +33,7 @@
                                     </Upload>
                                 </Col>
                                 <Col>
-                                    <Button type="primary" @click="selectShow('w')" icon="refresh">重置</Button>
+                                    <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -91,15 +91,13 @@
         methods: {
             init () {
                 let editor = new Editor('#tinymceEditer');
+                this.editorc = editor;
                 // 处理图片
                 editor.customConfig.uploadImgServer = '/';
                 editor.customConfig.uploadFileName = 'file';
                 // 忽略粘贴内容中的图片
                 editor.customConfig.pasteFilter = true;
                 editor.customConfig.pasteIgnoreImg = false;
-                editor.customConfig.onchange = (html) => {
-                    this.wordObj.content = html
-                }
                 editor.customConfig.pasteTextHandle = function (content) {
                     // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
                     let c = content.indexOf('src="');
@@ -158,7 +156,7 @@
                 }
             },
             addWordContent(){
-                console.info("name",this.wordObj.name)
+                this.wordObj.content = this.editorc.txt.html();
                 if(this.wordObj.name == "" || this.wordObj.content == ""){
                     $util.frontErrMsg(this,2,"请完善文档信息")
                     return;
@@ -192,15 +190,39 @@
                         $util.httpErrorMsg(_this,error.data)
                     })
             },
+            newWordInit(){
+                this.wordObj.id = "";
+                this.wordObj.content = "";
+                this.wordObj.describe = "";
+                this.wordObj.name = "";
+                this.editorc.txt.clear();
+            },
             selectShow (id) {
-                console.info('文件标识',id)
+                this.newWordInit();
+                this.wordObj.id = id;
+                let url = "queryWordContent";
+                let _this = this;
+                $util.post(url,this.wordObj)
+                    .then(function (response) {
+                        if(response.status == 200){
+                            if(response.data.statusCode == "10000"){
+                                _this.wordObj.id = response.data.data.id;
+                                _this.wordObj.name = response.data.data.name;
+                                _this.editorc.txt.html(response.data.data.content);
+                            }else {
+                                $util.responseMsg(_this,response.data);
+                            }
+                        }else{
+                            $util.httpErrorMsg(_this,response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this,error.data)
+                    })
             }
         },
         mounted () {
             this.init();
-        },
-        destroyed () {
-            // tinymce.get('tinymceEditer').destroy();
         },
         created(){
             this.initHistoryWord();
