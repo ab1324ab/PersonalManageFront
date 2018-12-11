@@ -161,10 +161,6 @@
                     $util.frontErrMsg(this,2,"请完善文档信息")
                     return;
                 }
-                if(this.wordObj.content.length > 10000){
-                    $util.frontErrMsg(this,2,"文档信息超过10000字不支持")
-                    return;
-                }
                 let url = "";
                 if(this.wordObj.id == ""){
                     url = "addWordContent";
