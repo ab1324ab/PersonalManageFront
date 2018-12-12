@@ -257,7 +257,9 @@ util.fullscreenEvent = function (vm) {
     // 全屏相关
 };
 
-// 请求时的拦截
+/**
+ * 请求时的拦截
+ */
 axios.interceptors.request.use(function (config) {
     // 请求之前做一些处理
     return config;
@@ -267,7 +269,9 @@ axios.interceptors.request.use(function (config) {
     return error;
 });
 
-// 响应时拦截
+/**
+ * 响应时拦截
+ */
 axios.interceptors.response.use(function (response) {
     //console.info(response)
     return response;
@@ -276,6 +280,11 @@ axios.interceptors.response.use(function (response) {
     return error.response;
 });
 
+/**
+ * get请求
+ * @param url
+ * @returns {Promise<any>}
+ */
 util.get = function (url) {
     return new Promise((resolve, reject) => {
         axios.get(ajaxUrl + url)
@@ -284,6 +293,12 @@ util.get = function (url) {
     });
 };
 
+/**
+ * post请求
+ * @param url
+ * @param data
+ * @returns {Promise<any>}
+ */
 util.post = function (url, data) {
     return new Promise((resolve, reject) => {
         axios.post(ajaxUrl + url,data)
@@ -292,6 +307,13 @@ util.post = function (url, data) {
     });
 };
 
+/**
+ * post带配置请求
+ * @param url
+ * @param data
+ * @param config
+ * @returns {Promise<any>}
+ */
 util.post = function (url, data,config) {
     return new Promise((resolve, reject) => {
         axios.post(ajaxUrl + url,data,config)
@@ -300,6 +322,11 @@ util.post = function (url, data,config) {
     });
 };
 
+/**
+ * 处理业务返回状态
+ * @param vm
+ * @param status
+ */
 util.responseMsg = function(vm,status){
     try {
         if(status == null || status == ""){
@@ -329,6 +356,11 @@ util.responseMsg = function(vm,status){
     }
 };
 
+/**
+ * 处理网络返回状态
+ * @param vm
+ * @param status
+ */
 util.httpErrorMsg = function(vm,status){
     try {
         if(status.status == '403'){
@@ -358,7 +390,12 @@ util.httpErrorMsg = function(vm,status){
         })
     }
 };
-
+/**
+ * 自定义正确消息
+ * @param vm
+ * @param time
+ * @param content
+ */
 util.frontSuccMsg = function(vm,time,content){
     vm.$Message.success({
         duration: time,
@@ -366,11 +403,36 @@ util.frontSuccMsg = function(vm,time,content){
     });
 };
 
+/**
+ * 自定义错误消息
+ * @param vm
+ * @param time
+ * @param content
+ */
 util.frontErrMsg = function(vm,time,content){
     vm.$Message.error({
         duration: time,
         content: content
     });
+};
+
+/**
+ * base64转图片文件
+ * @param base64Data
+ * @param fileName
+ */
+util.base64toFile = function(base64Data,fileName){
+    var arr = base64Data.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    let suffix = mime.split("/");
+    var file = new File([u8arr], fileName+"."+suffix[1],{ type: mime });
+    return file;
 };
 
 util.checkUpdate = function (vm) {

@@ -74,7 +74,6 @@
     import Cropper from 'cropperjs';
     import './style/cropper.min.css';
     import $util from '@/libs/util.js';
-    var qs = require('qs');
 
     export default {
         name: "create-image",
@@ -106,6 +105,23 @@
                     cropBoxMovable: true,
                     toggleDragModeOnDblclick: false
                 });
+                let url = "initAdvertisement";
+                let _this = this;
+                $util.get(url)
+                    .then(function (response) {
+                        if(response.status == 200 ){
+                            if( response.data.statusCode == "10000"){
+                                // 暂没想到
+                            }else{
+                                $util.responseMsg(_this,response.data);
+                            }
+                        }else{
+                            $util.httpErrorMsg(_this,response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this,response.data)
+                    })
             },
             handleChange(e) {
                 let file = e.target.files[0];
@@ -118,17 +134,21 @@
                 reader.readAsDataURL(file);
             },
             uploadImg(data){
+                if(this.imgObj.name == ""){
+                    $util.frontErrMsg(this,2,"请输入名称");
+                    return;
+                }
                 let upFile = {};
-                if(data ==  'direct'){
+                if(data ==  'direct'){ // 直接上传
                     upFile = this.uploadFile;
+                }else if(data ==  'trim'){ // 裁剪上传
+                    upFile = $util.base64toFile(this.option.cropedImg,this.imgObj.name);
                 }else{
-                    upFile = this.option.cropedImg;
+                    $util.frontErrMsg(this,2,"请上传图片");
+                    return;
                 }
                 if(upFile == null){
                     $util.frontErrMsg(this,2,"请上传图片");
-                    return;
-                }else if(this.imgObj.name == ""){
-                    $util.frontErrMsg(this,2,"请输入名称");
                     return;
                 }
                 let url = "upload"
@@ -179,10 +199,14 @@
                     })
             },
             handlecrop() {
+                if(this.imgObj.name == ""){
+                    $util.frontErrMsg(this,2,"请输入名称");
+                    return;
+                }
                 let file = this.cropper.getCroppedCanvas().toDataURL();
                 this.option.cropedImg = file;
                 this.option.showCropedImage = true;
-            },
+            }
         },
         mounted() {
             this.init();
