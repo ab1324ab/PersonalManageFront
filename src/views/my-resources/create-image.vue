@@ -15,7 +15,7 @@
             <img :src="option.cropedImg" alt=""  style="width: 100%;">
             <div slot="footer">
                 <Button type="primary" @click="option.showCropedImage = false">取消</Button>
-                <Button type="primary">保存上传</Button>
+                <Button type="primary" @click="uploadImg('trim')">保存上传</Button>
             </div>
         </Modal>
         <Row :gutter="10">
@@ -36,7 +36,7 @@
                                     <Icon type="image"></Icon>&nbsp;选择图片</label>
                             </Col>
                             <Col>
-                                <Button type="primary" @click="uploadImg" icon="upload">直接上传</Button>
+                                <Button type="primary" @click="uploadImg('direct')" icon="upload">直接上传</Button>
                             </Col>
                             <Col>
                                 <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
@@ -117,18 +117,24 @@
                 };
                 reader.readAsDataURL(file);
             },
-            uploadImg(){
-                if(this.uploadFile.name == null){
-                    $util.frontErrMsg(this,2,"请上传图片")
+            uploadImg(data){
+                let upFile = {};
+                if(data ==  'direct'){
+                    upFile = this.uploadFile;
+                }else{
+                    upFile = this.option.cropedImg;
+                }
+                if(upFile == null){
+                    $util.frontErrMsg(this,2,"请上传图片");
                     return;
                 }else if(this.imgObj.name == ""){
-                    $util.frontErrMsg(this,2,"请输入名称")
+                    $util.frontErrMsg(this,2,"请输入名称");
                     return;
                 }
                 let url = "upload"
                 let _this = this;
                 let param = new window.FormData();
-                param.append('file', this.uploadFile);
+                param.append('file', upFile);
                 $util.post(url,param,{
                         headers: {
                             'Content-Type': 'multipart/form-data'
