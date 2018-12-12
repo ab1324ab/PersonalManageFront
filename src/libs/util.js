@@ -263,7 +263,8 @@ axios.interceptors.request.use(function (config) {
     return config;
 }, function (error) {
     // 当请求异常时做一些处理
-    return Promise.reject(error);
+    // Promise.reject(error)
+    return error;
 });
 
 // 响应时拦截
@@ -272,7 +273,7 @@ axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     // 当响应异常时做一些处理
-    return Promise.reject(error);
+    return error.response;
 });
 
 util.get = function (url) {
@@ -291,41 +292,56 @@ util.post = function (url, data) {
     });
 };
 
+util.post = function (url, data,config) {
+    return new Promise((resolve, reject) => {
+        axios.post(ajaxUrl + url,data,config)
+            .then(res => { resolve(res); })
+            .catch(err => { reject(err); });
+    });
+};
+
 util.responseMsg = function(vm,status){
-    if(status == null || status == ""){
+    try {
+        if(status == null || status == ""){
+            vm.$Message.error({
+                duration: 2,
+                content: '系统繁忙,请稍后再试！'
+            });
+            return;
+        }else if(status.statusCode == '400001'){
+            Cookies.remove('user');
+            Cookies.remove('access');
+            vm.$router.push({
+                name: 'login',
+            });
+            return;
+        }else{
+            vm.$Message.error({
+                duration: 2,
+                content: status.msg
+            })
+        }
+    }catch (e) {
         vm.$Message.error({
             duration: 2,
             content: '系统繁忙,请稍后再试！'
-        });
-        return;
+        })
     }
-    if(status.statusCode == '400001'){
-        Cookies.remove('user');
-        Cookies.remove('access');
-        vm.$router.push({
-            name: 'login',
-        });
-        return;
-    }
-    vm.$Message.error({
-        duration: 2,
-        content: status.msg
-    })
 };
 
 util.httpErrorMsg = function(vm,status){
     try {
-        if(status.statusCode == '403'){
+        if(status.status == '403'){
             vm.$router.push({
                 name: 'error-403',
             });
             return;
-        }else if(status.statusCode == '404'){
+        }else if(status.status == '404'){
             vm.$router.push({
                 name: 'error-404',
             });
             return;
-        }else if(status.statusCode == '500'){
+        }else if(status.status == '500'){
             vm.$router.push({
                 name: 'error-500',
             });

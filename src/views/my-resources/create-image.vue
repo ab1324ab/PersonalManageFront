@@ -25,10 +25,10 @@
                         <Icon type="qr-scanner"></Icon>
                         图片编辑
                     </p>
-                    <Form :label-width='80' inline style="margin-bottom: -25px">
+                    <Form :label-width='80' inline style="margin-bottom: -25px" v-model="imgObj">
                         <Row :gutter="10" type="flex">
                             <FormItem label="文件名称" prop="name">
-                                <Input placeholder="输入文件名称" style="width: 300px"/>
+                                <Input placeholder="输入文件名称" v-model="imgObj.name" style="width: 300px"/>
                             </FormItem>
                             <Col>
                                 <input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
@@ -36,7 +36,7 @@
                                     <Icon type="image"></Icon>&nbsp;选择图片</label>
                             </Col>
                             <Col>
-                                <Button type="primary" @click="selectShow('w')" icon="upload">直接上传</Button>
+                                <Button type="primary" @click="uploadImg" icon="upload">直接上传</Button>
                             </Col>
                             <Col>
                                 <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
@@ -73,16 +73,25 @@
 <script>
     import Cropper from 'cropperjs';
     import './style/cropper.min.css';
+    import $util from '@/libs/util.js';
+    var qs = require('qs');
 
     export default {
         name: "create-image",
         data() {
             return {
                 cropper: {},
+                uploadFile:{},
                 option: {
                     showCropedImage: false,
                     cropedImg: ''
                 },
+                imgObj:{
+                    id:"",
+                    name:"",
+                    imgPath:"",
+                    type:"img"
+                }
             };
         },
         methods: {
@@ -100,12 +109,68 @@
             },
             handleChange(e) {
                 let file = e.target.files[0];
+                this.uploadFile = file;
                 let reader = new FileReader();
                 reader.onload = () => {
                     this.cropper.replace(reader.result);
                     reader.onload = null;
                 };
                 reader.readAsDataURL(file);
+            },
+            uploadImg(){
+                if(this.uploadFile.name == null){
+                    $util.frontErrMsg(this,2,"请上传图片")
+                    return;
+                }else if(this.imgObj.name == ""){
+                    $util.frontErrMsg(this,2,"请输入名称")
+                    return;
+                }
+                let url = "upload"
+                let _this = this;
+                let param = new window.FormData();
+                param.append('file', this.uploadFile);
+                $util.post(url,param,{
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(function (response) {
+                        _this.loginLoading = false;
+                        if(response.status == 200){
+                            if(response.data.statusCode == "10000"){
+                                _this.imgObj.imgPath = response.data.data;
+                                let url = "";
+                                if(_this.imgObj.id == ""){
+                                    url = "addImagesInfo";
+                                }else {
+                                    url = "updateImagesInfo";
+                                }
+                                $util.post(url,_this.imgObj)
+                                .then(function (response) {
+                                    if(response.status == 200 ){
+                                        if( response.data.statusCode == "10000"){
+                                            _this.imgObj.id = response.data.data;
+                                            $util.frontSuccMsg(_this,2,response.data.msg);
+                                        }else{
+                                            $util.responseMsg(_this,response.data);
+                                        }
+                                    }else{
+                                        $util.httpErrorMsg(_this,response.data)
+                                    }
+                                })
+                                .catch(function (error) {
+                                    $util.httpErrorMsg(_this,error.data)
+                                })
+                            }else {
+                                $util.responseMsg(_this,response.data);
+                            }
+                        }else{
+                            $util.httpErrorMsg(_this,response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this,error.data)
+                    })
             },
             handlecrop() {
                 let file = this.cropper.getCroppedCanvas().toDataURL();
