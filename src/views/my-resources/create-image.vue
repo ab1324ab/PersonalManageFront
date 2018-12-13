@@ -47,8 +47,8 @@
                 </Card>
                 <Row :gutter="10" class="margin-top-10">
                     <Col span="17" class="image-editor-con1">
-                        <Card style="height: 100%">
-                            <div class="cropper">
+                        <Card style="height: 710px">
+                            <div class="cropper" style="height: 100%">
                                 <img id="cropimg" height="505" src="../../images/cropper-test.png" alt="">
                             </div>
                         </Card>

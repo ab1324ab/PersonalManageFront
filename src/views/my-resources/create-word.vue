@@ -1,11 +1,6 @@
 <style lang="less">
     @import '../../styles/common.less';
 </style>
-<style>
-    .w-e-text-container{
-        height: 460px !important;
-    }
-</style>
 <template>
     <div id="hot-preview">
         <!--<HotTable :settings="settings"></HotTable>-->
@@ -16,7 +11,7 @@
                         <Icon type="ios-film-outline"></Icon>
                         新建工作文档
                     </p>
-                    <div style="height: 550px">
+                    <div :style="{height:editorH}">
                         <Form  inline :label-width='80' :model="wordObj">
                             <Row :gutter='10' type="flex">
                                 <FormItem label="文档名称" prop="name">
@@ -37,7 +32,7 @@
                                 </Col>
                             </Row>
                         </Form>
-                        <div ref="tinymceEditer" id="tinymceEditer" style="height: 500px;"></div>
+                        <div ref="tinymceEditer" id="tinymceEditer"></div>
                         <!--<textarea id="tinymceEditer"></textarea>-->
                         <Spin fix v-if="false">
                             <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
@@ -73,6 +68,7 @@
         },
         data () {
             return {
+                editorH:'0px',
                 spinShow: true,
                 historyList: [],
                 editorc:{},
@@ -89,6 +85,15 @@
 
         },
         methods: {
+            initEditorHeight(){
+                var docHeight = document.body.scrollHeight;
+                var wordTH = docHeight - 210;
+                this.editorH = wordTH + 'px';
+                var obj = document.getElementsByClassName('w-e-text-container');
+                var elHei = wordTH - 90;
+                obj[0].style.height = elHei + 'px';
+                console.info(elHei);
+            },
             init () {
                 let editor = new Editor('#tinymceEditer');
                 this.editorc = editor;
@@ -219,6 +224,7 @@
         },
         mounted () {
             this.init();
+            this.initEditorHeight();
         },
         created(){
             this.initHistoryWord();

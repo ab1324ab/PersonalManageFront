@@ -201,7 +201,7 @@
                         <Button type="primary" @click="addNew">确定</Button>
                     </Row>
                 </Modal>
-                <div class="to-do-list-con" :style="{height:toDoListCon}">
+                <div class="to-do-list-con">
                     <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
                         <to-do-list-item :contentObj="item"></to-do-list-item>
                     </div>
@@ -240,7 +240,6 @@ export default {
     },
     data () {
         return {
-            toDoListCon:'400px',
             loginObj: {
                 oldIp: "",
                 oldIpAddress: "",
@@ -336,19 +335,8 @@ export default {
                 })
         }
     },
-    mounted: function () {
-        this.$nextTick(function () {
-            const _this = this
-            window.onresize = () => {
-                return (() => {
-                    let clientHeight = document.body.clientHeight - 614;
-                    if(clientHeight < 300){
-                        clientHeight = 300
-                    }
-                    _this.toDoListCon = (clientHeight) +"px"
-                })()
-            }
-        })
+    mounted () {
+
     },
     created () {
         this.loginObj.oldIp = localStorage.getItem("oldIp");
