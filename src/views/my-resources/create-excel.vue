@@ -36,7 +36,7 @@
                                 </Col>
                             </Row>
                         </Form>
-                        <HotTable :root="root" :settings="settings"></HotTable>
+                        <HotTable ref="hotTable" :root="root" :settings="settings"></HotTable>
                     </div>
                 </Card>
             </Col>
@@ -67,6 +67,8 @@
         },
         data () {
             return {
+                hotTableData:[],
+                thisc:this,
                 hotTableH:'0px',
                 root: 'test-hot',
                 settings: {
@@ -78,8 +80,8 @@
                     contextMenu: true,
                     rowHeaders: [1,2,3,4,5,6,7,8],//行表头
                     colHeaders:   ['A', 'B', 'C', 'D', 'E','F'],//列表头
-                    minSpareCols: 100, //列留白
-                    minSpareRows: 100,//行留白
+                    minSpareCols: 6, //列留白
+                    minSpareRows: 6,//行留白
                     columnSorting: true,//排序
                     // mergeCells: [   //合并
                     //     {row: 1, col: 1, rowspan: 3, colspan: 3},  //指定合并，从（1,1）开始行3列3合并成一格
@@ -92,6 +94,11 @@
                     manualColumnResize: true,//手工更改列距
                     manualRowResize: true,//手动更改行距
                     comments: true, //添加注释
+                    _this:this,
+                    afterChange:function (changes, source)  { //数据改变时触发此方法
+
+                        this.$refs.hotTable.table.getData();
+                    },
                 },
                 excelObj:{
                     id:"",
@@ -104,12 +111,15 @@
             };
         },
         methods: {
+            sverData(data){
+                this.hotTableData = data;
+            },
             initHotTableHeight(){
                 var docHeight = document.body.scrollHeight;
                 var wordTH = docHeight - 210;
                 this.hotTableH = wordTH + 'px';
                 var wtHolderCssH = wordTH - 90;
-                console.info(wtHolderCssH);
+                //console.info(wtHolderCssH);
                 // 直接写入style标签
                 var nod = document.createElement("style"),
                 str = ".wtHolder{ width: 100% !important; height: "+wtHolderCssH+"px !important;} #hot-display-license-info{ padding: 10px 0 3px 0 !important;}";
@@ -124,7 +134,7 @@
             removeInfo(){
                 let licenseInfo = document.getElementById('hot-display-license-info');
                 //licenseInfo.style.
-                console.info(licenseInfo)
+                //console.info(licenseInfo)
                 licenseInfo.innerHTML = "前端界最接近excel的插件，可以执行编辑，复制粘贴，插入删除行列，排序等复杂操作<br/>关你屁事！"
             },
             wordTitle(name,describe){
@@ -155,6 +165,8 @@
                     })
             },
             addExcelContent(){
+                console.info(this.$refs.hotTable.table.getData())
+
                 this.excelObj.content = "";
                 if(this.excelObj.name == "" || this.excelObj.content == ""){
                     $util.frontErrMsg(this,2,"请完善文档信息")

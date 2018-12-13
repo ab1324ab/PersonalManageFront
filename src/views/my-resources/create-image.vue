@@ -47,7 +47,7 @@
                 </Card>
                 <Row :gutter="10" class="margin-top-10">
                     <Col span="17" class="image-editor-con1">
-                        <Card style="height: 710px">
+                        <Card :style="{height: cropperH}">
                             <div class="cropper" style="height: 100%">
                                 <img id="cropimg" height="505" src="../../images/cropper-test.png" alt="">
                             </div>
@@ -79,6 +79,7 @@
         name: "create-image",
         data() {
             return {
+                cropperH:'0px',
                 cropper: {},
                 uploadFile:{},
                 option: {
@@ -94,6 +95,15 @@
             };
         },
         methods: {
+            initImageH(){
+                var docHeight = document.body.scrollHeight;
+                var imgH = docHeight - 248;
+                if(imgH < 285){
+                    imgH = 285;
+                }
+                this.cropperH = imgH + 'px';
+                console.info(imgH)
+            },
             init() {
                 let img = document.getElementById('cropimg');
                 this.cropper = new Cropper(img, {
@@ -105,6 +115,11 @@
                     cropBoxMovable: true,
                     toggleDragModeOnDblclick: false
                 });
+                // 处理图片显示高度
+                var heightLeft = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-17');
+                var heightRight = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-7');
+                heightRight[0].classList.remove("image-editor-con1");
+                heightLeft[0].classList.remove("image-editor-con1");
                 let url = "initAdvertisement";
                 let _this = this;
                 $util.get(url)
@@ -210,6 +225,9 @@
         },
         mounted() {
             this.init();
+        },
+        created(){
+            this.initImageH();
         }
     }
 </script>
