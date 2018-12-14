@@ -201,7 +201,7 @@
                         <Button type="primary" @click="addNew">确定</Button>
                     </Row>
                 </Modal>
-                <div class="to-do-list-con">
+                <div class="to-do-list-con" :style="{height: toDoListConH}">
                     <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
                         <to-do-list-item :contentObj="item"></to-do-list-item>
                     </div>
@@ -255,19 +255,14 @@ export default {
             },
             cityData: cityData,
             showAddNewTodo: false,
-            newToDoItemValue: ''
+            newToDoItemValue: '',
+            toDoListConH:'0px'
         };
     },
     computed: {
         avatorPath () {
             return localStorage.avatorImgPath;
         },
-        // toDoListCon (){
-        //     let clientHeight = document.body.clientHeight;
-        //     console.info(clientHeight - 510)
-        //     return (clientHeight - 510) +'px'
-        // }
-
     },
     methods: {
         addNewToDoItem () {
@@ -333,17 +328,24 @@ export default {
                 .catch(function (error) {
                     $util.httpErrorMsg(_this,error.data)
                 })
+        },
+        toDoListCon (){
+            var docHeight = document.body.scrollHeight;
+            docHeight = docHeight - 614;
+            // console.info(docHeight);
+            this.toDoListConH = docHeight +'px';
+            // return (clientHeight - 510) +'px'
         }
+
     },
     mounted () {
-
+        this.toDoListCon();
     },
     created () {
         this.loginObj.oldIp = localStorage.getItem("oldIp");
         this.loginObj.oldIpAddress = localStorage.getItem("oldIpAddress");
         this.loginObj.oldLoginTime = localStorage.getItem("oldLoginTime");
         this.loginObj.nickname = localStorage.getItem("nickname");
-
         this.init();
     }
 };

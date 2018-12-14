@@ -1,9 +1,5 @@
 <style lang="less">
     @import '../../styles/common.less';
-    /*.wtHolder{*/
-        /*width: 100% !important;*/
-        /*height: 460px !important;*/
-    /*}*/
 </style>
 
 <template>
@@ -16,10 +12,10 @@
                         新建表格文档
                     </p>
                     <div :style="{height: hotTableH}">
-                        <Form :label-width='80' inline>
+                        <Form :label-width='80' inline v-model="excelObj">
                             <Row :gutter="10" type="flex" >
                                 <FormItem label="文件名称" prop="name">
-                                    <Input placeholder="输入文件名称" style="width: 300px"/>
+                                    <Input placeholder="输入文件名称" v-model="excelObj.name" style="width: 300px"/>
                                 </FormItem>
                                 <Col>
                                     <Button type="primary" @click="addExcelContent" icon="document-text">保存</Button>
@@ -36,7 +32,7 @@
                                 </Col>
                             </Row>
                         </Form>
-                        <HotTable ref="hotTable" :root="root" :settings="settings"></HotTable>
+                        <HotTable ref="thisTable" :root="root" :settings="settings"></HotTable>
                     </div>
                 </Card>
             </Col>
@@ -68,52 +64,44 @@
         data () {
             return {
                 hotTableData:[],
-                thisc:this,
                 hotTableH:'0px',
                 root: 'test-hot',
-                settings: {
+                settings:{
                     data: [
                         ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
                         ['2', '1', '3', '5', '6'],
                     ],
-                    // columnSorting: true, // 排序
                     contextMenu: true,
-                    rowHeaders: [1,2,3,4,5,6,7,8],//行表头
-                    colHeaders:   ['A', 'B', 'C', 'D', 'E','F'],//列表头
-                    minSpareCols: 6, //列留白
-                    minSpareRows: 6,//行留白
-                    columnSorting: true,//排序
+                    rowHeaders: [1,2,3,4,5,6,7,8], //行表头
+                    colHeaders: ['A', 'B', 'C', 'D', 'E','F'], //列表头
+                    minSpareCols: 50,      //列留白
+                    minSpareRows: 50,      //行留白
+                    columnSorting: true,   //排序
+                    language: 'zh-CN',     //选择中文语言包
+                    manualColumnFreeze: true, //手动固定列
+                    manualColumnMove: true,   //手动移动列
+                    manualRowMove: true,       //手动移动行
+                    fillHandle: false,         //允许拖动单元格右下角
+                    manualColumnResize: true, //手工更改列距
+                    manualRowResize: true,     //手动更改行距
+                    //comments: true, //添加注释
                     // mergeCells: [   //合并
                     //     {row: 1, col: 1, rowspan: 3, colspan: 3},  //指定合并，从（1,1）开始行3列3合并成一格
                     //     {row: 3, col: 4, rowspan: 2, colspan: 2}
                     // ],
-                    language: 'zh-CN',
-                    manualColumnFreeze: true, //手动固定列
-                    manualColumnMove: true, //手动移动列
-                    manualRowMove: true,   //手动移动行
-                    manualColumnResize: true,//手工更改列距
-                    manualRowResize: true,//手动更改行距
-                    comments: true, //添加注释
-                    _this:this,
-                    afterChange:function (changes, source)  { //数据改变时触发此方法
 
-                        this.$refs.hotTable.table.getData();
-                    },
                 },
                 excelObj:{
                     id:"",
                     describe:"",
                     name:"",
                     content:"",
-                    type:"word"
+                    type:"excel"
                 },
                 historyList: []
             };
         },
         methods: {
-            sverData(data){
-                this.hotTableData = data;
-            },
             initHotTableHeight(){
                 var docHeight = document.body.scrollHeight;
                 var wordTH = docHeight - 210;
@@ -130,11 +118,10 @@
                     nod.innerHTML = str;
                 }
                 document.getElementsByTagName("head")[0].appendChild(nod);
+                this.newWordInit();
             },
             removeInfo(){
                 let licenseInfo = document.getElementById('hot-display-license-info');
-                //licenseInfo.style.
-                //console.info(licenseInfo)
                 licenseInfo.innerHTML = "前端界最接近excel的插件，可以执行编辑，复制粘贴，插入删除行列，排序等复杂操作<br/>关你屁事！"
             },
             wordTitle(name,describe){
@@ -164,11 +151,26 @@
                         $util.httpErrorMsg(_this,error.data)
                     })
             },
+            removeNotList(data){
+                let temp = new Array();
+                for(var i = 0 ; i < data.length ; i++){
+                    var flag = false;
+                    for(var j = 0 ;j <data[i].length ; j++){
+                        if(data[i][j] != null && data[i][j] != ""){
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(flag){
+                        temp.push(data[i]);
+                    }
+                }
+                return temp;
+            },
             addExcelContent(){
-                console.info(this.$refs.hotTable.table.getData())
-
-                this.excelObj.content = "";
-                if(this.excelObj.name == "" || this.excelObj.content == ""){
+                var contentArray = this.removeNotList(this.$refs.thisTable.$data.hotInstance.getData());
+                this.excelObj.content = JSON.stringify(contentArray);
+                if(this.excelObj.name == "" || contentArray.length == 0){
                     $util.frontErrMsg(this,2,"请完善文档信息")
                     return;
                 }
@@ -202,7 +204,8 @@
                 this.excelObj.content = "";
                 this.excelObj.describe = "";
                 this.excelObj.name = "";
-                this.editorc.txt.clear();
+                this.$refs.thisTable.$data.hotInstance.clear();
+                this.$refs.thisTable.$data.hotInstance.deselectCell();
             },
             selectShow (id) {
                 this.newWordInit();
@@ -213,10 +216,10 @@
                     .then(function (response) {
                         if(response.status == 200){
                             if(response.data.statusCode == "10000"){
-                                console.info(response)
-                                // _this.excelObj.id = response.data.data.id;
-                                // _this.excelObj.name = response.data.data.name;
-                                // _this.editorc.txt.html(response.data.data.content);
+                                _this.excelObj.id = response.data.data.id;
+                                _this.excelObj.name = response.data.data.name;
+                                var data = JSON.parse(response.data.data.content);
+                                _this.$refs.thisTable.$data.hotInstance.loadData(data);
                             }else {
                                 $util.responseMsg(_this,response.data);
                             }
@@ -225,6 +228,7 @@
                         }
                     })
                     .catch(function (error) {
+                        console.info(error);
                         $util.httpErrorMsg(_this,error.data)
                     })
             }
