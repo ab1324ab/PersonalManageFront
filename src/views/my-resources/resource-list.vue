@@ -25,15 +25,15 @@
                 <Icon type="ios-film-outline"></Icon>
                 文档列表
             </p>
-            <Form ref="formInline"  inline :label-width='60' >
-                <FormItem label="文档名称" prop="name">
-                    <Input placeholder="文件名称" ></Input>
+            <Form ref="formInline"  inline :label-width='60' v-model="resourceListFrom">
+                <FormItem label="文档名称" prop="fileName">
+                    <Input placeholder="文件名称" v-model="resourceListFrom.fileName" ></Input>
                 </FormItem>
-                <FormItem label="创建日期" prop="time">
-                    <DatePicker type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
+                <FormItem label="创建日期" prop="creationTime">
+                    <DatePicker v-model="resourceListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
-                <FormItem label="文档类型" prop="time">
-                    <Select v-model="defaultType" style="width:200px">
+                <FormItem label="文档类型" prop="fileType">
+                    <Select v-model="resourceListFrom.fileType" style="width:200px">
                         <Option v-for="item in typeList" :value="item.typeValue" :key="item.typeValue">{{ item.typeName }}</Option>
                     </Select>
                 </FormItem>
@@ -50,6 +50,7 @@
     import pagingComponents from '../main-components/paging-components/paging-components';
     import $util from '@/libs/util.js';
     var qs = require('qs');
+
     export default {
         name: 'resource-list',
         components: {
@@ -114,12 +115,12 @@
                         {
                             title: '名称',
                             align: 'center',
-                            key: 'name'
+                            key: 'fileName'
                         },
                         {
                             title: '类型',
                             align: 'center',
-                            key: 'type'
+                            key: 'fileType'
                         },
                         {
                             title: '大小',
@@ -204,13 +205,17 @@
                         }
                     ],
                     paging: {
-                        total: 100,
+                        total: 0,
                         display: 10,
                         current: 1,
                         pagegroup: 5
                     }
                 },
-                defaultType: '',
+                resourceListFrom:{
+                    fileType: '',
+                    creationTime:'',
+                    fileName:'',
+                },
                 typeList: [
                     {
                         typeName: 'Excel文档',
@@ -228,6 +233,44 @@
             };
         },
         methods: {
+            initResourceList(){
+                let url = 'initUserResourceList';
+                let _this = this;
+                var pageVo = JSON.stringify(this.tableData.paging);
+                var fileQueryFrom = JSON.stringify(this.resourceListFrom);
+                var params = new URLSearchParams();
+                params.append('pageVo',pageVo);
+                params.append('fileQueryFrom',fileQueryFrom);
+                this.tableData.loading = true;
+                $util.post(url,params
+                    // ,{
+                    //     headers: {
+                    //         'Content-Type': 'application/json;charset=UTF-8'
+                    //     }
+                    // }
+                    )
+                    .then(function (response) {
+                        if(response.status == 200){
+                            if(response.data.statusCode == "10000"){
+                                this.tableData.loading = false;
+                                _this.tableData.data = response.data.data.pageVo.data;
+                                _this.tableData.paging.total = response.data.data.pageVo.total;
+                                _this.tableData.paging.display = response.data.data.pageVo.display;
+                                _this.tableData.paging.current = response.data.data.pageVo.current;
+                                _this.tableData.paging.pagegroup = response.data.data.pageVo.pagegroup;
+                                //_this.historyList = response.data.data
+                            }else {
+                                $util.responseMsg(_this,response.data);
+                            }
+                        }else{
+                            $util.httpErrorMsg(_this,response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this,error.data)
+                    })
+
+            },
             detailedInfo (currentRow, oldCurrentRow) {
                 let id = currentRow.id;
                 let type = currentRow.type;
@@ -285,7 +328,10 @@
                 console.info('type',type);
             }
 
-        }
+        },
+        created(){
+            this.initResourceList();
+        },
 
     };
 </script>

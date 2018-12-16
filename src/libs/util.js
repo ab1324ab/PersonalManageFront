@@ -280,6 +280,9 @@ axios.interceptors.response.use(function (response) {
     return error.response;
 });
 
+//设置默认请求地址前缀
+axios.defaults.baseURL = ajaxUrl;
+
 /**
  * get请求
  * @param url
@@ -287,7 +290,7 @@ axios.interceptors.response.use(function (response) {
  */
 util.get = function (url) {
     return new Promise((resolve, reject) => {
-        axios.get(ajaxUrl + url)
+        axios.get(url)
         .then(res => { resolve(res); })
         .catch(err => { reject(err); });
     });
@@ -301,7 +304,7 @@ util.get = function (url) {
  */
 util.post = function (url, data) {
     return new Promise((resolve, reject) => {
-        axios.post(ajaxUrl + url,data)
+        axios.post(url,data)
             .then(res => { resolve(res); })
             .catch(err => { reject(err); });
     });
@@ -316,7 +319,7 @@ util.post = function (url, data) {
  */
 util.post = function (url, data,config) {
     return new Promise((resolve, reject) => {
-        axios.post(ajaxUrl + url,data,config)
+        axios.post(url,data,config)
             .then(res => { resolve(res); })
             .catch(err => { reject(err); });
     });
