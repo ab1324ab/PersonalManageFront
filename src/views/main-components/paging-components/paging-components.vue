@@ -122,6 +122,7 @@
             setDisplay (value) {
                 value = parseInt(value);
                 this.tableData.paging.display = value;
+                this.$emit('showDisplay', this.tableData.paging.display);
             },
             detailedInfo (currentRow, oldCurrentRow) {
                 this.$emit('detailedInfo', currentRow, oldCurrentRow);
