@@ -1,6 +1,12 @@
+<style>
+    #wordShow ul li{
+        list-style:none;
+    }
+</style>
+
 <template>
     <div style="height: 600px">
-        <Modal
+        <Modal width="800"
                 v-model="detailedInfoModal.modalShow">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
@@ -10,10 +16,10 @@
                 <Table :columns="detailedInfoModal.excelData.columns" :data="detailedInfoModal.excelData.data"></Table>
             </div>
             <div v-if="detailedInfoModal.wordShow">
-                {{detailedInfoModal.wordData}}
+                <div id="wordShow" style="margin: 0 auto;overflow:scroll;width: 700px;height: 470px;overflow-x: hidden;" v-html="detailedInfoModal.wordData"></div>
             </div>
-            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 300px;">
-                <img :src="detailedInfoModal.imgUrl" height="300"/>
+            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 700px;">
+                 <img :src="detailedInfoModal.imgUrl" width="700"/>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
@@ -232,11 +238,12 @@
                                 _this.detailedInfoModal.modalName = '文件详细信息';
                                 if(type == 'img'){
                                     _this.detailedInfoModal.imgShow = true;
-                                    _this.detailedInfoModal.modalName = response.data.data.fileName + "- 最近更新：" + response.data.data.updateTime
+                                    _this.detailedInfoModal.modalName = response.data.data.fileName + " -- 最近更新：" + response.data.data.updateTime;
                                     _this.detailedInfoModal.imgUrl = response.data.data.imgUrl;
                                 }else if(type == 'word'){
+                                    _this.detailedInfoModal.modalName = response.data.data.name + " -- 最近更新：" + response.data.data.updateTime;
                                     _this.detailedInfoModal.wordShow = true;
-                                    _this.detailedInfoModal.wordData = id;
+                                    _this.detailedInfoModal.wordData = response.data.data.content;
                                 }else if(type == 'excel'){
                                     _this.detailedInfoModal.excelShow = true;
                                     //_this.detailedInfoModal.excelData.columns = ''
