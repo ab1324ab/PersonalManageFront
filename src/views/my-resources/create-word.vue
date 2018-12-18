@@ -162,7 +162,7 @@
             },
             addWordContent(){
                 this.wordObj.content = this.editorc.txt.html();
-                if(this.wordObj.name == "" || this.wordObj.content == ""){
+                if(this.wordObj.name == "" || this.wordObj.content == "" || this.wordObj.content == "<p><br></p>"){
                     $util.frontErrMsg(this,2,"请完善文档信息")
                     return;
                 }
@@ -220,6 +220,13 @@
                     .catch(function (error) {
                         $util.httpErrorMsg(_this,error.data)
                     })
+            }
+        },
+        activated(){
+            console.info("activated() => start");
+            let fileId = this.$route.params.fileId;
+            if(fileId != null && fileId !=""){
+                this.selectShow(fileId);
             }
         },
         mounted () {

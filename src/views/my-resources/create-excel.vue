@@ -233,6 +233,13 @@
                     })
             }
         },
+        activated(){
+            console.info("activated() => start");
+            let fileId = this.$route.params.fileId;
+            if(fileId != null && fileId !=""){
+                this.selectShow(fileId);
+            }
+        },
         mounted (){
             this.removeInfo();
             this.initHotTableHeight();

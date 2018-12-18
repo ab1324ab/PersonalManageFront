@@ -225,6 +225,10 @@
         },
         mounted() {
             this.init();
+            let fileId = this.$route.params.fileId;
+            if(fileId != null && fileId !=""){
+                console.info('2222222=',fileId);
+            }
         },
         created(){
             this.initImageH();

@@ -1,12 +1,6 @@
-<style>
-    #wordShow ul li{
-        list-style:none;
-    }
-</style>
-
 <template>
     <div style="height: 600px">
-        <Modal width="800"
+        <Modal width="900"
                 v-model="detailedInfoModal.modalShow">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
@@ -16,10 +10,10 @@
                 <Table :columns="detailedInfoModal.excelData.columns" :data="detailedInfoModal.excelData.data"></Table>
             </div>
             <div v-if="detailedInfoModal.wordShow">
-                <div id="wordShow" style="margin: 0 auto;overflow:scroll;width: 700px;height: 470px;overflow-x: hidden;" v-html="detailedInfoModal.wordData"></div>
+                <div id="wordShow" style="margin: 0 auto;overflow:scroll;width: 875px;height: 470px;overflow-x: hidden;overflow-y:auto" v-html="detailedInfoModal.wordData"></div>
             </div>
-            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 700px;">
-                 <img :src="detailedInfoModal.imgUrl" width="700"/>
+            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 600px;">
+                 <img :src="detailedInfoModal.imgUrl" width="600"/>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
@@ -66,6 +60,7 @@
             return {
                 detailedInfoModal: {
                     modalName:'文件详细信息',
+                    fileId:'',
                     type: '',
                     modalShow: false,
                     imgShow: false,
@@ -225,9 +220,6 @@
                 }else{
                     return;
                 }
-                let data = qs.stringify({
-                    "id":id
-                });
                  $util.post(url,{'id':id})
                     .then(function (response) {
                         _this.detailedInfoModal.imgShow = false;
@@ -236,6 +228,7 @@
                         if(response.status == 200){
                             if(response.data.statusCode == "10000"){
                                 _this.detailedInfoModal.modalName = '文件详细信息';
+                                _this.detailedInfoModal.fileId = response.data.data.id;
                                 if(type == 'img'){
                                     _this.detailedInfoModal.imgShow = true;
                                     _this.detailedInfoModal.modalName = response.data.data.fileName + " -- 最近更新：" + response.data.data.updateTime;
@@ -246,8 +239,36 @@
                                     _this.detailedInfoModal.wordData = response.data.data.content;
                                 }else if(type == 'excel'){
                                     _this.detailedInfoModal.excelShow = true;
-                                    //_this.detailedInfoModal.excelData.columns = ''
-                                    //_this.detailedInfoModal.excelData.data = ''
+                                    var table = JSON.parse(response.data.data.content);
+                                    var tableColumnsList = [];
+                                    for(var i = 0 ; i < table[0].length ; i++){
+                                        if(table[0][i] != ""){
+                                            var tableColumnsObj = {};
+                                            tableColumnsObj.title = table[0][i];
+                                            tableColumnsObj.align = 'center';
+                                            tableColumnsObj.key = "obg" + i;
+                                            tableColumnsList.push(tableColumnsObj);
+                                        }
+                                    }
+                                    _this.detailedInfoModal.excelData.columns = tableColumnsList;
+                                    var tableDataList = [];
+                                    for(var obi = 1 ; obi <  table.length ; obi++){
+                                        var check = false;
+                                        for(var obj = 0 ; obj < table[obi].length ; obj++){
+                                            if(table[obi][obj] != ""){
+                                                check = true;
+                                            }
+                                        }
+                                        if(check){
+                                            function TableData(){};
+                                            var tableData = new TableData();
+                                            for(var ix = 0 ; ix < tableColumnsList.length ;ix++){
+                                                tableData['obg'+ix] = table[obi][ix];
+                                            }
+                                            tableDataList.push(tableData);
+                                        }
+                                    }
+                                    _this.detailedInfoModal.excelData.data = tableDataList;
                                 }
                                 _this.detailedInfoModal.type = type;
                                 _this.detailedInfoModal.modalShow = true;
@@ -273,23 +294,24 @@
             },
             detailedInfoModel (type) {
                 this.detailedInfoModal.modalShow = false;
+                let fileIdc = this.detailedInfoModal.fileId;
+                 let  params = {fileId:fileIdc};
                 if(type == 'img'){
                     this.$router.push({
                         name: 'create-image',
-                        params: 'ccc'
+                        params: params
                     });
                 }else if(type == 'word'){
                     this.$router.push({
                         name: 'create-word',
-                        params: 'ccc'
+                        params: params
                     });
                 }else if(type == 'excel'){
                     this.$router.push({
                         name: 'create-excel',
-                        params: 'ccc'
+                        params: params
                     });
                 }
-                console.info('type',type);
             }
 
         },
