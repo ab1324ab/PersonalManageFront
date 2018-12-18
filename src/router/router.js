@@ -96,7 +96,7 @@ export const appRouter = [
         name: 'workRecord',
         component: Main,
         children: [
-            { path: 'recordList',icon: 'compose', title: '记录列表', name: 'recordList', component: () => import('@/views/work-record/work-record.vue') },
+            { path: 'workRecordList',icon: 'compose', title: '记录列表', name: 'workRecordList', component: () => import('@/views/work-record/work-record.vue') },
         ]
     },
     {

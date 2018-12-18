@@ -49,7 +49,7 @@
                     <Col span="17" class="image-editor-con1">
                         <Card :style="{height: cropperH}">
                             <div class="cropper" style="height: 100%">
-                                <img id="cropimg" height="505" src="../../images/cropper-test.png" alt="">
+                                <img id="cropimg" height="505" :src="imgSrc" alt="">
                             </div>
                         </Card>
                     </Col>
@@ -74,11 +74,13 @@
     import Cropper from 'cropperjs';
     import './style/cropper.min.css';
     import $util from '@/libs/util.js';
+    import defaultimg from '../../images/cropper-test.png'
 
     export default {
         name: "create-image",
         data() {
             return {
+                imgSrc:defaultimg,
                 cropperH:'0px',
                 cropper: {},
                 uploadFile:{},
@@ -115,6 +117,7 @@
                     cropBoxMovable: true,
                     toggleDragModeOnDblclick: false
                 });
+
                 // 处理图片显示高度
                 var heightLeft = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-17');
                 var heightRight = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-7');
@@ -221,14 +224,38 @@
                 let file = this.cropper.getCroppedCanvas().toDataURL();
                 this.option.cropedImg = file;
                 this.option.showCropedImage = true;
+            },
+            selectShow(id){
+                let _this = this;
+                let url = "queryImagesInfo";
+                $util.post(url,{id:id})
+                    .then(function (response) {
+                        if(response.status == 200){
+                            if(response.data.statusCode == "10000"){
+                                _this.imgObj.name = response.data.data.fileName;
+                                _this.imgObj.id = response.data.data.id;
+                                _this.cropper.load(response.data.data.imgUrl);
+                            }else{
+                                $util.responseMsg(_this,response.data);
+                            }
+                        }else{
+                            $util.httpErrorMsg(_this,response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this,error.data)
+                    })
+            }
+        },
+        activated(){
+            console.info("activated() => start");
+            let fileId = this.$route.params.fileId;
+            if(fileId != null && fileId !=""){
+                this.selectShow(fileId);
             }
         },
         mounted() {
             this.init();
-            let fileId = this.$route.params.fileId;
-            if(fileId != null && fileId !=""){
-                console.info('2222222=',fileId);
-            }
         },
         created(){
             this.initImageH();
