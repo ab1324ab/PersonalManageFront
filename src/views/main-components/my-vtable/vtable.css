@@ -1,0 +1,42 @@
+.vtable {
+    border: 1px solid #EBEEF5;
+    height: 200px;
+    width: 300px;
+    text-align: center;
+    margin-left: 40px;
+}
+.vtable td {
+    border: 1px solid #EBEEF5;
+    position: relative;
+    color: #606266;
+}
+.vtable th {
+    text-align: center;
+    border: 1px solid #EBEEF5;
+    background-color: #F5F7FA;
+    color: #909D8F;
+    line-height: 60px;
+}
+
+.vtable tr:hover {
+    background-color: #F6F8FB;
+}
+.tdclick:after{
+    content: ' ';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: 1px solid blue;
+    pointer-events: none;
+}
+.vtable input{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
+    outline: none;
+}

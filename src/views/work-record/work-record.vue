@@ -1,5 +1,19 @@
 <template>
     <div>
+        <Modal
+             v-model="detailedInfoModal.modalShow">
+            <p slot="header">
+                <Icon type="information-circled"></Icon>
+                <span>{{detailedInfoModal.modalName}}</span>
+            </p>
+            <div>
+                <vtable :datat = "workData" :thlabel="thlabel" :isEdit="isEdit"></vtable>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
+                <Button type="primary" @click="isEdit = false">编辑</Button>
+            </div>
+        </Modal>
         <Card>
             <p slot="title">
                 <Icon type="ios-film-outline"></Icon>
@@ -23,10 +37,13 @@
 
 <script>
     import pagingComponents from '../main-components/paging-components/paging-components';
+    import vtable from '../main-components/my-vtable/vtable';
+
     export default {
         name: "work-record",
         components:{
-            pagingComponents
+            pagingComponents,
+            vtable
         },
         data() {
             return{
@@ -70,9 +87,9 @@
                             }
                         },
                         {
-                            title: '简述',
+                            title: '计划名称',
                             align: 'center',
-                            key: 'describe',
+                            key: 'name',
                         },
                         {
                             title: '操作',
@@ -90,10 +107,11 @@
                                         },
                                         on: {
                                             click: () => {
-                                                this.$Modal.info({
-                                                    title: 'User Info',
-                                                    content: params.row.id
-                                                })
+                                                this.showWorkInfo(params.row);
+                                                // this.$Modal.info({
+                                                //     title: 'User Info',
+                                                //     content: params.row.id
+                                                // })
                                             }
                                         }
                                     },'编辑'),
@@ -138,49 +156,49 @@
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'John Brown',
+                            name: 'John Brown',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'John Brown',
+                            name: 'John Brown',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'John Brown',
+                            name: 'John Brown',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'Jim Green',
+                            name: 'Jim Green',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'Joe Black',
+                            name: 'Joe Black',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'Jon Snow',
+                            name: 'Jon Snow',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'Jon Snow',
+                            name: 'Jon Snow',
                         },
                         {
                             id: 'sdgsdhjkljsdkgj',
                             start_time: '2016-10-03',
                             end_time: '2016-10-05',
-                            describe: 'Jon Snow',
+                            name: 'Jon Snow',
                         }
                     ],
                     paging: {
@@ -190,6 +208,28 @@
                         pagegroup: 5
                     }
                 },
+                isEdit:true,
+                detailedInfoModal:{
+                    modalShow:false,
+                    modalName:'',
+                },
+                workData:[
+                        {'a':'1','b':'2','c':'3','d':'8'},
+                        {'a':'4','b':'5','c':'6','d':'9'}
+                    ],
+                thlabel:[
+                    [
+                        {label:'测试1',prop:'a',rowspan:'2'},
+                        {label:'测试2'},
+                        {label:'测试3',colspan:'2'}
+                    ],
+                    [
+                        {prop:'c',label:'表头2'},
+                        {prop:'b',label:'表头3'},
+                        {prop:'d',label:'表头4'}
+                    ]
+                ]
+
             }
         },
         methods: {
@@ -202,6 +242,11 @@
             },
             pagechange (index) {
                 console.info('index', index);
+            },
+            showWorkInfo(row){
+                console.info(row);
+                this.detailedInfoModal.modalName = row.name;
+                this.detailedInfoModal.modalShow = true;
             }
         }
     }
