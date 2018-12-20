@@ -11,7 +11,7 @@
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
-                <Button type="primary" @click="isEdit = false">编辑</Button>
+                <Button type="primary" @click="isEdit = false">保存</Button>
             </div>
         </Modal>
         <Card>
@@ -208,7 +208,7 @@
                         pagegroup: 5
                     }
                 },
-                isEdit:true,
+                isEdit:false,
                 detailedInfoModal:{
                     modalShow:false,
                     modalName:'',

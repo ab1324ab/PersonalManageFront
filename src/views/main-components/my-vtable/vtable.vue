@@ -5,13 +5,15 @@
 <template id="vtable">
     <table class="vtable">
         <thead>
-        <tr ref="vtr" v-for="(i,index) in rownum">
-            <th v-for="label in thlabel[index]">{{label.label}}</th>
-        </tr>
+            <tr ref="vtr" v-for="(i,index) in rownum">
+                <th v-for="label in thlabel[index]">{{label.label}}</th>
+            </tr>
         </thead>
         <tbody>
-        <tr v-for="data in datat">
-            <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)" ><Input type="text" :disabled="isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/></td>
+        <tr v-for="(data,i) in datat" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
+            <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)" >
+                <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -59,11 +61,11 @@
         },
         mounted:function(){
             this.$nextTick(function(){
-                    let vtd = this.$refs.vtd;
-                    for(var it=0;it<vtd.length;it++){
-                        vtd[it].children[0].disabled = this.isEdit;
-                        //vtd[it].children[0].readOnly = this.isEdit;
-                    }
+                    // let vtd = this.$refs.vtd;
+                    // for(var it=0;it<vtd.length;it++){
+                    //     vtd[it].children[0].disabled = this.isEdit;
+                    //     //vtd[it].children[0].readOnly = this.isEdit;
+                    // }
                     var a = this.thlabel;
                     for(let i=0;i<a.length;i++){
                         for(let j=0;j<a[i].length;j++){
@@ -80,10 +82,16 @@
             )
         },
         methods:{
+            trHoverFocus(exent){
+                var vtr = document.getElementById(exent)
+                console.info(vtr)
+                vtr.classList.add("ivu-table-row-hover");
+            },
             tdEdit:function(event){
                 var vth = event.currentTarget.children[0];
-                debugger;
+                //debugger;
                 if(this.isEdit){
+                    vth.__vue__.$refs.input.disabled = false;
                     this.$delete(vth,'disabled',false);
                     vth.disabled = false;
                     //$(h).find('input').attr("readOnly",false);
@@ -96,8 +104,8 @@
             },
             tdEditBlur(event){
                 var vthInput = event.currentTarget;
-                debugger;
-                vthInput.disabled = true;
+                //debugger;
+                //vthInput.disabled = true;
                 //vthInput.readOnly = true;
             }
         }
