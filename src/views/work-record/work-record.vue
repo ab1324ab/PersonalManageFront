@@ -1,13 +1,14 @@
 <template>
     <div>
         <Modal
+                width="900px"
              v-model="detailedInfoModal.modalShow">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
             </p>
             <div>
-                <vtable :datat = "workData" :thlabel="thlabel" :isEdit="isEdit"></vtable>
+                <vtable :datat = "workData" :thlabel="thlabel" :isEdit="isEdit" @addTrFocusc="addTrFocus"></vtable>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
@@ -214,25 +215,41 @@
                     modalName:'',
                 },
                 workData:[
-                        {'a':'1','b':'2','c':'3','d':'8'},
-                        {'a':'4','b':'5','c':'6','d':'9'}
+                        {'a':'1','b':'2','c':'3','d':'8','e':'5','f':'4','g':'0'},
+                        {'a':'4','b':'5','c':'6','d':'9','e':'7','f':'8','g':'4'},
+                        {'a':'1','b':'2','c':'3','d':'8','e':'5','f':'4','g':'0'},
+                        {'a':'4','b':'5','c':'6','d':'9','e':'7','f':'8','g':'4'},
+                    {},{}
+
                     ],
                 thlabel:[
                     [
-                        {label:'测试1',prop:'a',rowspan:'2'},
-                        {label:'测试2'},
-                        {label:'测试3',colspan:'2'}
-                    ],
-                    [
-                        {prop:'c',label:'表头2'},
-                        {prop:'b',label:'表头3'},
-                        {prop:'d',label:'表头4'}
+                        // {label:'测试1',prop:'a',rowspan:'2'},
+                        // {label:'测试2'},
+                        // {label:'测试3',colspan:'2'}
+                        {label:'任务/组别',prop:'a'},
+                        {label:'任务内容',prop:'b',width:'180px'},
+                        {label:'难易度',prop:'c'},
+                        {label:'耗时(H)',prop:'d'},
+                        {label:'完成比例',prop:'h'},
+                        {label:'完成情况',prop:'e',width:'240px'},
+                        {label:'难易度',prop:'f'},
+                        {label:'耗时(H)',prop:'j'},
+                        {label:'完成比例',prop:'g'},
                     ]
-                ]
-
+                    // ,
+                    // [
+                    //     {prop:'c',label:'表头2'},
+                    //     {prop:'b',label:'表头3'},
+                    //     {prop:'d',label:'表头4'}
+                    // ]
+                ],
             }
         },
         methods: {
+            addTrFocus(data){
+                this.workData = data;
+            },
             handleSubmit(data) {
                 this.tableData.loading=true;
             },

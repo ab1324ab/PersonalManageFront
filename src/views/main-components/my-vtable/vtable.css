@@ -1,29 +1,36 @@
 .vtable {
     /*border: 1px solid #EBEEF5;*/
     /*height: 200px;*/
-    /*width: 300px;*/
+    width: 100%;
     text-align: center;
     color: #495060;
     /*margin-left: 40px;*/
     border-collapse: collapse;
 }
+
+.vtable tr td{
+    width: 60px;
+}
+
 .vtable tr {
     border: 1px solid #e9eaec;
     position: relative;
     /*color: #606266;*/
 }
+
 .vtable th {
     text-align: center;
     height: 32px;
     /*border: 1px solid #EBEEF5;*/
     background-color: #f8f8f9;
     /*color: #909D8F;*/
-    /*line-height: 60px;*/
+    line-height: 32px;
 }
 
 .vtable tr:hover {
     background-color: #F6F8FB;
 }
+
 .tdclick:after{
     content: ' ';
     position: absolute;
@@ -35,6 +42,7 @@
     border: 1px solid blue;
     pointer-events: none;
 }
+
 .vtable input{
     display: block;
     width: 100%;

@@ -3,23 +3,39 @@
 </style>
 
 <template id="vtable">
-    <table class="vtable">
-        <thead>
-            <tr ref="vtr" v-for="(i,index) in rownum">
-                <th v-for="label in thlabel[index]">{{label.label}}</th>
+    <div>
+        <slot name="top"></slot>
+        <table class="vtable vtableTop"><tr><th colspan="6">本周计划</th><th colspan="6">本周总结</th></tr>
+            <tr>
+                <td>部门</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>计划人</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>计划日期</td><td style="width: 120px"><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>部门</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>总结人</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>总结日期</td><td style="width: 120px"><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
             </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(data,i) in datat" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
-            <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)" >
-                <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        </table>
+        <table class="vtable">
+            <thead>
+                <tr ref="vtr" v-for="(i,index) in rownum">
+                    <th style="width: 60px" v-for="label in thlabel[index]"><span>{{label.label}}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(data,i) in datat" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
+                <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)" >
+                    <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <Button type="primary" size="small" icon="ios-plus-outline" @click="addTrFocus" style="margin-top: 5px;width: 100px;">增加</Button>
+    </div>
 </template>
 
 <script>
+    import $util from '@/libs/util.js';
+
     export default {
         name: "vtable",
         props:{
@@ -61,19 +77,17 @@
         },
         mounted:function(){
             this.$nextTick(function(){
-                    // let vtd = this.$refs.vtd;
-                    // for(var it=0;it<vtd.length;it++){
-                    //     vtd[it].children[0].disabled = this.isEdit;
-                    //     //vtd[it].children[0].readOnly = this.isEdit;
-                    // }
                     var a = this.thlabel;
                     for(let i=0;i<a.length;i++){
                         for(let j=0;j<a[i].length;j++){
                             for(var key in a[i][j]){
+
                                 if(key == 'rowspan'){
                                     this.$refs.vtr[i].children[j].rowSpan = parseInt(a[i][j][key]);
                                 }else if(key == 'colspan'){
                                     this.$refs.vtr[i].children[j].colSpan = parseInt(a[i][j][key]);
+                                }else if(key == 'width'){
+                                    this.$refs.vtr[i].children[j].style.width = a[i][j][key];
                                 }
                             }
                         }
@@ -82,14 +96,27 @@
             )
         },
         methods:{
+            addTrFocus(){
+                let objNull = 0;
+                for(var i=0;i<this.datat.length;i++){
+                    if(Object.keys(this.datat[i]).length==0){
+                        objNull++;
+                    }
+                    if(objNull >= 6){
+                        $util.frontErrMsg(this,2,'空行太多!');
+                        return;
+                    }
+                }
+                var a ={};
+                this.datat.push(a);
+                this.$emit('addTrFocusc', this.datat);
+            },
             trHoverFocus(exent){
-                var vtr = document.getElementById(exent)
-                console.info(vtr)
-                vtr.classList.add("ivu-table-row-hover");
+
             },
             tdEdit:function(event){
                 var vth = event.currentTarget.children[0];
-                //debugger;
+                debugger;
                 if(this.isEdit){
                     vth.__vue__.$refs.input.disabled = false;
                     this.$delete(vth,'disabled',false);
