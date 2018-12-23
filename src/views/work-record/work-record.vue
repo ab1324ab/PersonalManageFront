@@ -1,18 +1,55 @@
+<style>
+    #wordForm div{
+        margin-right: 0px !important;
+        margin-bottom: 0px;
+    }
+    #wordForm label {
+        padding-right: 0px !important;
+        text-align: center;
+    }
+</style>
+
 <template>
     <div>
         <Modal
-                width="900px"
+             width="900px"
              v-model="detailedInfoModal.modalShow">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
             </p>
             <div>
-                <vtable :datat = "workData" :thlabel="thlabel" :isEdit="isEdit" @addTrFocusc="addTrFocus"></vtable>
+                <vtable :workData="workData" :workColumns="workColumns" ></vtable>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
-                <Button type="primary" @click="isEdit = false">保存</Button>
+                <Button type="primary" @click="updateWordPlan">保存</Button>
+            </div>
+        </Modal>
+        <Modal
+                width="900px"
+                v-model="newWordModal">
+            <p slot="header">
+                <Icon type="information-circled"></Icon>
+                <span>新建计划</span>
+            </p>
+            <div>
+                <Form inline :label-width='60' v-model="newWordData" label-position="left" style="border: 1px solid #e9eaec;width: 100%" id="wordForm">
+                    <FormItem id="planmc" label="计划名称" prop="name" style="width: 50%">
+                        <Input v-model="newWordData.name" placeholder="计划名称"/>
+                    </FormItem>
+                    <FormItem label="开始时间" prop="startTime" style="width: 21%">
+                        <DatePicker v-model="newWordData.startTime" type="date" placeholder="开始时间" ></DatePicker>
+                    </FormItem>
+                    <FormItem label="结束时间" prop="startTime" style="width: 28.2%">
+                        <DatePicker v-model="newWordData.endTime" type="date" placeholder="结束时间" ></DatePicker>
+                    </FormItem>
+                </Form>
+                <vtable :workData="newWordData" :workColumns="workColumns" ></vtable>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="newWordModal = false">取消</Button>
+                <Button type="primary" @click="addWordPlan">保存</Button>
             </div>
         </Modal>
         <Card>
@@ -28,6 +65,7 @@
                     <DatePicker type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
                 <Button type="primary"  @click="handleSubmit">搜索计划</Button>
+                <Button type="primary"  @click="newWordModal = true">创建计划</Button>
             </Form>
             <div style="height: 475px">
                 <paging-components :tableData="tableData" @pagechange="pagechange" @detailedInfo="detailedInfo"></paging-components>
@@ -101,7 +139,6 @@
                                     h('Button',{
                                         props: {
                                             type: 'primary',
-                                            //size: 'small'
                                         },
                                         style: {
                                             marginRight: '5px'
@@ -109,10 +146,6 @@
                                         on: {
                                             click: () => {
                                                 this.showWorkInfo(params.row);
-                                                // this.$Modal.info({
-                                                //     title: 'User Info',
-                                                //     content: params.row.id
-                                                // })
                                             }
                                         }
                                     },'编辑'),
@@ -209,20 +242,43 @@
                         pagegroup: 5
                     }
                 },
-                isEdit:false,
                 detailedInfoModal:{
                     modalShow:false,
                     modalName:'',
                 },
-                workData:[
+                newWordModal:false,
+                newWordData:{
+                    name:'',
+                    startTime:'',
+                    endTime:'',
+                    isEdit:false,
+                    department:'',
+                    plannerPeople:'',
+                    plannedDate:'',
+                    summaryPeople:'',
+                    summaryDate:'',
+                    content: [
+                        {},
+                        {}
+                    ]
+                },
+                workData:{
+                    isEdit:false,
+                    department:'部门1',
+                    plannerPeople:'计划人1',
+                    plannedDate:'2018-12-12',
+                    summaryPeople:'总结人1',
+                    summaryDate:'2018-12-16',
+                    content: [
                         {'a':'1','b':'2','c':'3','d':'8','e':'5','f':'4','g':'0'},
                         {'a':'4','b':'5','c':'6','d':'9','e':'7','f':'8','g':'4'},
                         {'a':'1','b':'2','c':'3','d':'8','e':'5','f':'4','g':'0'},
                         {'a':'4','b':'5','c':'6','d':'9','e':'7','f':'8','g':'4'},
-                    {},{}
-
-                    ],
-                thlabel:[
+                        {},
+                        {}
+                    ]
+                },
+                workColumns:[
                     [
                         // {label:'测试1',prop:'a',rowspan:'2'},
                         // {label:'测试2'},
@@ -231,11 +287,11 @@
                         {label:'任务内容',prop:'b',width:'180px'},
                         {label:'难易度',prop:'c'},
                         {label:'耗时(H)',prop:'d'},
-                        {label:'完成比例',prop:'h'},
-                        {label:'完成情况',prop:'e',width:'240px'},
-                        {label:'难易度',prop:'f'},
-                        {label:'耗时(H)',prop:'j'},
-                        {label:'完成比例',prop:'g'},
+                        {label:'完成比例',prop:'e'},
+                        {label:'完成情况',prop:'f',width:'240px'},
+                        {label:'难易度',prop:'g'},
+                        {label:'耗时(H)',prop:'h'},
+                        {label:'完成比例',prop:'i'},
                     ]
                     // ,
                     // [
@@ -247,9 +303,6 @@
             }
         },
         methods: {
-            addTrFocus(data){
-                this.workData = data;
-            },
             handleSubmit(data) {
                 this.tableData.loading=true;
             },
@@ -261,9 +314,15 @@
                 console.info('index', index);
             },
             showWorkInfo(row){
-                console.info(row);
+                //console.info(row);
                 this.detailedInfoModal.modalName = row.name;
                 this.detailedInfoModal.modalShow = true;
+            },
+            updateWordPlan(){
+                console.info(this.workData);
+            },
+            addWordPlan(){
+                console.info(this.newWordData);
             }
         }
     }

@@ -7,24 +7,24 @@
         <slot name="top"></slot>
         <table class="vtable vtableTop"><tr><th colspan="6">本周计划</th><th colspan="6">本周总结</th></tr>
             <tr>
-                <td>部门</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
-                <td>计划人</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
-                <td>计划日期</td><td style="width: 120px"><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
-                <td>部门</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
-                <td>总结人</td><td><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
-                <td>总结日期</td><td style="width: 120px"><input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>部门</td><td><input v-model="workData.department" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>计划人</td><td><input v-model="workData.plannerPeople" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>计划日期</td><td style="width: 120px"><DatePicker v-model="workData.plannedDate" type="date" placeholder="Select date" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker></td>
+                <td>部门</td><td><input v-model="workData.department" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>总结人</td><td><input v-model="workData.summaryPeople" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;"/></td>
+                <td>总结日期</td><td style="width: 120px"><DatePicker v-model="workData.summaryDate" type="date" placeholder="Select date" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker></td>
             </tr>
         </table>
         <table class="vtable">
             <thead>
                 <tr ref="vtr" v-for="(i,index) in rownum">
-                    <th style="width: 60px" v-for="label in thlabel[index]"><span>{{label.label}}</span></th>
+                    <th style="width: 60px" v-for="label in workColumns[index]"><span>{{label.label}}</span></th>
                 </tr>
             </thead>
             <tbody>
-            <tr v-for="(data,i) in datat" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
+            <tr v-for="(data,i) in workData.content" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
                 <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)" >
-                    <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/>
+                    <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="workData.isEdit" v-model="data[key]" @blur="tdEditBlur($event)"/>
                 </td>
             </tr>
             </tbody>
@@ -39,30 +39,23 @@
     export default {
         name: "vtable",
         props:{
-            datat:{
+            workData:{},
+            workColumns:{//表头数组
                 type:Array,
                 required:true
             },
-            thlabel:{//表头数组
-                type:Array,
-                required:true
-            },
-            isEdit:{
-                type:Boolean,
-                required:true
-            }
         },
         data(){
             return{
-                datata:''
+                //datata:''
             }
         },
         computed:{
             rownum:function(){//表头行数
-                return this.thlabel.length;
+                return this.workColumns.length;
             },
             labelprop:function(){//取出表头数据依次对应的字段key
-                let thlab = this.thlabel;
+                let thlab = this.workColumns;
                 var ar = [];
                 for(let i=0;i<thlab.length;i++)
                     for(let j=0;j<thlab[i].length;j++){
@@ -77,11 +70,10 @@
         },
         mounted:function(){
             this.$nextTick(function(){
-                    var a = this.thlabel;
+                    var a = this.workColumns;
                     for(let i=0;i<a.length;i++){
                         for(let j=0;j<a[i].length;j++){
                             for(var key in a[i][j]){
-
                                 if(key == 'rowspan'){
                                     this.$refs.vtr[i].children[j].rowSpan = parseInt(a[i][j][key]);
                                 }else if(key == 'colspan'){
@@ -98,8 +90,8 @@
         methods:{
             addTrFocus(){
                 let objNull = 0;
-                for(var i=0;i<this.datat.length;i++){
-                    if(Object.keys(this.datat[i]).length==0){
+                for(var i=0;i<this.workData.content.length;i++){
+                    if(Object.keys(this.workData.content[i]).length==0){
                         objNull++;
                     }
                     if(objNull >= 6){
@@ -108,32 +100,25 @@
                     }
                 }
                 var a ={};
-                this.datat.push(a);
-                this.$emit('addTrFocusc', this.datat);
+                this.workData.content.push(a);
             },
-            trHoverFocus(exent){
+            trHoverFocus(id){
 
             },
             tdEdit:function(event){
-                var vth = event.currentTarget.children[0];
-                debugger;
-                if(this.isEdit){
-                    vth.__vue__.$refs.input.disabled = false;
-                    this.$delete(vth,'disabled',false);
-                    vth.disabled = false;
-                    //$(h).find('input').attr("readOnly",false);
-                    //$(h).addClass('tdclick').siblings().removeClass('tdclick');
-                    //$(h).addClass('tdclick').parent('tr').siblings().find('td').removeClass('tdclick');
-                }else{
-                    //vth.readOnly = false;
-                    // $(h).find('input').attr("readOnly",true);
-                }
+                // var vth = event.currentTarget.children[0];
+                // if(this.isEdit){
+                //     vth.__vue__.$refs.input.disabled = false;
+                //     this.$delete(vth,'disabled',false);
+                //     vth.disabled = false;
+                // }else{
+                //
+                // }
             },
             tdEditBlur(event){
-                var vthInput = event.currentTarget;
-                //debugger;
-                //vthInput.disabled = true;
-                //vthInput.readOnly = true;
+                // var vthInput = event.currentTarget;
+                // vthInput.disabled = true;
+                // vthInput.readOnly = true;
             }
         }
 
