@@ -36,13 +36,13 @@
             <div>
                 <Form inline :label-width='60' v-model="newWordData" label-position="left" style="border: 1px solid #e9eaec;width: 100%" id="wordForm">
                     <FormItem id="planmc" label="计划名称" prop="name" style="width: 50%">
-                        <Input v-model="newWordData.name" placeholder="计划名称"/>
+                        <Input v-model="newWordData.name" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="计划名称"/>
                     </FormItem>
                     <FormItem label="开始时间" prop="startTime" style="width: 21%">
-                        <DatePicker v-model="newWordData.startTime" type="date" placeholder="开始时间" ></DatePicker>
+                        <DatePicker v-model="newWordData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="开始时间" ></DatePicker>
                     </FormItem>
                     <FormItem label="结束时间" prop="startTime" style="width: 28.2%">
-                        <DatePicker v-model="newWordData.endTime" type="date" placeholder="结束时间" ></DatePicker>
+                        <DatePicker v-model="newWordData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="结束时间" ></DatePicker>
                     </FormItem>
                 </Form>
                 <vtable :workData="newWordData" :workColumns="workColumns" ></vtable>
@@ -77,6 +77,7 @@
 <script>
     import pagingComponents from '../main-components/paging-components/paging-components';
     import vtable from '../main-components/my-vtable/vtable';
+    import $util from '@/libs/util.js';
 
     export default {
         name: "work-record",
@@ -322,6 +323,17 @@
                 console.info(this.workData);
             },
             addWordPlan(){
+                this.newWordData.content;
+                let objNull = 0;
+                for(var i=0;i<this.workData.content.length;i++){
+                    if(Object.keys(this.workData.content[i]).length != 0){
+                        objNull++;
+                    }
+                    if(objNull <= 0){
+                        $util.frontErrMsg(this,2,'请至少输入一行');
+                        return;
+                    }
+                }
                 console.info(this.newWordData);
             }
         }
