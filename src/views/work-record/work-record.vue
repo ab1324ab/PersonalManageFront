@@ -66,7 +66,7 @@
                     <DatePicker v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
                 <Button type="primary" @click="handleSubmit">搜索计划</Button>
-                <Button type="primary" @click="modelShowData">创建计划</Button>
+                <Button type="primary" @click="modelShowNewData">创建计划</Button>
             </Form>
             <div style="height: 475px">
                 <paging-components :tableData="tableData" @pagechange="pagechange" @detailedInfo="detailedInfo"></paging-components>
@@ -266,10 +266,7 @@
                     summaryPeople: '总结人1',
                     summaryDate: '2018-12-16',
                     content: [
-                        {'a': '1', 'b': '2', 'c': '3', 'd': '8', 'e': '5', 'f': '4', 'g': '0'},
-                        {'a': '4', 'b': '5', 'c': '6', 'd': '9', 'e': '7', 'f': '8', 'g': '4'},
-                        {'a': '1', 'b': '2', 'c': '3', 'd': '8', 'e': '5', 'f': '4', 'g': '0'},
-                        {'a': '4', 'b': '5', 'c': '6', 'd': '9', 'e': '7', 'f': '8', 'g': '4'},
+                        {'taskName': '1', 'taskContent': '2', 'planFacilityValue': '3', 'planTimeConsuming': '8', 'planCompletionRatio': '5', 'completionStatus': '4', 'summaryTimeConsuming': '0'},
                         {},
                         {}
                     ]
@@ -279,15 +276,15 @@
                         // {label:'测试1',prop:'a',rowspan:'2'},
                         // {label:'测试2'},
                         // {label:'测试3',colspan:'2'}
-                        {label: '任务/组别', prop: 'a'},
-                        {label: '任务内容', prop: 'b', width: '180px'},
-                        {label: '难易度', prop: 'c'},
-                        {label: '耗时(H)', prop: 'd'},
-                        {label: '完成比例', prop: 'e'},
-                        {label: '完成情况', prop: 'f', width: '240px'},
-                        {label: '难易度', prop: 'g'},
-                        {label: '耗时(H)', prop: 'h'},
-                        {label: '完成比例', prop: 'i'},
+                        {label: '任务/组别', prop: 'taskName'},
+                        {label: '任务内容', prop: 'taskContent', width: '180px'},
+                        {label: '难易度', prop: 'planFacilityValue'},
+                        {label: '耗时(H)', prop: 'planTimeConsuming'},
+                        {label: '完成比例', prop: 'planCompletionRatio'},
+                        {label: '完成情况', prop: 'completionStatus', width: '240px'},
+                        {label: '难易度', prop: 'summaryFacilityValue'},
+                        {label: '耗时(H)', prop: 'summaryTimeConsuming'},
+                        {label: '完成比例', prop: 'summaryCompletionRatio'},
                     ]
                     // ,
                     // [
@@ -333,10 +330,27 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-
+                let _this = this;
+                let url = 'addWordPlan';
+                $util.post(url, this.workData)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.detailedInfoModal.newWordModal = false;
+                                $util.frontSuccMsg(_this, 2, response.data.msg);
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
 
             },
-            modelShowData() {
+            modelShowNewData() {
                 var newWordData = {
                     name: '', startTime: '',
                     endTime: '',
