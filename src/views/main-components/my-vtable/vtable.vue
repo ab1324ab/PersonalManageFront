@@ -38,7 +38,7 @@
             <tbody>
             <tr v-for="(data,i) in workData.content" :id="'vtr'+i" @mouseover="trHoverFocus('vtr'+i)">
                 <td ref="vtd" v-for="key in labelprop" @click="tdEdit($event)">
-                    <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="workData.isEdit" v-model="data[key]" @blur="tdEditBlur($event)" />
+                    <input type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" :disabled="isEditc" v-model="data[key]" @blur="tdEditBlur($event)" />
                 </td>
             </tr>
             </tbody>
@@ -81,6 +81,13 @@
                     }
                 return ar;
             },
+            isEditc(){
+                if(this.workData.isEdit == 'false'){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
         },
         mounted: function () {
             this.$nextTick(function () {

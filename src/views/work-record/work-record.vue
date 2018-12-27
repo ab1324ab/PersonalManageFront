@@ -12,66 +12,101 @@
 
 <template>
     <div>
-        <Modal
-                width="900px"
-                v-model="detailedInfoModal.modalShow">
-            <p slot="header">
-                <Icon type="information-circled"></Icon>
-                <span>{{detailedInfoModal.modalName}}</span>
-            </p>
-            <div>
-                <vtable :workData="workData" :workColumns="workColumns"></vtable>
-            </div>
-            <div slot="footer">
-                <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
-                <Button type="primary" @click="updateWordPlan">保存</Button>
-            </div>
-        </Modal>
-        <Modal
-                width="900px"
-                v-model="detailedInfoModal.newWordModal">
-            <p slot="header">
-                <Icon type="information-circled"></Icon>
-                <span>新建计划</span>
-            </p>
-            <div>
-                <Form inline :label-width='60' v-model="workData" label-position="left" style="border: 1px solid #e9eaec;width: 100%" id="wordForm">
-                    <FormItem id="planmc" label="计划名称" prop="name" style="width: 50%">
-                        <Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="计划名称" />
-                    </FormItem>
-                    <FormItem label="开始时间" prop="startTime" style="width: 21%">
-                        <DatePicker v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="开始时间"></DatePicker>
-                    </FormItem>
-                    <FormItem label="结束时间" prop="startTime" style="width: 28.2%">
-                        <DatePicker v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="结束时间"></DatePicker>
-                    </FormItem>
-                </Form>
-                <vtable :workData="workData" :workColumns="workColumns"></vtable>
-            </div>
-            <div slot="footer">
-                <Button type="primary" @click="detailedInfoModal.newWordModal = false">取消</Button>
-                <Button type="primary" @click="addWordPlan">保存</Button>
-            </div>
-        </Modal>
-        <Card>
-            <p slot="title">
-                <Icon type="ios-film-outline"></Icon>
-                工作记录
-            </p>
-            <Form ref="formInline" v-model="wordListFrom" inline :label-width='60'>
-                <FormItem label="文档名称" prop="name">
-                    <Input v-model="wordListFrom.name" placeholder="文件名称"></Input>
-                </FormItem>
-                <FormItem label="创建日期" prop="time">
-                    <DatePicker v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
-                </FormItem>
-                <Button type="primary" @click="handleSubmit">搜索计划</Button>
-                <Button type="primary" @click="modelShowNewData">创建计划</Button>
-            </Form>
-            <div style="height: 475px">
-                <paging-components :tableData="tableData" @pagechange="pagechange" @detailedInfo="detailedInfo"></paging-components>
-            </div>
-        </Card>
+        <Row :gutter="10">
+            <Col span="20">
+                <Modal
+                        width="900px"
+                        v-model="detailedInfoModal.modalShow">
+                    <p slot="header">
+                        <Icon type="information-circled"></Icon>
+                        <span>{{detailedInfoModal.modalName}}</span>
+                    </p>
+                    <div>
+                        <vtable :workData="workData" :workColumns="workColumns"></vtable>
+                    </div>
+                    <div slot="footer">
+                        <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
+                        <Button type="primary" @click="updateWordPlan">保存</Button>
+                    </div>
+                </Modal>
+                <Modal
+                        width="900px"
+                        v-model="detailedInfoModal.newWordModal">
+                    <p slot="header">
+                        <Icon type="information-circled"></Icon>
+                        <span>新建计划</span>
+                    </p>
+                    <div>
+                        <Form inline :label-width='60' v-model="workData" label-position="left" style="border: 1px solid #e9eaec;width: 100%" id="wordForm">
+                            <FormItem id="planmc" label="计划名称" prop="name" style="width: 50%">
+                                <Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="计划名称" />
+                            </FormItem>
+                            <FormItem label="开始时间" prop="startTime" style="width: 21%">
+                                <DatePicker v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="开始时间"></DatePicker>
+                            </FormItem>
+                            <FormItem label="结束时间" prop="startTime" style="width: 28.2%">
+                                <DatePicker v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="结束时间"></DatePicker>
+                            </FormItem>
+                        </Form>
+                        <vtable :workData="workData" :workColumns="workColumns"></vtable>
+                    </div>
+                    <div slot="footer">
+                        <Button type="primary" @click="detailedInfoModal.newWordModal = false">取消</Button>
+                        <Button type="primary" @click="addWordPlan">保存</Button>
+                    </div>
+                </Modal>
+                <Card>
+                    <p slot="title">
+                        <Icon type="ios-film-outline"></Icon>
+                        工作记录
+                    </p>
+                    <Form ref="formInline" v-model="wordListFrom" inline :label-width='60'>
+                        <FormItem label="文档名称" prop="name">
+                            <Input v-model="wordListFrom.name" placeholder="文件名称"></Input>
+                        </FormItem>
+                        <FormItem label="创建日期" prop="time">
+                            <DatePicker v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
+                        </FormItem>
+                        <Button type="primary" @click="handleSubmit">搜索计划</Button>
+                        <Button type="primary" @click="modelShowNewData">创建计划</Button>
+                    </Form>
+                    <div>
+                        <paging-components :tableData="tableData" @pagechange="pagechange" @detailedInfo="detailedInfo"></paging-components>
+                    </div>
+                </Card>
+            </Col>
+            <Col span="4">
+                <Card style="">
+                    <p slot="title">
+                        <Icon type="ios-film-outline"></Icon>
+                        创建设置
+                    </p>
+                    <!--<div v-for="list in historyList" :title='wordTitle(list.name,list.describe)' class="margin-top-20" style="border-bottom: #dddee1 solid 1px;text-indent: 1em;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">-->
+                        <!--<a href="javascript:void(0)" type="text" @click="selectShow(list.id)">{{list.name}}</a>-->
+                    <!--</div>-->
+                    <div>
+                        <Form v-model="createWordSetting">
+                            <FormItem label="名称" :label-width='40' prop="wordName">
+                                <Input v-model="createWordSetting.wordName" placeholder="计划名称"></Input>
+                            </FormItem>
+                            <Row>
+                                <Col span="12">
+                                    <FormItem label="%n" :label-width='20' prop="setName">
+                                        <Input v-model="createWordSetting.setName" placeholder="姓名"></Input>
+                                    </FormItem>
+                                </Col>
+                                <Col span="12">
+                                    <FormItem label="%t" :label-width='20' prop="setTime">
+                                        <Input v-model="createWordSetting.setTime" placeholder="日期格式"></Input>
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Button type="primary" @click="saveWordSetting">保存</Button>
+                        </Form>
+                    </div>
+                </Card>
+            </Col>
+        </Row>
     </div>
 </template>
 
@@ -79,7 +114,6 @@
     import pagingComponents from '../main-components/paging-components/paging-components';
     import vtable from '../main-components/my-vtable/vtable';
     import $util from '@/libs/util.js';
-
     var qs = require('qs');
 
     export default {
@@ -153,7 +187,8 @@
                                         },
                                         on: {
                                             click: () => {
-                                                this.showUpdateWorkInfo(params.row);
+                                                //this.showUpdateWorkInfo(params.row);
+                                                this.showUpdateWorkInfo('bd01113b9935459c9f44b9526c75d4db');
                                             }
                                         }
                                     }, '编辑'),
@@ -256,6 +291,7 @@
                     newWordModal: false,
                 },
                 workData: {
+                    id:'',
                     name: '',
                     startTime: '',
                     endTime: '',
@@ -293,6 +329,12 @@
                     //     {prop:'d',label:'表头4'}
                     // ]
                 ],
+                createWordSetting:{
+                    id:'',
+                    wordName:'',
+                    setName:'',
+                    setTime:''
+                }
             }
         },
         methods: {
@@ -304,26 +346,114 @@
                     fileQueryFromc: fileQueryFrom
                 });
             },
+            initWordPlanSetting(){
+                let _this = this;
+                let url = 'queryWordSetting';
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.createWordSetting = response.data.data;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
+            },
             handleSubmit(data) {
                 this.tableData.loading = true;
             },
-            detailedInfo(currentRow, oldCurrentRow) {
-                //console.info('currentRow', currentRow);
-                //console.info('oldCurrentRow', oldCurrentRow);
-            },
+            detailedInfo(currentRow, oldCurrentRow) {},
             pagechange(index) {
                 console.info('index', index);
             },
-            showUpdateWorkInfo(row) {
-                console.info(row);
-                this.detailedInfoModal.modalName = row.name;
-                this.detailedInfoModal.modalShow = true;
+            saveWordSetting(){
+                console.info(this.createWordSetting);
+                if(this.createWordSetting.wordName == ""){
+                    $util.frontErrMsg(this, 2, '计划名称为空');
+                    return;
+                }else if(this.createWordSetting.setName == ""){
+                    $util.frontErrMsg(this, 2, '姓名为空');
+                    return;
+                }else if(this.createWordSetting.setTime == ""){
+                    $util.frontErrMsg(this, 2, '时间格式为空');
+                    return;
+                }
+                let time = this.createWordSetting.setTime;
+                var pattern = /(^y{1,4}[\-|\/|\.]M{1,2}[\-|\/|\.]d{1,2}$)|(^y{4}年M{1,2}月d{1,2}日$)/;
+                if(!pattern.test(time)){
+                    $util.frontErrMsg(this, 2, '时间格式错误列如：yyyy-MM-dd或yyyy/MM/dd或yyyy|MM|dd或yyyy.MM.dd或yyyy年MM月dd日');
+                    return;
+                }
+                let _this = this;
+                let url = 'updateWordSetting';
+                $util.post(url, this.createWordSetting)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                $util.frontSuccMsg(_this, 2, response.data.msg);
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
+            },
+            showUpdateWorkInfo(id) {
+                let _this = this;
+                let url = 'queryWordPlanContent';
+                let queryData = qs.stringify({
+                    'id' : id,
+                });
+                $util.post(url, queryData)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.detailedInfoModal.modalName = response.data.data.name;
+                                _this.workData = response.data.data;
+                                _this.detailedInfoModal.modalShow = true;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
             },
             updateWordPlan() {
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-
+                let _this = this;
+                let url = 'updateWordPlanContent';
+                $util.post(url, this.workData)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.detailedInfoModal.modalShow = false;
+                                $util.frontSuccMsg(_this, 2, response.data.msg);
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
 
             },
             addWordPlan() {
@@ -348,13 +478,13 @@
                     .catch(function (error) {
                         $util.httpErrorMsg(_this, error.data)
                     })
-
             },
             modelShowNewData() {
                 var newWordData = {
-                    name: '', startTime: '',
+                    name: '',
+                    startTime: '',
                     endTime: '',
-                    isEdit: false,
+                    isEdit: 'false',
                     department: '',
                     plannerPeople: '',
                     plannedDate: '',
@@ -363,7 +493,26 @@
                     content: [{}, {}]
                 };
                 this.workData = newWordData;
-                this.detailedInfoModal.newWordModal = true;
+                let _this = this;
+                let url = 'createWordConfig';
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.detailedInfoModal.newWordModal = true;
+                                _this.workData.name = response.data.data.name;
+                                _this.workData.startTime = response.data.data.startTime;
+                                _this.workData.endTime = response.data.data.endTime;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
             },
             checkWordParam(data) {
                 if (data.name == '') {
@@ -404,6 +553,9 @@
                     return false;
                 }
             }
+        },
+        created() {
+            this.initWordPlanSetting();
         }
     }
 </script>
