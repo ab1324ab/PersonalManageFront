@@ -32,7 +32,9 @@ export default {
         };
     },
     methods:{
-
+        hideLoading(){
+            this.visiteVolume.hideLoading();
+        }
     },
     mounted () {
         this.$nextTick(() => {
@@ -97,7 +99,6 @@ export default {
     watch:{
         counts:{
             handler: function (val) {
-                this.visiteVolume.hideLoading();
                 this.visiteVolume.setOption({
                     series: [{
                             data: [

@@ -29,17 +29,19 @@ export default {
     },
     data () {
         return {
-            //
+            dataSourcePie :{},
         };
     },
     methods:{
-
+        hideLoading(){
+            this.dataSourcePie.hideLoading();
+        }
     },
     mounted () {
         this.$nextTick(() => {
             var dataSourcePie = echarts.init(document.getElementById('data_source_con'));
-            this.visiteVolume = dataSourcePie;
-            this.visiteVolume.showLoading();
+            this.dataSourcePie = dataSourcePie;
+            this.dataSourcePie.showLoading();
             const option = {
                 tooltip: {
                     trigger: 'item',
@@ -84,8 +86,7 @@ export default {
     watch:{
         counts:{
             handler: function (val) {
-                this.visiteVolume.hideLoading();
-                this.visiteVolume.setOption({
+                this.dataSourcePie.setOption({
                     series: [{
                         data: [
                             {value: val.imgCount, name: '图片', itemStyle: {normal: {color: '#9bd598'}}},

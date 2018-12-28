@@ -187,8 +187,7 @@
                                         },
                                         on: {
                                             click: () => {
-                                                //this.showUpdateWorkInfo(params.row);
-                                                this.showUpdateWorkInfo('bd01113b9935459c9f44b9526c75d4db');
+                                                this.showUpdateWorkInfo(params.row.id);
                                             }
                                         }
                                     }, '编辑'),
@@ -279,7 +278,7 @@
                         }
                     ],
                     paging: {
-                        total: 100,
+                        total: 0,
                         display: 10,
                         current: 1,
                         pagegroup: 5
@@ -345,6 +344,29 @@
                     pageVoc: pageVo,
                     fileQueryFromc: fileQueryFrom
                 });
+                this.tableData.loading = true;
+                let url = 'initUserWordResourceList';
+                let _this = this;
+                $util.post(url, readyData)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                _this.tableData.loading = false;
+                                _this.tableData.data = response.data.data.data;
+                                _this.tableData.paging.total = response.data.data.total;
+                                _this.tableData.paging.display = response.data.data.display;
+                                _this.tableData.paging.current = response.data.data.current;
+                                _this.tableData.paging.pagegroup = response.data.data.pagegroup;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
             },
             initWordPlanSetting(){
                 let _this = this;
@@ -365,12 +387,13 @@
                         $util.httpErrorMsg(_this, error.data)
                     })
             },
-            handleSubmit(data) {
-                this.tableData.loading = true;
+            handleSubmit() {
+                this.initWordPlan();
             },
             detailedInfo(currentRow, oldCurrentRow) {},
             pagechange(index) {
-                console.info('index', index);
+                this.tableData.paging.current = index;
+                this.initWordPlan();
             },
             saveWordSetting(){
                 console.info(this.createWordSetting);
@@ -436,6 +459,10 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
+                this.workData.startTime = this.addDateDay(this.workData.startTime);
+                this.workData.endTime = this.addDateDay(this.workData.endTime);
+                this.workData.plannedDate = this.addDateDay(this.workData.plannedDate);
+                this.workData.summaryDate = this.addDateDay(this.workData.summaryDate);
                 let _this = this;
                 let url = 'updateWordPlanContent';
                 $util.post(url, this.workData)
@@ -460,6 +487,10 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
+                this.workData.startTime = this.addDateDay(this.workData.startTime);
+                this.workData.endTime = this.addDateDay(this.workData.endTime);
+                this.workData.plannedDate = this.addDateDay(this.workData.plannedDate);
+                this.workData.summaryDate = this.addDateDay(this.workData.summaryDate);
                 let _this = this;
                 let url = 'addWordPlan';
                 $util.post(url, this.workData)
@@ -552,9 +583,26 @@
                     }
                     return false;
                 }
+            },
+            addDateDay(date){
+                var date = new Date(date);
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                return date.getFullYear() + '-' + this.getFormatDate(month) + '-' + this.getFormatDate(day);
+            },
+            getFormatDate(arg){
+                if (arg == undefined || arg == '') {
+                    return '';
+                }
+                var re = arg + '';
+                if (re.length < 2) {
+                    re = '0' + re;
+                }
+                return re;
             }
         },
         created() {
+            this.initWordPlan();
             this.initWordPlanSetting();
         }
     }

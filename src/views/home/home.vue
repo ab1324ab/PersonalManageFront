@@ -126,7 +126,7 @@
                                 数量分类统计
                             </p>
                             <div class="data-source-row">
-                                <visite-volume :counts="count"></visite-volume>
+                                <visite-volume ref="visiteVolume" :counts="count"></visite-volume>
                             </div>
                         </Card>
                     </Col>
@@ -137,7 +137,7 @@
                                 数据来源统计
                             </p>
                             <div class="data-source-row">
-                                <data-source-pie :counts="count"></data-source-pie>
+                                <data-source-pie ref="dataSourcePie" :counts="count"></data-source-pie>
                             </div>
                         </Card>
                     </Col>
@@ -251,7 +251,7 @@ export default {
                 excelCount: 0,
                 wordCount: 0,
                 imgCount: 0,
-                planCount: 0
+                planCount: 0,
             },
             cityData: cityData,
             showAddNewTodo: false,
@@ -318,6 +318,8 @@ export default {
                             _this.count.wordCount = parseInt(response.data.data.wordCount);
                             _this.count.planCount = parseInt(response.data.data.planCount);
                             _this.toDoList = response.data.data.todoList;
+                            _this.$refs.visiteVolume.hideLoading();
+                            _this.$refs.dataSourcePie.hideLoading();
                         }else {
                             $util.responseMsg(_this,response.data);
                         }

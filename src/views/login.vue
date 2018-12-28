@@ -105,7 +105,7 @@ export default {
                                     _this.imgCodeShow = parseInt(response.data.data.imgCodeShow);
                                 }
                                 if(response.data.statusCode == "10000"){
-                                    Cookies.set('user', response.data.data.account);
+                                    Cookies.set('user', response.data.data.nickname);
                                     _this.$store.commit('setAvator', response.data.data.imgurl);
                                     Cookies.set('access', 0); // 权限页 0：有权 1：没权
                                     let oldLoginTime = response.data.data.oldLoginTime;

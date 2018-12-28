@@ -18,8 +18,7 @@
                         :end-val="endVal" 
                         :color="color"
                         :countSize="countSize"
-                        :countWeight="countWeight"
-                    >
+                        :countWeight="countWeight">
                         <p class="infor-intro-text" slot="intro">{{ introText }}</p>
                     </count-up>
                 </Row>
