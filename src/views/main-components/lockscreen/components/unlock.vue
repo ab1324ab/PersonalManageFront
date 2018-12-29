@@ -28,6 +28,9 @@
 
 <script>
 import Cookies from 'js-cookie';
+import $util from '@/libs/util.js';
+var qs = require('qs');
+
 export default {
     name: 'Unlock',
     data () {
@@ -50,24 +53,40 @@ export default {
         }
     },
     methods: {
-        validator () {
-            return true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
-        },
         handleClickAvator () {
             this.avatorLeft = '-180px';
             this.inputLeft = '0px';
             this.$refs.inputEle.focus();
         },
         handleUnlock () {
-            if (this.validator()) {
-                this.avatorLeft = '0px';
-                this.inputLeft = '400px';
-                this.password = '';
-                Cookies.set('locking', '0');
-                this.$emit('on-unlock');
-            } else {
-                this.$Message.error('密码错误,请重新输入。如果忘了密码，清除浏览器缓存重新登录即可，这里没有做后端验证');
+            if(this.password == ''){
+                $util.frontErrMsg(this, 2, '请输入密码');
+                return;
             }
+            let url = 'unlocking';
+            let _this = this;
+            let formData = qs.stringify({
+                "password":this.password
+            });
+            $util.post(url, formData)
+                .then(function (response) {
+                    if (response.status == 200) {
+                        if (response.data.statusCode == "10000") {
+                            _this.avatorLeft = '0px';
+                            _this.inputLeft = '400px';
+                            _this.password = '';
+                            Cookies.set('locking', '0');
+                            _this.$emit('on-unlock');
+                        } else {
+                            $util.responseMsg(_this, response.data);
+                        }
+                    } else {
+                        $util.httpErrorMsg(_this, response.data)
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this, error.data)
+                })
         },
         unlockMousedown () {
             this.$refs.unlockBtn.className = 'unlock-btn click-unlock-btn';

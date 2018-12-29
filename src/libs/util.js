@@ -338,13 +338,19 @@ util.responseMsg = function(vm,status){
                 content: '系统繁忙,请稍后再试！'
             });
             return;
-        }else if(status.statusCode == '400001'){
+        }else if(status.statusCode == '40001'){
             Cookies.remove('user');
             Cookies.remove('access');
+            Cookies.remove('locking');
             vm.$router.push({
                 name: 'login',
             });
             return;
+        }else if(status.statusCode == '10002'){
+            Cookies.set('locking', "1");
+            vm.$router.push({
+                name: 'locking'
+            });
         }else{
             vm.$Message.error({
                 duration: 2,

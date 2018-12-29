@@ -334,12 +334,11 @@ export default {
         toDoListCon (){
             var docHeight = document.body.scrollHeight;
             docHeight = docHeight - 614;
-             console.info(docHeight);
-             if(docHeight < 200){
+             //console.info(docHeight);
+            if(docHeight < 200){
                  docHeight = 200;
-             }
+            }
             this.toDoListConH = docHeight +'px';
-            // return (clientHeight - 510) +'px'
         }
 
     },

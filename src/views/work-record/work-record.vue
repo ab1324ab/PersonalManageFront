@@ -11,7 +11,7 @@
 </style>
 
 <template>
-    <div>
+    <div @keydown.enter="initWordPlan">
         <Row :gutter="10">
             <Col span="20">
                 <Modal
@@ -227,56 +227,7 @@
                             }
                         },
                     ],
-                    data: [
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'John Brown',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'John Brown',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'John Brown',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'Jim Green',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'Joe Black',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'Jon Snow',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'Jon Snow',
-                        },
-                        {
-                            id: 'sdgsdhjkljsdkgj',
-                            start_time: '2016-10-03',
-                            end_time: '2016-10-05',
-                            name: 'Jon Snow',
-                        }
-                    ],
+                    data: [],
                     paging: {
                         total: 0,
                         display: 10,

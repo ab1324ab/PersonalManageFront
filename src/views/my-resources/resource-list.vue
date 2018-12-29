@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 600px">
+    <div style="height: 600px" @keydown.enter="initResourceList">
         <Modal width="900"
                v-model="detailedInfoModal.modalShow">
             <p slot="header">
