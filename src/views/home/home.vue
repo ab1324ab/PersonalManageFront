@@ -335,8 +335,8 @@ export default {
             var docHeight = document.body.scrollHeight;
             docHeight = docHeight - 614;
              console.info(docHeight);
-             if(docHeight < 300){
-                 docHeight = 300;
+             if(docHeight < 200){
+                 docHeight = 200;
              }
             this.toDoListConH = docHeight +'px';
             // return (clientHeight - 510) +'px'

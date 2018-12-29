@@ -67,11 +67,11 @@
                         <FormItem label="创建日期" prop="time">
                             <DatePicker v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                         </FormItem>
-                        <Button type="primary" @click="handleSubmit">搜索计划</Button>
+                        <Button type="primary" @click="initWordPlan">搜索计划</Button>
                         <Button type="primary" @click="modelShowNewData">创建计划</Button>
                     </Form>
                     <div>
-                        <paging-components :tableData="tableData" @pagechange="pagechange" @detailedInfo="detailedInfo"></paging-components>
+                        <paging-components :tableData="tableData" @pagechange="pagechange" @showDisplay="showDisplay"></paging-components>
                     </div>
                 </Card>
             </Col>
@@ -339,6 +339,9 @@
         methods: {
             initWordPlan() {
                 var pageVo = JSON.stringify(this.tableData.paging);
+                if(this.wordListFrom.creationTime != ''){
+                    this.wordListFrom.creationTime = $util.addDateDay(this.wordListFrom.creationTime)
+                }
                 var fileQueryFrom = JSON.stringify(this.wordListFrom);
                 var readyData = qs.stringify({
                     pageVoc: pageVo,
@@ -387,12 +390,13 @@
                         $util.httpErrorMsg(_this, error.data)
                     })
             },
-            handleSubmit() {
-                this.initWordPlan();
-            },
-            detailedInfo(currentRow, oldCurrentRow) {},
             pagechange(index) {
                 this.tableData.paging.current = index;
+                this.initWordPlan();
+            },
+            showDisplay(number) {
+                this.tableData.paging.current = 1;
+                this.tableData.paging.display = number;
                 this.initWordPlan();
             },
             saveWordSetting(){
@@ -459,10 +463,10 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-                this.workData.startTime = this.addDateDay(this.workData.startTime);
-                this.workData.endTime = this.addDateDay(this.workData.endTime);
-                this.workData.plannedDate = this.addDateDay(this.workData.plannedDate);
-                this.workData.summaryDate = this.addDateDay(this.workData.summaryDate);
+                this.workData.startTime = $util.addDateDay(this.workData.startTime);
+                this.workData.endTime = $util.addDateDay(this.workData.endTime);
+                this.workData.plannedDate = $util.addDateDay(this.workData.plannedDate);
+                this.workData.summaryDate = $util.addDateDay(this.workData.summaryDate);
                 let _this = this;
                 let url = 'updateWordPlanContent';
                 $util.post(url, this.workData)
@@ -487,10 +491,10 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-                this.workData.startTime = this.addDateDay(this.workData.startTime);
-                this.workData.endTime = this.addDateDay(this.workData.endTime);
-                this.workData.plannedDate = this.addDateDay(this.workData.plannedDate);
-                this.workData.summaryDate = this.addDateDay(this.workData.summaryDate);
+                this.workData.startTime = $util.addDateDay(this.workData.startTime);
+                this.workData.endTime = $util.addDateDay(this.workData.endTime);
+                this.workData.plannedDate = $util.addDateDay(this.workData.plannedDate);
+                this.workData.summaryDate = $util.addDateDay(this.workData.summaryDate);
                 let _this = this;
                 let url = 'addWordPlan';
                 $util.post(url, this.workData)
@@ -584,22 +588,6 @@
                     return false;
                 }
             },
-            addDateDay(date){
-                var date = new Date(date);
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
-                return date.getFullYear() + '-' + this.getFormatDate(month) + '-' + this.getFormatDate(day);
-            },
-            getFormatDate(arg){
-                if (arg == undefined || arg == '') {
-                    return '';
-                }
-                var re = arg + '';
-                if (re.length < 2) {
-                    re = '0' + re;
-                }
-                return re;
-            }
         },
         created() {
             this.initWordPlan();

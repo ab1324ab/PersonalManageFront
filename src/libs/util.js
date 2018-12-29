@@ -438,6 +438,24 @@ util.base64toFile = function(base64Data,fileName){
     return file;
 };
 
+util.addDateDay = function (date){
+    var date = new Date(date);
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    return date.getFullYear() + '-' + this.getFormatDate(month) + '-' + this.getFormatDate(day);
+};
+
+util.getFormatDate = function (arg){
+    if (arg == undefined || arg == '') {
+        return '';
+    }
+    var re = arg + '';
+    if (re.length < 2) {
+        re = '0' + re;
+    }
+    return re;
+};
+
 util.checkUpdate = function (vm) {
     axios.get('https://api.github.com/repos/iview/iview-admin/releases/latest').then(res => {
         let version = res.data.tag_name;

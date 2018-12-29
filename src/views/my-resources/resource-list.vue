@@ -179,6 +179,9 @@
         methods: {
             initResourceList() {
                 var pageVo = JSON.stringify(this.tableData.paging);
+                if(this.resourceListFrom.creationTime != ''){
+                    this.resourceListFrom.creationTime = $util.addDateDay(this.resourceListFrom.creationTime)
+                }
                 var fileQueryFrom = JSON.stringify(this.resourceListFrom);
                 var readyData = qs.stringify({
                     pageVoc: pageVo,
