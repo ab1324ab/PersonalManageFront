@@ -8,9 +8,12 @@ import '@/locale';
 import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
+import md5 from 'js-md5';
 
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.prototype.$md5 = md5;
+Vue.prototype.$util = util;
 
 new Vue({
     el: '#app',

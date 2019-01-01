@@ -25,7 +25,7 @@
                                             <Row class-name="made-child-con-middle" type="flex" align="middle">
                                                 <div class="margin-auto">
                                                     <b class="card-user-infor-name">Admin</b>
-                                                    <p>{{loginObj.nickname}}</p>
+                                                    <p style="text-align: center;">{{loginObj.nickname}}</p>
                                                 </div>
                                             </Row>
                                         </Col>

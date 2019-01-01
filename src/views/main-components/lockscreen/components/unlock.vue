@@ -66,7 +66,7 @@ export default {
             let url = 'unlocking';
             let _this = this;
             let formData = qs.stringify({
-                "password":this.password
+                "password":this.$md5(this.password)
             });
             $util.post(url, formData)
                 .then(function (response) {

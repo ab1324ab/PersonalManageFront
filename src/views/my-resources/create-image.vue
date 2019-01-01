@@ -99,12 +99,24 @@
         methods: {
             initImageH(){
                 var docHeight = document.body.scrollHeight;
-                var imgH = docHeight - 248;
-                if(imgH < 285){
-                    imgH = 285;
+                var imgH = docHeight - 250;
+                if(imgH < 258){
+                    imgH = 258;
                 }
                 this.cropperH = imgH + 'px';
-                console.info(imgH)
+                var imgBack = document.getElementsByClassName("cropper-container cropper-bg")[0];
+                if(Object.keys(this.cropper).length != 0){
+                    // let containerData = this.cropper.containerData;
+                    // this.cropper.setStyle(this.cropper, {
+                    //     width: containerData.width,
+                    //     height: containerData.height+30,
+                    // });
+                    // this.cropper.reset();
+                    // console.info(this.cropper.containerData.height)
+                    // imgBack.style.height = imgH + 'px';
+                    // console.info(imgBack.style.height);
+                    // imgBack.style.width = "100%";
+                }
             },
             init() {
                 let img = document.getElementById('cropimg');
@@ -115,7 +127,7 @@
                     center: false,
                     highlight: false,
                     cropBoxMovable: true,
-                    toggleDragModeOnDblclick: false
+                    toggleDragModeOnDblclick: false,
                 });
 
                 // 处理图片显示高度
@@ -256,6 +268,11 @@
         },
         mounted() {
             this.init();
+            window.onresize = () => {
+                return (() => {
+                    this.initImageH();
+                })()
+            };
         },
         created(){
             this.initImageH();

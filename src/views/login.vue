@@ -72,7 +72,12 @@ export default {
             imgCode:"",
             imgCodeShow: 0,
             form: {
-                account: 'iview_admin',
+                account: '',
+                password: '',
+                checkCode:''
+            },
+            submitForm: {
+                account: '',
                 password: '',
                 checkCode:''
             },
@@ -91,12 +96,15 @@ export default {
     },
     methods: {
         handleSubmit () {
+            let _this = this;
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    this.loginLoading = true;
+                    _this.submitForm.account = _this.form.account;
+                    _this.submitForm.password = _this.$md5(this.form.password);
+                    _this.submitForm.checkCode = _this.form.checkCode;
+                    _this.loginLoading = true;
                     let url = "login";
-                    let _this = this;
-                    $util.post(url,this.form)
+                    $util.post(url,this.submitForm)
                         .then(function (response) {
                             _this.loginLoading = false;
                             if(response.status == 200){

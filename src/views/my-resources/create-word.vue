@@ -88,11 +88,13 @@
             initEditorHeight(){
                 var docHeight = document.body.scrollHeight;
                 var wordTH = docHeight - 210;
+                if(wordTH < 398){
+                    wordTH = 398;
+                }
                 this.editorH = wordTH + 'px';
                 var obj = document.getElementsByClassName('w-e-text-container');
                 var elHei = wordTH - 90;
                 obj[0].style.height = elHei + 'px';
-                console.info(elHei);
             },
             init () {
                 let editor = new Editor('#tinymceEditer');
@@ -124,14 +126,6 @@
                     return content;
                 };
                 editor.create();
-                let sett = this;
-                // $util.post('index.html')
-                // .then(function (response) {
-                //     console.log(response.data);
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
             },
             initHistoryWord(){
                 let url = "initHistoryWord";
@@ -223,7 +217,6 @@
             }
         },
         activated(){
-            console.info("activated() => start");
             let fileId = this.$route.params.fileId;
             if(fileId != null && fileId !=""){
                 this.selectShow(fileId);
@@ -232,6 +225,11 @@
         mounted () {
             this.init();
             this.initEditorHeight();
+            window.onresize = () => {
+                return (() => {
+                    this.initEditorHeight();
+                })()
+            };
         },
         created(){
             this.initHistoryWord();

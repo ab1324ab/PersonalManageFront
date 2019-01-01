@@ -105,9 +105,11 @@
             initHotTableHeight(){
                 var docHeight = document.body.scrollHeight;
                 var wordTH = docHeight - 210;
-                this.hotTableH = wordTH + 'px';
+                if(wordTH < 398){
+                    wordTH = 398;
+                }
                 var wtHolderCssH = wordTH - 90;
-                //console.info(wtHolderCssH);
+                this.hotTableH = wordTH + 'px';
                 // 直接写入style标签
                 var nod = document.createElement("style"),
                 str = ".wtHolder{ width: 100% !important; height: "+wtHolderCssH+"px !important;} #hot-display-license-info{ padding: 10px 0 3px 0 !important;}";
@@ -118,7 +120,6 @@
                     nod.innerHTML = str;
                 }
                 document.getElementsByTagName("head")[0].appendChild(nod);
-                this.newWordInit();
             },
             removeInfo(){
                 let licenseInfo = document.getElementById('hot-display-license-info');
@@ -243,6 +244,12 @@
         mounted (){
             this.removeInfo();
             this.initHotTableHeight();
+            this.newWordInit();
+            window.onresize = () => {
+                return (() => {
+                    this.initHotTableHeight();
+                })()
+            };
         },
         created(){
             this.initHistoryExcel()

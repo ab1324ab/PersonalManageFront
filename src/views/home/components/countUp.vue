@@ -95,7 +95,7 @@ export default {
                         demo.start();
                     }
                 }catch (e) {
-                    console.info("this.demo","this.demo error...")
+                    console.info("demo","edemo error...")
                 }
             }, this.delay);
         });

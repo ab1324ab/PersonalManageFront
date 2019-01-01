@@ -9,15 +9,15 @@ let util = {
 
 };
 util.title = function (title) {
-    title = title || 'iView admin';
+    title = title || 'Manege My';
     window.document.title = title;
 };
 
 const ajaxUrl = env === 'development'
     ? 'http://localhost:8081/'
     : env === 'production'
-        ? 'https://www.url.com/'
-        : 'https://debug.url.com/';
+        ? 'http://www.nacei.top/api'
+        : 'http://www.nacei.top/api';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
