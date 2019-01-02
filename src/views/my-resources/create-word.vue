@@ -1,36 +1,41 @@
 <style lang="less">
     @import '../../styles/common.less';
 </style>
+<style>
+    .w-e-toolbar{
+        flex-wrap: wrap !important;
+    }
+    .w-e-droplist{
+        z-index: 1;
+    }
+</style>
 <template>
     <div id="hot-preview">
-        <!--<HotTable :settings="settings"></HotTable>-->
         <Row :gutter="10">
-            <Col span="20">
-                <Card style="">
+            <Col :sm="20" :xs="24">
+                <Card>
                     <p slot="title">
                         <Icon type="ios-film-outline"></Icon>
                         新建工作文档
                     </p>
-                    <div :style="{height:editorH}">
-                        <Form  inline :label-width='80' :model="wordObj">
-                            <Row :gutter='10' type="flex">
-                                <FormItem label="文档名称" prop="name">
-                                    <Input v-model="wordObj.name" placeholder="输入文件名称" style="width: 300px"/>
+                    <div>
+                        <Form  inline  :model="wordObj">
+                                <FormItem class="margin-bottom-10" prop="name">
+                                    <label class="margin-right-10">文件名称</label><Input v-model="wordObj.name" style="width: 73%" placeholder="输入文件名称"/>
                                 </FormItem>
-                                <Col>
+                                <FormItem class="margin-bottom-10">
                                     <Button type="primary" @click="addWordContent" icon="document-text">保存</Button>
-                                </Col>
-                                <Col>
+                                </FormItem>
+                                <FormItem class="margin-bottom-10">
                                     <Upload
                                             action="//jsonplaceholder.typicode.com/posts/"
                                             :show-upload-list="false">
                                         <Button type="primary" icon="ios-cloud-upload">上传</Button>
                                     </Upload>
-                                </Col>
-                                <Col>
+                                </FormItem>
+                                <FormItem class="margin-bottom-10">
                                     <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
-                                </Col>
-                            </Row>
+                                </FormItem>
                         </Form>
                         <div ref="tinymceEditer" id="tinymceEditer"></div>
                         <!--<textarea id="tinymceEditer"></textarea>-->
@@ -41,7 +46,7 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="4">
+            <Col :sm="4" :xs="0">
                 <Card style="">
                     <p slot="title">
                         <Icon type="ios-film-outline"></Icon>
@@ -68,7 +73,6 @@
         },
         data () {
             return {
-                editorH:'0px',
                 spinShow: true,
                 historyList: [],
                 editorc:{},
@@ -91,10 +95,15 @@
                 if(wordTH < 398){
                     wordTH = 398;
                 }
-                this.editorH = wordTH + 'px';
                 var obj = document.getElementsByClassName('w-e-text-container');
-                var elHei = wordTH - 90;
+                var elHei = wordTH - 85;
                 obj[0].style.height = elHei + 'px';
+                let weMenu = document.getElementsByClassName('w-e-menu');
+                for(var i=0;i<weMenu.length;i++){
+                    weMenu[i].removeAttribute("style");
+                }
+                let weTextContainer = document.getElementsByClassName('w-e-text-container');
+                weTextContainer[0].style.zIndex = 0;
             },
             init () {
                 let editor = new Editor('#tinymceEditer');

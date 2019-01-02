@@ -46,7 +46,7 @@
                             <Button @click="handleSubmit" :loading="loginLoading" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
+                    <p class="login-tip">忘记密码？这辈子都不可能</p>
                 </div>
             </Card>
         </div>
