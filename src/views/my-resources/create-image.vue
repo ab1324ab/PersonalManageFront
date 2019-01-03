@@ -25,24 +25,21 @@
                         <Icon type="qr-scanner"></Icon>
                         图片编辑
                     </p>
-                    <Form :label-width='80' inline style="margin-bottom: -25px" v-model="imgObj">
-                        <Row :gutter="10" type="flex">
-                            <FormItem label="文件名称" prop="name">
-                                <Input placeholder="输入文件名称" v-model="imgObj.name" style="width: 300px"/>
-                            </FormItem>
-                            <Col>
-                                <input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
-                                <label class="filelabel" for="fileinput">
-                                    <Icon type="image"></Icon>&nbsp;选择图片</label>
-                            </Col>
-                            <Col>
-                                <Button type="primary" @click="uploadImg('direct')" icon="upload">直接上传</Button>
-                            </Col>
-                            <Col>
-                                <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
-                                <!--<Button type="primary" @click="selectShow('w')" icon="refresh">重置</Button>-->
-                            </Col>
-                        </Row>
+                    <Form inline v-model="imgObj">
+                        <FormItem class="margin-bottom-10" prop="name">
+                            <label class="margin-right-10">文件名称</label><Input placeholder="输入文件名称" style="width: 73%" v-model="imgObj.name"/>
+                        </FormItem>
+                        <FormItem class="margin-bottom-10">
+                            <label class="filelabel" style="padding: 0px 15px;" for="fileinput">
+                            <input type="file" icon="image" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
+                                <Icon type="image"></Icon>&nbsp;选择图片</label>
+                        </FormItem>
+                        <FormItem class="margin-bottom-10">
+                            <Button type="primary" @click="uploadImg('direct')" icon="upload">直接上传</Button>
+                        </FormItem>
+                        <FormItem class="margin-bottom-10">
+                            <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
+                        </FormItem>
                     </Form>
                 </Card>
                 <Row :gutter="10" class="margin-top-10">
@@ -100,8 +97,8 @@
             initImageH(){
                 var docHeight = document.body.scrollHeight;
                 var imgH = docHeight - 250;
-                if(imgH < 258){
-                    imgH = 258;
+                if(imgH < 358){
+                    imgH = 358;
                 }
                 this.cropperH = imgH + 'px';
                 var imgBack = document.getElementsByClassName("cropper-container cropper-bg")[0];
@@ -121,13 +118,17 @@
             init() {
                 let img = document.getElementById('cropimg');
                 this.cropper = new Cropper(img, {
-                    dragMode: 'move',
-                    preview: '#preview',
-                    restore: false,
-                    center: false,
-                    highlight: false,
-                    cropBoxMovable: true,
-                    toggleDragModeOnDblclick: false,
+                    dragMode: 'move',    // 定义cropper的拖拽模式。
+                    preview: '#preview', // 添加额外的元素(容器)以供预览。
+                    guides:true,         // 显示在裁剪框上方的虚线。
+                    autoCropArea:0.5,    // 定义自动裁剪面积大小(百分比)和图片进行对比。
+                    restore: true,       // 在调整窗口大小后恢复裁剪的区域。
+                    center: true,        // 裁剪框在图片正中心。
+                    movable:true,       // 是否允许可以移动后面的图片
+                    highlight: false,    // 在裁剪框上方显示白色的区域(突出裁剪框)。
+                    cropBoxMovable: true,// 是否通过拖拽来移动剪裁框。
+                    zoomOnWheel:false,   // 是否可以通过移动鼠标来放大图像。
+                    toggleDragModeOnDblclick: true, // 当点击两次时可以在“crop”和“move”之间切换拖拽模式。
                 });
 
                 // 处理图片显示高度

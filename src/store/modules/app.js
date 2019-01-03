@@ -11,6 +11,7 @@ const app = {
         openedSubmenuArr: [], // 要展开的菜单数组
         menuTheme: 'dark', // 主题
         themeColor: '',
+        winSwitch: 'left',
         pageOpenedList: [{
             title: '首页',
             path: '',
@@ -92,6 +93,9 @@ const app = {
         },
         changeMainTheme (state, mainTheme) {
             state.themeColor = mainTheme;
+        },
+        changeWinTheme (state, switchc) {
+            state.winSwitch = switchc;
         },
         addOpenSubmenu (state, name) {
             let hasThisName = false;

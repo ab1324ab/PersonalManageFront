@@ -90,6 +90,7 @@ export default {
             let themeLink = document.querySelector('link[name="theme"]');
             let userName = Cookies.get('user');
             if (localStorage.theme) {
+                let winSwitch = this.$store.state.app.winSwitch;
                 let themeList = JSON.parse(localStorage.theme);
                 let index = 0;
                 let hasThisUser = themeList.some((item, i) => {
@@ -103,11 +104,13 @@ export default {
                 if (hasThisUser) {
                     themeList[index].mainTheme = mainTheme;
                     themeList[index].menuTheme = menuTheme;
+                    themeList[index].winSwitch = winSwitch;
                 } else {
                     themeList.push({
                         userName: userName,
                         mainTheme: mainTheme,
-                        menuTheme: menuTheme
+                        menuTheme: menuTheme,
+                        winSwitch: winSwitch
                     });
                 }
                 localStorage.theme = JSON.stringify(themeList);

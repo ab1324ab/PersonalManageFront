@@ -29,13 +29,41 @@
         methods: {
             mainWindowSwitch (style) {
                 this.winSwitch = style;
-                let themeList = JSON.parse(localStorage.theme);
-                localStorage.theme = JSON.stringify([{
-                    userName: themeList[0].userName,
-                    mainTheme: themeList[0].mainTheme,
-                    menuTheme: themeList[0].menuTheme,
-                    winSwitch: style
-                }]);
+                let winSwitch = style;
+                this.$store.commit('changeWinTheme', style);
+                let userName = Cookies.get('user');
+                if (localStorage.theme) {
+                    let mainTheme = this.$store.state.app.themeColor;
+                    let menuTheme = this.$store.state.app.menuTheme;
+                    let themeList = JSON.parse(localStorage.theme);
+                    let index = 0;
+                    let hasThisUser = themeList.some((item, i) => {
+                        if (item.userName === userName) {
+                            index = i;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                    if (hasThisUser) {
+                        themeList[index].mainTheme = mainTheme;
+                        themeList[index].menuTheme = menuTheme;
+                        themeList[index].winSwitch = winSwitch;
+                    } else {
+                        themeList.push({
+                            userName: userName,
+                            mainTheme: mainTheme,
+                            menuTheme: menuTheme,
+                            winSwitch: winSwitch
+                        });
+                    }
+                    localStorage.theme = JSON.stringify(themeList);
+                } else {
+                    localStorage.theme = JSON.stringify([{
+                        userName: userName,
+                        winSwitch: winSwitch
+                    }]);
+                }
             }
         },
         handleSubmenuChange (val) {
