@@ -43,14 +43,14 @@
                     </Form>
                 </Card>
                 <Row :gutter="10" class="margin-top-10">
-                    <Col span="17" class="image-editor-con1">
+                    <Col :sm="17" :xs="24" class="image-editor-con1 cropImgH">
                         <Card :style="{height: cropperH}">
                             <div class="cropper" style="height: 100%">
                                 <img id="cropimg" height="505" :src="imgSrc" alt="">
                             </div>
                         </Card>
                     </Col>
-                    <Col span="7" class="image-editor-con1">
+                    <Col :sm="7" :xs="24" class="image-editor-con1 scannerH">
                         <Card>
                             <p slot="title">
                                 <Icon type="qr-scanner"></Icon>
@@ -132,8 +132,8 @@
                 });
 
                 // 处理图片显示高度
-                var heightLeft = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-17');
-                var heightRight = document.getElementsByClassName('image-editor-con1 ivu-col ivu-col-span-7');
+                var heightLeft = document.getElementsByClassName('image-editor-con1 ivu-col cropImgH');
+                var heightRight = document.getElementsByClassName('image-editor-con1 ivu-col scannerH');
                 heightRight[0].classList.remove("image-editor-con1");
                 heightLeft[0].classList.remove("image-editor-con1");
                 let url = "initAdvertisement";

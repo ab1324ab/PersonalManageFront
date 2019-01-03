@@ -5,38 +5,36 @@
 <template>
     <div>
         <Row :gutter="10">
-            <Col span="20">
+            <Col :sm="20" :xs="24">
                 <Card style="">
                     <p slot="title">
                         <Icon type="ios-film-outline"></Icon>
                         新建表格文档
                     </p>
-                    <div :style="{height: hotTableH}">
-                        <Form :label-width='80' inline v-model="excelObj">
-                            <Row :gutter="10" type="flex" >
-                                <FormItem label="文件名称" prop="name">
-                                    <Input placeholder="输入文件名称" v-model="excelObj.name" style="width: 300px"/>
-                                </FormItem>
-                                <Col>
-                                    <Button type="primary" @click="addExcelContent" icon="document-text">保存</Button>
-                                </Col>
-                                <Col >
-                                    <Upload
-                                            action="//jsonplaceholder.typicode.com/posts/"
-                                            :show-upload-list="false">
-                                        <Button type="primary" icon="ios-cloud-upload">上传</Button>
-                                    </Upload>
-                                </Col>
-                                <Col >
-                                    <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
-                                </Col>
-                            </Row>
+                    <div>
+                        <Form inline v-model="excelObj">
+                            <FormItem class="margin-bottom-10" prop="name">
+                                <label class="margin-right-10">文件名称</label><Input placeholder="输入文件名称" v-model="excelObj.name" style="width: 73%"/>
+                            </FormItem>
+                            <FormItem class="margin-bottom-10">
+                                <Button type="primary" @click="addExcelContent" icon="document-text">保存</Button>
+                            </FormItem>
+                            <FormItem class="margin-bottom-10">
+                                <Upload
+                                        action="//jsonplaceholder.typicode.com/posts/"
+                                        :show-upload-list="false">
+                                    <Button type="primary" icon="ios-cloud-upload">上传</Button>
+                                </Upload>
+                            </FormItem>
+                            <FormItem class="margin-bottom-10">
+                                <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
+                            </FormItem>
                         </Form>
                         <HotTable ref="thisTable" :root="root" :settings="settings"></HotTable>
                     </div>
                 </Card>
             </Col>
-            <Col span="4">
+            <Col :sm="4" :xs="0">
                 <Card style="">
                     <p slot="title">
                         <Icon type="ios-film-outline"></Icon>
@@ -64,7 +62,6 @@
         data () {
             return {
                 hotTableData:[],
-                hotTableH:'0px',
                 root: 'test-hot',
                 settings:{
                     data: [
@@ -109,7 +106,6 @@
                     wordTH = 398;
                 }
                 var wtHolderCssH = wordTH - 90;
-                this.hotTableH = wordTH + 'px';
                 // 直接写入style标签
                 var nod = document.createElement("style"),
                 str = ".wtHolder{ width: 100% !important; height: "+wtHolderCssH+"px !important;} #hot-display-license-info{ padding: 10px 0 3px 0 !important;}";
