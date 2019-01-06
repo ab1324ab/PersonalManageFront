@@ -17,7 +17,7 @@
                 <td><input v-model="workData.plannerPeople" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" /></td>
                 <td>计划日期</td>
                 <td style="width: 120px">
-                    <DatePicker v-model="workData.plannedDate" type="date" placeholder="Select date" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker>
+                    <DatePicker :editable="false" v-model="workData.plannedDate" type="date" placeholder="选择日期" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker>
                 </td>
                 <td>部门</td>
                 <td><input v-model="workData.department" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" /></td>
@@ -25,7 +25,7 @@
                 <td><input v-model="workData.summaryPeople" type="text" style="border: 1px solid #a6dbff;border-radius: 5px;" /></td>
                 <td>总结日期</td>
                 <td style="width: 120px">
-                    <DatePicker v-model="workData.summaryDate" type="date" placeholder="Select date" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker>
+                    <DatePicker :editable="false" v-model="workData.summaryDate" type="date" placeholder="选择日期" style="border: 1px solid #a6dbff;border-radius: 5px;"></DatePicker>
                 </td>
             </tr>
         </table>

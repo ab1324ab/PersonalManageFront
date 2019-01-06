@@ -1,19 +1,19 @@
 <template>
     <div style="height: 600px" @keydown.enter="initResourceList">
-        <Modal width="900"
+        <Modal width="60%"
                v-model="detailedInfoModal.modalShow">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
             </p>
             <div v-if="detailedInfoModal.excelShow">
-                <Table :columns="detailedInfoModal.excelData.columns" :data="detailedInfoModal.excelData.data"></Table>
+                <Table height="400" :columns="detailedInfoModal.excelData.columns" :data="detailedInfoModal.excelData.data"></Table>
             </div>
             <div v-if="detailedInfoModal.wordShow">
-                <div id="wordShow" style="margin: 0 auto;overflow:scroll;width: 875px;height: 470px;overflow-x: hidden;overflow-y:auto" v-html="detailedInfoModal.wordData"></div>
+                <div id="wordShow" style="margin: 0 auto;overflow:scroll;height:auto;min-height:100px;max-height:400px;overflow-x: hidden;overflow-y:auto" v-html="detailedInfoModal.wordData"></div>
             </div>
-            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 600px;">
-                <img :src="detailedInfoModal.imgUrl" width="600"/>
+            <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 90%">
+                <img :src="detailedInfoModal.imgUrl" width="100%"/>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
@@ -27,10 +27,10 @@
             </p>
             <Form ref="formInline" inline :label-width='60' v-model="resourceListFrom">
                 <FormItem label="文档名称" prop="fileName">
-                    <Input placeholder="文件名称" v-model="resourceListFrom.name"></Input>
+                    <Input placeholder="文件名称" style="width: 200px;" v-model="resourceListFrom.name"></Input>
                 </FormItem>
                 <FormItem label="创建日期" prop="creationTime">
-                    <DatePicker v-model="resourceListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
+                    <DatePicker :editable="false" v-model="resourceListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
                 <FormItem label="文档类型" prop="fileType">
                     <Select v-model="resourceListFrom.type" style="width:200px">
@@ -39,7 +39,9 @@
                         </Option>
                     </Select>
                 </FormItem>
-                <Button type="primary" @click="initResourceList">搜索文档</Button>
+                <FormItem>
+                    <Button type="primary" @click="initResourceList">搜索文档</Button>
+                </FormItem>
             </Form>
             <div>
                 <paging-components :tableData="tableData" @pagechange="pagechange" @showDisplay="showDisplay" @detailedInfo="detailedInfo"></paging-components>

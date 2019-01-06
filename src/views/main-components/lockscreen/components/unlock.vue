@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         handleClickAvator () {
-            this.avatorLeft = '-180px';
+            this.avatorLeft = '-150px';
             this.inputLeft = '0px';
             this.$refs.inputEle.focus();
         },

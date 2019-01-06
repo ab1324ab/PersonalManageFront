@@ -26,18 +26,15 @@
                         图片编辑
                     </p>
                     <Form inline v-model="imgObj">
-                        <FormItem class="margin-bottom-10" prop="name">
-                            <label class="margin-right-10">文件名称</label><Input placeholder="输入文件名称" style="width: 73%" v-model="imgObj.name"/>
+                        <FormItem style="margin-bottom: 10px" :label-width='60' label="文件名称"  prop="name">
+                            <Input placeholder="输入文件名称" style="width: 200px" v-model="imgObj.name"/>
                         </FormItem>
-                        <FormItem class="margin-bottom-10">
+                        <FormItem style="margin-bottom: 0px">
                             <label class="filelabel" style="padding: 0px 15px;" for="fileinput">
-                            <input type="file" icon="image" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
-                                <Icon type="image"></Icon>&nbsp;选择图片</label>
-                        </FormItem>
-                        <FormItem class="margin-bottom-10">
+                                <input type="file" icon="image" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
+                                <Icon type="image"></Icon>&nbsp;选择图片
+                            </label>
                             <Button type="primary" @click="uploadImg('direct')" icon="upload">直接上传</Button>
-                        </FormItem>
-                        <FormItem class="margin-bottom-10">
                             <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
                         </FormItem>
                     </Form>

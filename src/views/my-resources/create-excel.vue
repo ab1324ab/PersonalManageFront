@@ -13,21 +13,18 @@
                     </p>
                     <div>
                         <Form inline v-model="excelObj">
-                            <FormItem class="margin-bottom-10" prop="name">
-                                <label class="margin-right-10">文件名称</label><Input placeholder="输入文件名称" v-model="excelObj.name" style="width: 73%"/>
+                            <FormItem :label-width='60' label="文件名称" prop="name">
+                                <Input style="width: 200px;" placeholder="输入文件名称" v-model="excelObj.name" />
                             </FormItem>
-                            <FormItem class="margin-bottom-10">
+                            <FormItem >
                                 <Button type="primary" @click="addExcelContent" icon="document-text">保存</Button>
-                            </FormItem>
-                            <FormItem class="margin-bottom-10">
-                                <Upload
-                                        action="//jsonplaceholder.typicode.com/posts/"
-                                        :show-upload-list="false">
+                                <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
+                                <Upload style="float: right;margin-left: 5px;" action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
                                     <Button type="primary" icon="ios-cloud-upload">上传</Button>
                                 </Upload>
                             </FormItem>
-                            <FormItem class="margin-bottom-10">
-                                <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
+                            <FormItem>
+
                             </FormItem>
                         </Form>
                         <HotTable ref="thisTable" :root="root" :settings="settings"></HotTable>

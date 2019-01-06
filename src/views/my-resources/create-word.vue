@@ -19,22 +19,16 @@
                         新建工作文档
                     </p>
                     <div>
-                        <Form  inline  :model="wordObj">
-                                <FormItem class="margin-bottom-10" prop="name">
-                                    <label class="margin-right-10">文件名称</label><Input v-model="wordObj.name" style="width: 73%" placeholder="输入文件名称"/>
+                        <Form inline :model="wordObj">
+                                <FormItem :label-width='60' label="文件名称"  prop="name">
+                                    <Input v-model="wordObj.name" style="width: 200px" placeholder="输入文件名称"/>
                                 </FormItem>
-                                <FormItem class="margin-bottom-10">
+                                <FormItem>
                                     <Button type="primary" @click="addWordContent" icon="document-text">保存</Button>
-                                </FormItem>
-                                <FormItem class="margin-bottom-10">
-                                    <Upload
-                                            action="//jsonplaceholder.typicode.com/posts/"
-                                            :show-upload-list="false">
+                                    <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
+                                    <Upload style="float: right;margin-left: 5px;" action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
                                         <Button type="primary" icon="ios-cloud-upload">上传</Button>
                                     </Upload>
-                                </FormItem>
-                                <FormItem class="margin-bottom-10">
-                                    <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
                                 </FormItem>
                         </Form>
                         <div ref="tinymceEditer" id="tinymceEditer"></div>

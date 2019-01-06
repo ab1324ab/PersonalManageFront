@@ -87,7 +87,7 @@ export default {
                                 icon.style.color = "red"
                             }
                             if(pText.innerText == "已完成"){
-                                pText.innerText = "为完成";
+                                pText.innerText = "未完成";
                             }else{
                                 pText.innerText = "已完成";
                             }

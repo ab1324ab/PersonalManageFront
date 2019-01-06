@@ -13,7 +13,7 @@
 <template>
     <div @keydown.enter="initWordPlan">
         <Row :gutter="10">
-            <Col span="20">
+            <Col :sm="20" :xs="24">
                 <Modal
                         width="900px"
                         v-model="detailedInfoModal.modalShow">
@@ -37,17 +37,16 @@
                         <span>新建计划</span>
                     </p>
                     <div>
-                        <Form inline :label-width='60' v-model="workData" label-position="left" style="border: 1px solid #e9eaec;width: 100%" id="wordForm">
-                            <FormItem id="planmc" label="计划名称" prop="name" style="width: 50%">
-                                <Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="计划名称" />
-                            </FormItem>
-                            <FormItem label="开始时间" prop="startTime" style="width: 21%">
-                                <DatePicker v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="开始时间"></DatePicker>
-                            </FormItem>
-                            <FormItem label="结束时间" prop="startTime" style="width: 28.2%">
-                                <DatePicker v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="结束时间"></DatePicker>
-                            </FormItem>
-                        </Form>
+                        <table class="vtable">
+                            <tr>
+                                <td>计划名称</td>
+                                <td ><Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;width: 100%"  placeholder="计划名称" /></td>
+                                <td>开始时间</td>
+                                <td ><DatePicker :editable="false" v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker></td>
+                                <td>结束时间</td>
+                                <td ><DatePicker :editable="false" v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker></td>
+                            </tr>
+                        </table>
                         <vtable :workData="workData" :workColumns="workColumns"></vtable>
                     </div>
                     <div slot="footer">
@@ -62,20 +61,22 @@
                     </p>
                     <Form ref="formInline" v-model="wordListFrom" inline :label-width='60'>
                         <FormItem label="文档名称" prop="name">
-                            <Input v-model="wordListFrom.name" placeholder="文件名称"></Input>
+                            <Input style="width: 200px" v-model="wordListFrom.name" placeholder="文件名称"></Input>
                         </FormItem>
                         <FormItem label="创建日期" prop="time">
-                            <DatePicker v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
+                            <DatePicker :editable="false" v-model="wordListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
                         </FormItem>
-                        <Button type="primary" @click="initWordPlan">搜索计划</Button>
-                        <Button type="primary" @click="modelShowNewData">创建计划</Button>
+                        <FormItem>
+                            <Button type="primary" @click="initWordPlan">搜索计划</Button>
+                            <Button type="primary" @click="modelShowNewData">创建计划</Button>
+                        </FormItem>
                     </Form>
                     <div>
                         <paging-components :tableData="tableData" @pagechange="pagechange" @showDisplay="showDisplay"></paging-components>
                     </div>
                 </Card>
             </Col>
-            <Col span="4">
+            <Col :sm="4" :xs="24">
                 <Card style="">
                     <p slot="title">
                         <Icon type="ios-film-outline"></Icon>
@@ -101,7 +102,9 @@
                                     </FormItem>
                                 </Col>
                             </Row>
-                            <Button type="primary" @click="saveWordSetting">保存</Button>
+                            <FormItem :label-width='40'>
+                                <Button type="primary" @click="saveWordSetting">保存</Button>
+                            </FormItem>
                         </Form>
                     </div>
                 </Card>
@@ -206,7 +209,7 @@
                                                 })
                                             }
                                         }
-                                    }, '生成计划'),
+                                    }, '生成文档'),
                                     h('Button', {
                                         props: {
                                             type: 'error',
@@ -240,23 +243,7 @@
                     modalName: '',
                     newWordModal: false,
                 },
-                workData: {
-                    id:'',
-                    name: '',
-                    startTime: '',
-                    endTime: '',
-                    isEdit: false,
-                    department: '部门1',
-                    plannerPeople: '计划人1',
-                    plannedDate: '2018-12-12',
-                    summaryPeople: '总结人1',
-                    summaryDate: '2018-12-16',
-                    content: [
-                        {'taskName': '1', 'taskContent': '2', 'planFacilityValue': '3', 'planTimeConsuming': '8', 'planCompletionRatio': '5', 'completionStatus': '4', 'summaryTimeConsuming': '0'},
-                        {},
-                        {}
-                    ]
-                },
+                workData: {},
                 workColumns: [
                     [
                         // {label:'测试1',prop:'a',rowspan:'2'},
@@ -476,7 +463,7 @@
                     plannedDate: '',
                     summaryPeople: '',
                     summaryDate: '',
-                    content: [{}, {}]
+                    content: [{}]
                 };
                 this.workData = newWordData;
                 let _this = this;
@@ -489,6 +476,8 @@
                                 _this.workData.name = response.data.data.name;
                                 _this.workData.startTime = response.data.data.startTime;
                                 _this.workData.endTime = response.data.data.endTime;
+                                _this.workData.plannerPeople = response.data.data.people;
+                                _this.workData.summaryPeople = response.data.data.people;
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }

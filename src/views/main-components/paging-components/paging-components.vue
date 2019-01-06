@@ -1,20 +1,23 @@
 <style lang="less">
     @import "./paging-components.less";
+    .pages{
+        //padding: 0px 1px !important;
+    }
 </style>
 <template>
     <div>
         <Table :loading="tableData.loading" highlight-row stripe :columns="tableData.columns" :data="tableData.data" @on-row-click="detailedInfo"></Table>
         <nav style="float: right;">
             <ul class="pagination">
-                <li :class="{'disabled': tableData.paging.current == 1}"><a href="javascript:;" @click="setCurrent(1)"> 首页 </a></li>
-                <li :class="{'disabled': tableData.paging.current == 1}"><a href="javascript:;" @click="setCurrent(tableData.paging.current - 1)"> 上一页 </a></li>
-                <li v-for="p in grouplist" :class="{'active': tableData.paging.current == p.val}"><a href="javascript:;" @click="setCurrent(p.val)"> {{ p.text }} </a></li>
-                <li :class="{'disabled': tableData.paging.current == page}"><a href="javascript:;" @click="setCurrent(tableData.paging.current + 1)"> 下一页</a></li>
-                <li :class="{'disabled': tableData.paging.current == page}"><a href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
+                <li :class="{'disabled': tableData.paging.current == 1}"><a class="pages" href="javascript:;" @click="setCurrent(1)"> 首页 </a></li>
+                <li :class="{'disabled': tableData.paging.current == 1}"><a class="pages" href="javascript:;" @click="setCurrent(tableData.paging.current - 1)"> 上一页 </a></li>
+                <li v-for="p in grouplist" :class="{'active': tableData.paging.current == p.val}"><a class="pages" href="javascript:;" @click="setCurrent(p.val)"> {{ p.text }} </a></li>
+                <li :class="{'disabled': tableData.paging.current == page}"><a class="pages" href="javascript:;" @click="setCurrent(tableData.paging.current + 1)"> 下一页</a></li>
+                <li :class="{'disabled': tableData.paging.current == page}"><a class="pages" href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
             </ul>
             <ul class="pagination pull-right">
                 <li>
-                    <span>
+                    <span class="pages">
                         <Dropdown @on-click="setDisplay">
                             <a href="javascript:void(0)" style="color: #337ab7">
                                 {{tableData.paging.display}}
@@ -30,8 +33,8 @@
                         </Dropdown>
                     </span>
                 </li>
-                <li><span> {{ tableData.paging.current }} / {{ page }} 页 </span></li>
-                <li><span> 共 {{ tableData.paging.total }}  条 </span></li>
+                <li><span class="pages"> {{ tableData.paging.current }} / {{ page }} 页 </span></li>
+                <li><span class="pages"> 共 {{ tableData.paging.total }}  条 </span></li>
             </ul>
         </nav>
     </div>
@@ -113,6 +116,18 @@
             }
         },
         methods: {
+            modifyStyle (){
+                // 直接写入style标签
+                var docWidth = document.body.scrollWidth;
+                let pages = document.getElementsByClassName("pages");
+                for(let i=0 ; i<pages.length ; i++){
+                    if(docWidth < 685){
+                        pages[i].style.padding= "0px 1px"
+                    }else{
+                        pages[i].style.padding= "6px 12px"
+                    }
+                }
+            },
             setCurrent: function (idx) {
                 if (this.tableData.paging.current != idx && idx > 0 && idx < this.page + 1) {
                     this.tableData.paging.current = idx;
@@ -127,10 +142,19 @@
             detailedInfo (currentRow, oldCurrentRow) {
                 this.$emit('detailedInfo', currentRow, oldCurrentRow);
             }
+        },
+        updated(){
+            this.$nextTick(function () {
+                this.modifyStyle();
+            })
+        },
+        mounted(){
+            this.modifyStyle();
+            window.onresize = () => {
+                return (() => {
+                    this.modifyStyle();
+                })()
+            };
         }
     };
 </script>
-
-<style scoped>
-
-</style>
