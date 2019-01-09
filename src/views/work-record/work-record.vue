@@ -82,26 +82,20 @@
                         <Icon type="ios-film-outline"></Icon>
                         创建设置
                     </p>
-                    <!--<div v-for="list in historyList" :title='wordTitle(list.name,list.describe)' class="margin-top-20" style="border-bottom: #dddee1 solid 1px;text-indent: 1em;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">-->
-                        <!--<a href="javascript:void(0)" type="text" @click="selectShow(list.id)">{{list.name}}</a>-->
-                    <!--</div>-->
                     <div>
                         <Form v-model="createWordSetting">
-                            <FormItem label="名称" :label-width='40' prop="wordName">
-                                <Input v-model="createWordSetting.wordName" placeholder="计划名称"></Input>
+                            <FormItem label="名称" prop="wordName">
+                                <Input v-model="createWordSetting.wordName" icon="help-circled" title="字母代表可变值示例：%t周计划（%d - %n）" placeholder="计划名称"></Input>
                             </FormItem>
-                            <Row>
-                                <Col span="12">
-                                    <FormItem label="%n" :label-width='20' prop="setName">
-                                        <Input v-model="createWordSetting.setName" placeholder="姓名"></Input>
-                                    </FormItem>
-                                </Col>
-                                <Col span="12">
-                                    <FormItem label="%t" :label-width='20' prop="setTime">
-                                        <Input v-model="createWordSetting.setTime" placeholder="日期格式"></Input>
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                            <FormItem label="%d" :label-width='20' prop="setTime">
+                                <Input v-model="createWordSetting.setDept" placeholder="部门"></Input>
+                            </FormItem>
+                            <FormItem label="%n" :label-width='20' prop="setName">
+                                <Input v-model="createWordSetting.setName" placeholder="姓名"></Input>
+                            </FormItem>
+                            <FormItem label="%t" :label-width='20' prop="setTime">
+                                <Input v-model="createWordSetting.setTime" placeholder="日期格式"></Input>
+                            </FormItem>
                             <FormItem :label-width='40'>
                                 <Button type="primary" @click="saveWordSetting">保存</Button>
                             </FormItem>
@@ -203,10 +197,11 @@
                                         },
                                         on: {
                                             click: () => {
-                                                this.$Modal.info({
-                                                    title: 'User Info',
-                                                    content: params.row.id
-                                                })
+                                                $util.frontErrMsg(this, 2, '生成文档功能未开启');
+                                                // this.$Modal.info({
+                                                //     title: 'User Info',
+                                                //     content: params.row.id
+                                                // })
                                             }
                                         }
                                     }, '生成文档'),
@@ -219,10 +214,16 @@
                                         },
                                         on: {
                                             click: () => {
-                                                this.$Modal.info({
-                                                    title: 'User Info',
-                                                    content: params.row.id
-                                                })
+                                                this.$Modal.confirm({
+                                                    title: '消息',
+                                                    content: '<p>是否删除？'+params.row.name+'</p>',
+                                                    onOk: () => {
+                                                        this.delWordPlan(params.row.id);
+                                                    },
+                                                    onCancel: () => {
+                                                        //this.$Message.info('Clicked cancel');
+                                                    }
+                                                });
                                             }
                                         }
                                     }, '删除')
@@ -270,7 +271,8 @@
                     id:'',
                     wordName:'',
                     setName:'',
-                    setTime:''
+                    setTime:'',
+                    setDept:''
                 }
             }
         },
@@ -341,6 +343,9 @@
                 console.info(this.createWordSetting);
                 if(this.createWordSetting.wordName == ""){
                     $util.frontErrMsg(this, 2, '计划名称为空');
+                    return;
+                }else if(this.createWordSetting.setDept == ""){
+                    $util.frontErrMsg(this, 2, '部门为空');
                     return;
                 }else if(this.createWordSetting.setName == ""){
                     $util.frontErrMsg(this, 2, '姓名为空');
@@ -413,6 +418,7 @@
                             if (response.data.statusCode == "10000") {
                                 _this.detailedInfoModal.modalShow = false;
                                 $util.frontSuccMsg(_this, 2, response.data.msg);
+                                _this.initWordPlan();
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }
@@ -441,6 +447,30 @@
                             if (response.data.statusCode == "10000") {
                                 _this.detailedInfoModal.newWordModal = false;
                                 $util.frontSuccMsg(_this, 2, response.data.msg);
+                                _this.initWordPlan();
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data)
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data)
+                    })
+            },
+            delWordPlan(id){
+                let _this = this;
+                let url = 'delWordPlan';
+                let queryData = qs.stringify({
+                    'id' : id,
+                });
+                $util.post(url, queryData)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == "10000") {
+                                $util.frontSuccMsg(_this, 2, response.data.msg);
+                                _this.initWordPlan();
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }
@@ -478,6 +508,9 @@
                                 _this.workData.endTime = response.data.data.endTime;
                                 _this.workData.plannerPeople = response.data.data.people;
                                 _this.workData.summaryPeople = response.data.data.people;
+                                _this.workData.plannedDate = response.data.data.endTime;
+                                _this.workData.summaryDate = response.data.data.endTime;
+                                _this.workData.department = response.data.data.department;
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }
