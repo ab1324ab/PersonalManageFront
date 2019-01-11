@@ -21,7 +21,7 @@
                         <Dropdown @on-click="setDisplay">
                             <a href="javascript:void(0)" style="color: #337ab7">
                                 {{tableData.paging.display}}
-                                <Icon type="arrow-down-b"></Icon>
+                                <Icon type="md-arrow-dropdown" ></Icon>
                             </a>
                             <DropdownMenu slot="list">
                                 <DropdownItem name="5">5</DropdownItem>

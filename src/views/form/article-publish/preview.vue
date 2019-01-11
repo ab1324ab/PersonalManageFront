@@ -34,7 +34,7 @@
                         <h1>{{ articleTitle }}</h1>
                         <p class="preview-publish-time"><Icon type="android-alarm-clock"></Icon>&nbsp;发布时间：{{ publishTime }}</p>
                         <div class="preview-tags-con">
-                            <b class="preview-tip"><Icon type="ios-pricetags-outline"></Icon>&nbsp;标签：</b><Tag v-for="item in tagsList" type="border" color="blue" :key="item">{{ item }}</Tag>
+                            <b class="preview-tip"><Icon type="ios-pricetags-outline"></Icon>&nbsp;标签：</b><Tag v-for="item in tagsList" type="border" color="primary" :key="item">{{ item }}</Tag>
                         </div>
                         <div class="preview-content-con" v-html="content"></div>
                         <div class="preview-classifition-con">

@@ -84,7 +84,7 @@
                         <infor-card
                             id-name="excel_count"
                             :end-val="count.excelCount"
-                            iconType="ios-grid-view-outline"
+                            iconType="md-grid"
                             color="#2d8cf0"
                             intro-text="表格文档总数"
                         ></infor-card>
@@ -103,7 +103,7 @@
                         <infor-card
                             id-name="img_count"
                             :end-val="count.imgCount"
-                            iconType="images"
+                            iconType="md-images"
                             color="#ffd572"
                             intro-text="图片总数"
                         ></infor-card>
@@ -186,7 +186,7 @@
                     待办事项
                 </p>
                 <a type="text" slot="extra" @click.prevent="addNewToDoItem">
-                    <Icon type="plus-round"></Icon>
+                    <Icon type="md-add-circle" size="23"></Icon>
                 </a>
                 <Modal
                         v-model="showAddNewTodo"
@@ -194,7 +194,7 @@
                         @on-ok="addNew"
                         @on-cancel="cancelAdd">
                     <Row type="flex" justify="center">
-                        <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px" />
+                        <Input v-model="newToDoItemValue" icon="ios-create-outline" placeholder="请输入..." style="width: 300px" />
                     </Row>
                     <Row slot="footer">
                         <Button type="text" @click="cancelAdd">取消</Button>

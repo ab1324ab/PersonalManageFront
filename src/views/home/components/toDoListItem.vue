@@ -6,7 +6,7 @@
     <Row class="to-do-list-item">
         <Col span="2" class="height-100">
             <Row type="flex" justify="center" align="middle" class="height-100">
-                <Icon type="ios-checkmark" size="20" :color="iconColor" :id="contentObj.id+'Icon'"/>
+                <Icon type="md-checkmark-circle-outline" size="20" :color="iconColor" :id="contentObj.id+'Icon'"/>
             </Row>
         </Col>
         <Col span="20" class="height-100">
@@ -17,11 +17,6 @@
         <Col span="2">
             <p class="to-do-list-item-text" :id="contentObj.id+'pText'" @click="handleHasDid(contentObj.id)">{{todoText}}</p>
         </Col>
-        <!-- <Col span="4" class="height-100">
-            <Row type="flex" justify="center" align="middle" class="infor-icon-row height-100">
-                <Icon @click.native="showItemInfor" type="information-circled" size="20"></Icon>
-            </Row>
-        </Col> -->
     </Row>
 </template>
 

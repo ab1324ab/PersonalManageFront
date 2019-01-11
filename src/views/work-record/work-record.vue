@@ -85,7 +85,7 @@
                     <div>
                         <Form v-model="createWordSetting">
                             <FormItem label="名称" prop="wordName">
-                                <Input v-model="createWordSetting.wordName" icon="help-circled" title="字母代表可变值示例：%t周计划（%d - %n）" placeholder="计划名称"></Input>
+                                <Input v-model="createWordSetting.wordName" icon="md-help" title="字母代表可变值示例：%t周计划（%d - %n）" placeholder="计划名称"></Input>
                             </FormItem>
                             <FormItem label="%d" :label-width='20' prop="setTime">
                                 <Input v-model="createWordSetting.setDept" placeholder="部门"></Input>

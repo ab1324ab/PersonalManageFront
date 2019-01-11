@@ -8,7 +8,7 @@
             <Col :sm="20" :xs="24">
                 <Card style="">
                     <p slot="title">
-                        <Icon type="ios-film-outline"></Icon>
+                        <Icon type="md-grid"></Icon>
                         新建表格文档
                     </p>
                     <div>

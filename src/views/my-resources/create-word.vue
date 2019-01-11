@@ -15,7 +15,7 @@
             <Col :sm="20" :xs="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="ios-film-outline"></Icon>
+                        <Icon type="logo-wordpress"></Icon>
                         新建工作文档
                     </p>
                     <div>

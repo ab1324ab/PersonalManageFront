@@ -22,7 +22,7 @@
         </Modal>
         <Card>
             <p slot="title">
-                <Icon type="ios-film-outline"></Icon>
+                <Icon type="ios-list-box-outline"></Icon>
                 文档列表
             </p>
             <Form ref="formInline" inline :label-width='60' v-model="resourceListFrom">

@@ -22,7 +22,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="qr-scanner"></Icon>
+                        <Icon type="md-image"></Icon>
                         图片编辑
                     </p>
                     <Form inline v-model="imgObj">
