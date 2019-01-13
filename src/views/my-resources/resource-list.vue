@@ -3,7 +3,7 @@
         <Modal width="60%"
                v-model="detailedInfoModal.modalShow">
             <p slot="header">
-                <Icon type="information-circled"></Icon>
+                <Icon type="ios-information-circle"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
             </p>
             <div v-if="detailedInfoModal.excelShow">

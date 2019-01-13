@@ -24,8 +24,8 @@
                                     <Input v-model="wordObj.name" style="width: 200px" placeholder="输入文件名称"/>
                                 </FormItem>
                                 <FormItem>
-                                    <Button type="primary" @click="addWordContent" icon="document-text">保存</Button>
-                                    <Button type="primary" @click="newWordInit" icon="refresh">新建</Button>
+                                    <Button type="primary" @click="addWordContent" icon="md-document">保存</Button>
+                                    <Button type="primary" @click="newWordInit" icon="md-refresh">新建</Button>
                                     <Upload style="float: right;margin-left: 5px;" action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
                                         <Button type="primary" icon="ios-cloud-upload">上传</Button>
                                     </Upload>

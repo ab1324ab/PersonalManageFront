@@ -64,7 +64,19 @@
                         winSwitch: winSwitch
                     }]);
                 }
-            }
+            },
+            menuFlag(){
+                let theme = localStorage.theme;
+                if(theme != null){
+                    var docWidth = document.body.scrollWidth;
+                    if(docWidth < 500){
+                        this.winSwitch = 'top';
+                    }else{
+                        let themeList = JSON.parse(theme);
+                        this.winSwitch = themeList[0].winSwitch;
+                    }
+                }
+            },
         },
         handleSubmenuChange (val) {
             // console.log(val)
@@ -81,11 +93,7 @@
             // console.log(isFullScreen);
         },
         created () {
-            let theme = localStorage.theme;
-            if(theme != null){
-                let themeList = JSON.parse(theme);
-                this.winSwitch = themeList[0].winSwitch;
-            }
+            this.menuFlag();
         }
     };
 </script>

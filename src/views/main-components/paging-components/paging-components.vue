@@ -19,7 +19,7 @@
                 <li>
                     <span class="pages">
                         <Dropdown @on-click="setDisplay">
-                            <a href="javascript:void(0)" style="color: #337ab7">
+                            <a href="javascript:void(0)">
                                 {{tableData.paging.display}}
                                 <Icon type="md-arrow-dropdown" ></Icon>
                             </a>

@@ -9,7 +9,6 @@
                 <!--<Icon :type="item.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>-->
                 <span  :key="'title' + item.name">{{ itemTitle(item) }}</span>
             </MenuItem>
-
             <Submenu v-if="item.children.length > 1" :name="item.name" :key="item.name">
                 <template slot="title">
                     <!--<Icon :type="item.icon" :size="iconSize"></Icon>-->
@@ -39,6 +38,14 @@ export default {
         openNames: {
             type: Array
         }
+    },
+    data () {
+        return{
+
+        }
+    },
+    computed:{
+
     },
     methods: {
         changeMenu (active) {

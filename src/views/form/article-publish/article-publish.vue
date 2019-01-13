@@ -38,7 +38,7 @@
                         发布
                     </p>
                     <p class="margin-top-10">
-                        <Icon type="android-time"></Icon>&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp; 态：
+                        <Icon type="md-time"></Icon>&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp; 态：
                         <Select size="small" style="width:90px" value="草稿">
                             <Option v-for="item in articleStateList" :value="item.value" :key="item.value">{{ item.value }}</Option>
                         </Select>

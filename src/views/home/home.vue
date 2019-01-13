@@ -122,7 +122,7 @@
                     <Col :md="12" :lg="12" :style="{marginBottom: '10px'}">
                         <Card>
                             <p slot="title" class="card-title">
-                                <Icon type="android-map"></Icon>
+                                <Icon type="md-map"></Icon>
                                 数量分类统计
                             </p>
                             <div class="data-source-row">
@@ -133,7 +133,7 @@
                     <Col :md="12" :lg="12" :style="{marginBottom: '10px'}">
                         <Card>
                             <p slot="title" class="card-title">
-                                <Icon type="ios-pulse-strong"></Icon>
+                                <Icon type="md-pulse"></Icon>
                                 数据来源统计
                             </p>
                             <div class="data-source-row">
@@ -182,7 +182,7 @@
         <Row>
             <Card>
                 <p slot="title" class="card-title">
-                    <Icon type="android-checkbox-outline"></Icon>
+                    <Icon type="ios-book-outline"></Icon>
                     待办事项
                 </p>
                 <a type="text" slot="extra" @click.prevent="addNewToDoItem">

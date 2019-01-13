@@ -128,7 +128,7 @@ export default {
                         return h('span', [
                             h('Icon', {
                                 props: {
-                                    type: 'android-time',
+                                    type: 'md-time',
                                     size: 12
                                 },
                                 style: {
@@ -137,7 +137,7 @@ export default {
                             }),
                             h('span', {
                                 props: {
-                                    type: 'android-time',
+                                    type: 'md-time',
                                     size: 12
                                 }
                             }, this.formatDate(params.row.time))
