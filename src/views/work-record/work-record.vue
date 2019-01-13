@@ -18,7 +18,7 @@
                         width="900px"
                         v-model="detailedInfoModal.modalShow">
                     <p slot="header">
-                        <Icon type="information-circled"></Icon>
+                        <Icon type="md-information-circle"></Icon>
                         <span>{{detailedInfoModal.modalName}}</span>
                     </p>
                     <div>
@@ -33,7 +33,7 @@
                         width="900px"
                         v-model="detailedInfoModal.newWordModal">
                     <p slot="header">
-                        <Icon type="information-circled"></Icon>
+                        <Icon type="md-information-circle"></Icon>
                         <span>新建计划</span>
                     </p>
                     <div>
@@ -56,7 +56,7 @@
                 </Modal>
                 <Card>
                     <p slot="title">
-                        <Icon type="ios-film-outline"></Icon>
+                        <Icon type="ios-create-outline"></Icon>
                         工作记录
                     </p>
                     <Form ref="formInline" v-model="wordListFrom" inline :label-width='60'>
@@ -85,7 +85,9 @@
                     <div>
                         <Form v-model="createWordSetting">
                             <FormItem label="名称" prop="wordName">
-                                <Input v-model="createWordSetting.wordName" icon="md-help" title="字母代表可变值示例：%t周计划（%d - %n）" placeholder="计划名称"></Input>
+                                <Tooltip style="white-space: normal;" placement="bottom-end" content="字母代表可变值示例：%t周计划（%d - %n）">
+                                    <Input v-model="createWordSetting.wordName" icon="md-help-circle" placeholder="计划名称"></Input>
+                                </Tooltip>
                             </FormItem>
                             <FormItem label="%d" :label-width='20' prop="setTime">
                                 <Input v-model="createWordSetting.setDept" placeholder="部门"></Input>
@@ -136,7 +138,7 @@
                                 return h('div', [
                                     h('Icon', {
                                         props: {
-                                            type: 'android-time'
+                                            type: 'md-time'
                                         },
                                         style: {
                                             marginRight: '5px',
@@ -154,7 +156,7 @@
                                 return h('div', [
                                     h('Icon', {
                                         props: {
-                                            type: 'android-time'
+                                            type: 'md-time'
                                         },
                                         style: {
                                             marginRight: '5px',
@@ -204,7 +206,7 @@
                                                 // })
                                             }
                                         }
-                                    }, '生成文档'),
+                                    }, '生成'),
                                     h('Button', {
                                         props: {
                                             type: 'error',

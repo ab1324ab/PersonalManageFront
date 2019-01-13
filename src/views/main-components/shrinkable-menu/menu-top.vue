@@ -5,7 +5,7 @@
     <div class="main" :class="{'main-hide-text': shrink}">
         <div class="main-header-con-top">
             <div class="main-header">
-                <shrinkable-menu-top
+                <shrinkable-menu-top v-if="!menuIsMin"
                         :shrink="shrink"
                         @on-change="handleSubmenuChange"
                         :theme="menuTheme"
@@ -24,6 +24,25 @@
                         <user-head></user-head>
                     </div>
                 </shrinkable-menu-top>
+                <shrinkable-menu-min v-if="menuIsMin"
+                         :shrink="menuIsMin"
+                         @on-change="handleSubmenuChange"
+                         :theme="menuTheme"
+                         :before-push="beforePush"
+                         :open-names="openedSubmenuArr"
+                         :menu-list="menuList">
+                    <div slot="left" style="float: left;" class="navicon-con">
+                        <img style="height: 45px"  src="../../../images/logo-min.jpg" key="min-logo" />
+                    </div>
+                    <div slot="right" class="header-avator-con-min">
+                        <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+                        <lock-screen></lock-screen>
+                        <message-tip v-model="mesCount"></message-tip>
+                        <theme-switch :theme="menuTheme"></theme-switch>
+                        <!--<window-switch :theme="menuTheme" v-on:mainWindowSwitch="mainWindowSwitch"></window-switch>-->
+                        <user-head></user-head>
+                    </div>
+                </shrinkable-menu-min>
             </div>
             <div class="tags-con">
                 <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
@@ -40,6 +59,7 @@
 </template>
 <script>
     import shrinkableMenuTop from '../../main-components/shrinkable-menu/shrinkable-menu-top.vue';
+    import shrinkableMenuMin from '../../main-components/shrinkable-menu/shrinkable-menu-min.vue';
     import tagsPageOpened from '../../main-components/tags-page-opened.vue';
     import breadcrumbNav from '../../main-components/breadcrumb-nav.vue';
     import fullScreen from '../../main-components/fullscreen.vue';
@@ -55,6 +75,7 @@
         name: 'menuTop',
         components: {
             shrinkableMenuTop,
+            shrinkableMenuMin,
             tagsPageOpened,
             breadcrumbNav,
             fullScreen,
@@ -73,6 +94,7 @@
         },
         computed: {
             menuList () {
+                console.info(this.$store.state.app.menuList);
                 return this.$store.state.app.menuList;
             },
             pageTagsList () {
@@ -92,6 +114,14 @@
             },
             mesCount () {
                 return this.$store.state.app.messageCount;
+            },
+            menuIsMin(){
+                var docWidth = document.body.scrollWidth;
+                if(docWidth< 500){
+                    return true;
+                }else{
+                    return false;
+                }
             }
         },
         methods: {

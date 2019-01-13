@@ -19,7 +19,7 @@
                 <li>
                     <span class="pages">
                         <Dropdown @on-click="setDisplay">
-                            <a href="javascript:void(0)" style="color: #337ab7">
+                            <a href="javascript:void(0)">
                                 {{tableData.paging.display}}
                                 <Icon type="md-arrow-dropdown" ></Icon>
                             </a>
@@ -82,9 +82,15 @@
                 var len = this.page;
                 var temp = [];
                 var list = [];
-                var count = Math.floor(this.tableData.paging.pagegroup / 2);
+                let pagegroup = this.tableData.paging.pagegroup;
+                var docWidth = document.body.scrollWidth;
+                // 屏幕显示区域小于500px则属于小屏幕,显示强制设置为3个分页
+                if(docWidth < 500){
+                    pagegroup = 3;
+                }
+                var count = Math.floor( pagegroup / 2);
                 var center = this.tableData.paging.current;
-                if (len <= this.tableData.paging.pagegroup) {
+                if (len <= pagegroup) {
                     while (len--) {
                         temp.push({
                             text: this.page - len, val: this.page - len
@@ -100,7 +106,7 @@
                 var idx = temp.indexOf(center);
                 (idx < count) && (center = center + count - idx);
                 (this.tableData.paging.current > this.page - count) && (center = this.page - count);
-                temp = temp.splice(center - count - 1, this.tableData.paging.pagegroup);
+                temp = temp.splice(center - count - 1, pagegroup);
                 do {
                     var t = temp.shift();
                     list.push({
@@ -108,7 +114,7 @@
                         val: t
                     });
                 } while (temp.length);
-                if (this.page > this.tableData.paging.pagegroup) {
+                if (this.page > pagegroup) {
                     (this.tableData.paging.current > count + 1) && list.unshift({ text: '...', val: list[0].val - 1 });
                     (this.tableData.paging.current < this.page - count) && list.push({ text: '...', val: list[list.length - 1].val + 1 });
                 }

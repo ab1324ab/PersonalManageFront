@@ -10,8 +10,11 @@
 <template>
     <div class="image-editor">
         <Modal
-            v-model="option.showCropedImage"
-            title="预览裁剪之后的图片">
+            v-model="option.showCropedImage">
+            <p slot="header">
+                <Icon type="logo-instagram"></Icon>
+                预览裁剪之后的图片
+            </p>
             <img :src="option.cropedImg" alt=""  style="width: 100%;">
             <div slot="footer">
                 <Button type="primary" @click="option.showCropedImage = false">取消</Button>
@@ -30,12 +33,12 @@
                             <Input placeholder="输入文件名称" style="width: 200px" v-model="imgObj.name"/>
                         </FormItem>
                         <FormItem style="margin-bottom: 0px">
-                            <label class="filelabel" style="padding: 0px 15px;" for="fileinput">
+                            <label class="filelabel" style="padding: 0px 15px;border: 0px" for="fileinput">
                                 <input type="file" icon="image" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" class="fileinput"/>
-                                <Icon type="image"></Icon>&nbsp;选择图片
+                                <Icon type="md-image"></Icon>&nbsp;选择
                             </label>
-                            <Button type="primary" @click="uploadImg('direct')" icon="upload">直接上传</Button>
-                            <Button @click="handlecrop" type="primary" icon="crop">裁剪上传</Button>
+                            <Button type="primary" @click="uploadImg('direct')" icon="md-cloud-upload">上传</Button>
+                            <Button @click="handlecrop" type="primary" icon="md-crop">裁剪</Button>
                         </FormItem>
                     </Form>
                 </Card>
@@ -50,7 +53,7 @@
                     <Col :sm="7" :xs="24" class="image-editor-con1 scannerH">
                         <Card>
                             <p slot="title">
-                                <Icon type="qr-scanner"></Icon>
+                                <Icon type="logo-instagram"></Icon>
                                 裁剪预览
                             </p>
                             <Row type="flex" justify="center" align="middle" class="image-editor-con1-preview-con">

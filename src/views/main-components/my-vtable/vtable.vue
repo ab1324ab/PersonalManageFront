@@ -43,7 +43,7 @@
             </tr>
             </tbody>
         </table>
-        <Button type="primary" size="small" icon="ios-plus-outline" @click="addTrFocus" style="margin-top: 5px;width: 100px;">增加</Button>
+        <Button type="primary" size="small" icon="ios-add-circle-outline" @click="addTrFocus" style="margin-top: 5px;width: 100px;">增加</Button>
     </div>
 </template>
 

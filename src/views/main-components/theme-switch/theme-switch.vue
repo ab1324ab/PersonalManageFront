@@ -1,12 +1,10 @@
 <template>
     <div style="display:inline-block;padding:0 6px;">
         <Dropdown trigger="click" @on-click="setTheme">
-            <Tooltip content="主题" placement="bottom">
                 <a href="javascript:void(0)">
                     <Icon :style="{verticalAlign: 'middle'}" color="#657180" :size="23" type="md-color-fill"></Icon>
                     <Icon type="md-arrow-dropdown" :size="5"></Icon>
                 </a>
-            </Tooltip>
             <DropdownMenu slot="list">
                 <DropdownItem v-for="(item, index) in themeList" :key="index" :name="item.name">
                     <Row type="flex" justify="center" align="middle">
@@ -88,6 +86,7 @@ export default {
                 this.$store.commit('changeMenuTheme', 'light');
                 menuTheme = 'light';
             }
+            this.$store.commit('changeMainTheme', mainTheme);
             let path = '';
             let themeLink = document.querySelector('link[name="theme"]');
             let userName = Cookies.get('user');
