@@ -10,7 +10,20 @@
                     <Icon type="md-log-in"></Icon>
                     欢迎登录
                 </p>
-                <div class="form-con">
+                <div style="position: absolute;top: 2px;left: 258px;" @click="qrcodeLogin">
+                    <Tooltip  :content="tooltipText" placement="right">
+                        <img  height="40px" :src="tooltipImg"/>
+                    </Tooltip>
+                </div>
+                <div v-if="isQrcodelogin" class="form-con">
+                    <div style="width: 200px;height: 200px;margin: 0 auto">
+                        <img width="200px" src="../images/qrcode.jpg"/>
+                    </div>
+                    <p style="margin-top: 10px;" class="login-tip">
+                        请使用新版 <b style="color: #ff000075">支付宝APP</b> 扫码完成登录
+                    </p>
+                </div>
+                <div v-if="!isQrcodelogin" class="form-con">
                     <Form ref="loginForm" :model="form" :rules="rules">
                         <FormItem prop="account">
                             <Input v-model="form.account" placeholder="请输入用户名">
@@ -32,7 +45,7 @@
                                 <Col :span="12">
                                     <Input v-model="form.checkCode" :maxlength="4" placeholder="请输入验证码">
                                         <span slot="prepend">
-                                            <Icon :size="14" type="image"></Icon>
+                                            <Icon :size="14" type="md-image"></Icon>
                                         </span>
                                     </Input>
                                 </Col>
@@ -55,6 +68,8 @@
 
 <script>
 import Cookies from 'js-cookie';
+import qrcodeLoginImg from '../images/qrLogin.png';
+import pcLoginImg from '../images/pcLogin.png'
 import $util from '@/libs/util.js';
 export default {
     data () {
@@ -68,7 +83,10 @@ export default {
             }
         };
         return {
+            qrcodeLoginImg:qrcodeLoginImg,
+            pcLoginImg:pcLoginImg,
             loginLoading: false,
+            isQrcodelogin:false,
             imgCode:"",
             imgCodeShow: 0,
             form: {
@@ -93,6 +111,22 @@ export default {
                 ],
             }
         };
+    },
+    computed:{
+        tooltipText(){
+            if(this.isQrcodelogin){
+                return '账号密码登陆';
+            }else{
+                return '二维码登陆';
+            }
+        },
+        tooltipImg(){
+            if(this.isQrcodelogin){
+                return this.pcLoginImg;
+            }else{
+                return this.qrcodeLoginImg;
+            }
+        }
     },
     methods: {
         handleSubmit () {
@@ -150,10 +184,57 @@ export default {
                 }).catch(function (error) {
                     $util.httpErrorMsg(_this,error.data)
                 })
+        },
+        initWebSocket(){
+            //$util.getWebUrl()+
+            const wsuri = "ws://localhost:8081/webMessage";//ws地址
+            window.websock = new WebSocket(wsuri);
+            websock.onopen = this.websocketonopen;
+            websock.onerror = this.websocketonerror;
+            websock.onmessage = this.websocketonmessage;
+            websock.onclose = this.websocketclose;
+        },
+
+        websocketonopen() {
+            console.log("服务器连接成功！");
+        },
+        websocketonerror(e) { //错误
+            $util.frontErrMsg(this,2,'服务器连接异常');
+        },
+        websocketonmessage(e){ //数据接收
+            //const redata = JSON.parse(e.data);
+            //注意：长连接我们是后台直接1秒推送一条数据，
+            //但是点击某个列表时，会发送给后台一个标识，后台根据此标识返回相对应的数据，
+            //这个时候数据就只能从一个出口出，所以让后台加了一个键，例如键为1时，是每隔1秒推送的数据，为2时是发送标识后再推送的数据，以作区分
+            console.log(e);
+            if(e.data == '登陆失败！'){
+                $util.frontErrMsg(this,2,e.data)
+                this.form.account ='ccccc';
+            }
+
+        },
+        websocketsend(agentData){//数据发送
+            websock.send(agentData);
+        },
+        websocketclose(e){ //关闭
+            websock.close();
+        },
+        qrcodeLogin(){
+            this.isQrcodelogin = !this.isQrcodelogin;
+            if(this.isQrcodelogin){
+                this.initWebSocket();
+            }else{
+                this.websocketclose();
+            }
         }
+    },
+    beforeDestroy(){
+        // 毁后调用
+        this.websocketclose();
     },
     created (){
         this.resetPicCode();
+        //this.initWebSocket();
     }
 };
 </script>
