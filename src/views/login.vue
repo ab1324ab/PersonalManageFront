@@ -17,7 +17,8 @@
                 </div>
                 <div v-if="isQrcodelogin" class="form-con">
                     <div style="width: 200px;height: 200px;margin: 0 auto">
-                        <img width="200px" src="../images/qrcode.jpg"/>
+                        <img v-show="isSuccess" title="点击重试" width="200px" :src="scanSuccessImg" @click="isSuccess = false"/>
+                        <div v-show="!isSuccess" id="qrcode"></div>
                     </div>
                     <p style="margin-top: 10px;" class="login-tip">
                         请使用新版 <b style="color: #ff000075">支付宝APP</b> 扫码完成登录
@@ -68,8 +69,11 @@
 
 <script>
 import Cookies from 'js-cookie';
+import QRCode from 'qrcodejs2'
 import qrcodeLoginImg from '../images/qrLogin.png';
-import pcLoginImg from '../images/pcLogin.png'
+import pcLoginImg from '../images/pcLogin.png';
+import scanSuccessImg from '../images/scanSuccess.png';
+
 import $util from '@/libs/util.js';
 export default {
     data () {
@@ -85,6 +89,8 @@ export default {
         return {
             qrcodeLoginImg:qrcodeLoginImg,
             pcLoginImg:pcLoginImg,
+            isSuccess:false,
+            scanSuccessImg:scanSuccessImg,
             loginLoading: false,
             isQrcodelogin:false,
             imgCode:"",
@@ -185,6 +191,35 @@ export default {
                     $util.httpErrorMsg(_this,error.data)
                 })
         },
+        createQrcode(){
+            let _this = this;
+            this.isSuccess = false;
+            let url = "getAlipayLoginPath";
+            $util.post(url,{})
+                .then(function (response) {
+                    if(response.status == 200){
+                        if(response.data.statusCode == "10000"){
+                            let loginPath = response.data.data;
+                            let qrcode = new QRCode('qrcode', {
+                                width: 200,
+                                height: 200, // 高度
+                                text: loginPath, // 二维码内容
+                                // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）
+                                // background: '#f0f'
+                                // foreground: '#ff0'
+                            })
+
+                        }else{
+                            $util.responseMsg(_this,response.data);
+                        }
+                    }else{
+                        $util.httpErrorMsg(_this,response.data)
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this,error.data)
+                })
+        },
         initWebSocket(){
             //$util.getWebUrl()+
             const wsuri = "ws://localhost:8081/webMessage";//ws地址
@@ -194,24 +229,40 @@ export default {
             websock.onmessage = this.websocketonmessage;
             websock.onclose = this.websocketclose;
         },
-
         websocketonopen() {
             console.log("服务器连接成功！");
+            this.createQrcode();
         },
         websocketonerror(e) { //错误
             $util.frontErrMsg(this,2,'服务器连接异常');
         },
         websocketonmessage(e){ //数据接收
-            //const redata = JSON.parse(e.data);
             //注意：长连接我们是后台直接1秒推送一条数据，
             //但是点击某个列表时，会发送给后台一个标识，后台根据此标识返回相对应的数据，
             //这个时候数据就只能从一个出口出，所以让后台加了一个键，例如键为1时，是每隔1秒推送的数据，为2时是发送标识后再推送的数据，以作区分
-            console.log(e);
-            if(e.data == '登陆失败！'){
-                $util.frontErrMsg(this,2,e.data)
-                this.form.account ='ccccc';
+            const data = JSON.parse(e.data);
+            console.log(data);
+            if(data.code == '10003'){
+                this.isSuccess = true;
+            }else if(data.code == '40028'){
+                $util.frontErrMsg(this,2,data.msg);
+            }else if(data.code == '10000'){
+                Cookies.set('user', data.nickname);
+                this.$store.commit('setAvator', data.imgurl);
+                Cookies.set('access', 0); // 权限页 0：有权 1：没权
+                let oldLoginTime = data.oldLoginTime;
+                localStorage.setItem("oldLoginTime",oldLoginTime);
+                let oldIp = data.oldIp;
+                localStorage.setItem("oldIp",oldIp);
+                let oldIpAddress = data.oldIpAddress;
+                localStorage.setItem("oldIpAddress",oldIpAddress);
+                let nickname = data.nickname;
+                localStorage.setItem("nickname",nickname);
+                this.websocketclose();
+                this.$router.push({
+                    name: 'home_index'
+                });
             }
-
         },
         websocketsend(agentData){//数据发送
             websock.send(agentData);
@@ -234,7 +285,6 @@ export default {
     },
     created (){
         this.resetPicCode();
-        //this.initWebSocket();
     }
 };
 </script>
