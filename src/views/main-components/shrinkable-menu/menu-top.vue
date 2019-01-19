@@ -94,7 +94,6 @@
         },
         computed: {
             menuList () {
-                console.info(this.$store.state.app.menuList);
                 return this.$store.state.app.menuList;
             },
             pageTagsList () {

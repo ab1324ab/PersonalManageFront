@@ -49,7 +49,6 @@ export default {
     },
     methods: {
         changeMenu (active) {
-            console.info('menuTheme3',this.menuTheme);
             this.$emit('on-change', active);
         },
         itemTitle (item) {

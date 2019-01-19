@@ -14,10 +14,10 @@ util.title = function (title) {
 };
 
 const ajaxUrl = env === 'development'
-    ? 'http://localhost:8081/'
+    ? 'http://localhost:8081/api'
     : env === 'production'
-        ? 'http://www.nacei.top/api'
-        : 'http://www.nacei.top/api';
+        ? 'http://www.nacei.cn/api'
+        : 'http://www.nacei.cn/api';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
