@@ -10,14 +10,15 @@
 <template>
     <div class="image-editor">
         <Modal
-            v-model="option.showCropedImage">
+            v-model="option.showCropedImage"
+            :mask-closable="false">
             <p slot="header">
                 <Icon type="logo-instagram"></Icon>
                 预览裁剪之后的图片
             </p>
             <img :src="option.cropedImg" alt=""  style="width: 100%;">
             <div slot="footer">
-                <Button type="primary" @click="option.showCropedImage = false">取消</Button>
+                <Button type="text" @click="option.showCropedImage = false">取消</Button>
                 <Button type="primary" @click="uploadImg('trim')">保存上传</Button>
             </div>
         </Modal>
@@ -182,7 +183,7 @@
                     $util.frontErrMsg(this,2,"请上传图片");
                     return;
                 }
-                let url = "upload"
+                let url = "upload";
                 let _this = this;
                 let param = new window.FormData();
                 param.append('file', upFile);

@@ -16,7 +16,8 @@
             <Col :sm="20" :xs="24">
                 <Modal
                         width="900px"
-                        v-model="detailedInfoModal.modalShow">
+                        v-model="detailedInfoModal.modalShow"
+                        :mask-closable="false">
                     <p slot="header">
                         <Icon type="md-information-circle"></Icon>
                         <span>{{detailedInfoModal.modalName}}</span>
@@ -25,13 +26,14 @@
                         <vtable :workData="workData" :workColumns="workColumns"></vtable>
                     </div>
                     <div slot="footer">
-                        <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
+                        <Button type="text" @click="detailedInfoModal.modalShow = false">取消</Button>
                         <Button type="primary" @click="updateWordPlan">保存</Button>
                     </div>
                 </Modal>
                 <Modal
                         width="900px"
-                        v-model="detailedInfoModal.newWordModal">
+                        v-model="detailedInfoModal.newWordModal"
+                        :mask-closable="false">
                     <p slot="header">
                         <Icon type="md-information-circle"></Icon>
                         <span>新建计划</span>
@@ -50,7 +52,7 @@
                         <vtable :workData="workData" :workColumns="workColumns"></vtable>
                     </div>
                     <div slot="footer">
-                        <Button type="primary" @click="detailedInfoModal.newWordModal = false">取消</Button>
+                        <Button type="text" @click="detailedInfoModal.newWordModal = false">取消</Button>
                         <Button type="primary" @click="addWordPlan">保存</Button>
                     </div>
                 </Modal>

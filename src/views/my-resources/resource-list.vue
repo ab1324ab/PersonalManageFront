@@ -1,7 +1,9 @@
 <template>
     <div style="height: 600px" @keydown.enter="initResourceList">
         <Modal width="60%"
-               v-model="detailedInfoModal.modalShow">
+               v-model="detailedInfoModal.modalShow"
+               :mask-closable="false"
+               >
             <p slot="header">
                 <Icon type="ios-information-circle"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
@@ -16,7 +18,7 @@
                 <img :src="detailedInfoModal.imgUrl" width="100%"/>
             </div>
             <div slot="footer">
-                <Button type="primary" @click="detailedInfoModal.modalShow = false">取消</Button>
+                <Button type="text" @click="detailedInfoModal.modalShow = false">取消</Button>
                 <Button type="primary" @click="detailedInfoModel(detailedInfoModal.type)">编辑</Button>
             </div>
         </Modal>

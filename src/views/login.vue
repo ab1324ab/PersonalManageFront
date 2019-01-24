@@ -210,7 +210,7 @@ export default {
                             });
                             var div = document.getElementById('qrcode');
                             div.title = "请使用支付宝app扫描二维码";
-                            console.info(div);
+                            //console.info(div);
                         } else {
                             $util.responseMsg(_this, response.data);
                         }
@@ -269,7 +269,9 @@ export default {
             websock.send(agentData);
         },
         websocketclose (e) { // 关闭
-            websock.close();
+            try {
+                websock.close();
+            }catch (e) {}
         },
         qrcodeLogin () {
             this.isQrcodelogin = !this.isQrcodelogin;
