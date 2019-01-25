@@ -177,48 +177,63 @@
                                 </Form>
                             </TabPane>
                             <TabPane label="个人信息" name="name3">
-                                <Form class="form-width" ref="contactInfoForm" :model="contactInfoForm" :label-width="100"  label-position="right" >
-                                    <FormItem label="姓名：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                <Form class="form-width" ref="personalInfoForm" :model="personalInfoForm" :label-width="100"  label-position="right" :rules="personalInfoValidate">
+                                    <FormItem label="姓名：" prop="name">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.name"></Input>
                                     </FormItem>
-                                    <FormItem label="性别：">
-                                        <Select  style="width:200px;margin-left: 10%">
-                                            <Option  value="0" key="0">请选择</Option>
-                                            <Option  value="2" key="2">男</Option>
-                                            <Option  value="1" key="1">女</Option>
+                                    <FormItem label="性别：" prop="sex">
+                                        <Select  style="width:200px;margin-left: 10%" v-model="personalInfoForm.sex">
+                                            <Option value="0" key="0">请选择</Option>
+                                            <Option value="2" key="2">男</Option>
+                                            <Option value="1" key="1">女</Option>
                                         </Select>
                                     </FormItem>
-                                    <FormItem label="年龄：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                    <FormItem label="年龄：" prop="age">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.age"></Input>
                                     </FormItem>
-                                    <FormItem label="服务：">
-                                        <RadioGroup style="margin-left: 10%">
-                                            <Radio label="学生"></Radio>
-                                            <Radio label="上班族"></Radio>
-                                            <Radio label="其他"></Radio>
+                                    <FormItem label="职业信息：" prop="defaultSelect">
+                                        <RadioGroup style="margin-left: 10%" v-model="personalInfoForm.defaultSelect" @on-change="jobInfoSwitch">
+                                            <Radio label="1">学生</Radio>
+                                            <Radio label="2">上班族</Radio>
+                                            <Radio label="0">其他</Radio>
                                         </RadioGroup>
                                     </FormItem>
-                                    <div v-if="true">
-                                        <FormItem label="收入：">
-                                            <Select  style="width:200px;margin-left: 10%">
+                                    <div v-show="isStudent">
+                                        <FormItem label="学校名称：" prop="schoolName">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.schoolName"></Input>
+                                        </FormItem>
+                                        <FormItem label="学校地址：" prop="schoolAddress">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.schoolAddress"></Input>
+                                        </FormItem>
+                                    </div>
+                                    <div v-show="isIncome">
+                                        <FormItem label="收入：" prop="income">
+                                            <Select  style="width:200px;margin-left: 10%" v-model="personalInfoForm.income">
                                                 <Option  value="0" key="0"><2000</Option>
                                                 <Option  value="1" key="1">2000~5000</Option>
                                                 <Option  value="2" key="2">5000~10000</Option>
                                                 <Option  value="3" key="3">>10000</Option>
                                             </Select>
                                         </FormItem>
-                                        <FormItem label="公司：">
-                                            <span style="margin-left: 10%">公司</span>
+                                    </div>
+                                    <div v-show="isStaff">
+                                        <FormItem label="公司名称：" prop="companyName">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.companyName"></Input>
                                         </FormItem>
-                                        <FormItem label="部门：">
-                                            <span style="margin-left: 10%">部门</span>
+                                        <FormItem label="部门：" prop="'department">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.department"></Input>
                                         </FormItem>
                                     </div>
-                                    <FormItem label="自我描述：">
-                                        <Input style="margin-left: 10%"  type="textarea" :rows="4" placeholder="请输入自我描述..." />
+                                    <div v-show="isOther">
+                                        <FormItem label="职业：" prop="occupation">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.occupation"></Input>
+                                        </FormItem>
+                                    </div>
+                                    <FormItem label="自我描述：" prop="selfDescription">
+                                        <Input style="margin-left: 10%;width: 200px"  type="textarea" :rows="4" v-model="personalInfoForm.selfDescription" placeholder="请输入自我描述..." />
                                     </FormItem>
                                     <FormItem>
-                                        <Button type="dashed" style="width: 100px;">取消</Button>
+                                        <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
                                         <Button type="primary" style="width: 100px;">保存</Button>
                                     </FormItem>
                                 </Form>
@@ -234,7 +249,7 @@
                         简单说明
                     </p>
                     <div>
-                        可编辑单元格可配置可编辑的列，可设置编辑整行的可编辑单元格，也可配置单个编辑可编辑单元格，也可两种形式同时可用。可配置单元格内编辑的图标显示方式。
+                        为您的个人账号设置一个保存信息的个人空间。用您的用户名登录，个人中心中会显示修改用户信息的选项，点击进入后，就可以在这里修改管理您的个人资料了，包括修改头像、性别、年龄、婚姻状况、血型、星座、出生地、居住地、曾就读学校、喜欢的书籍、喜欢的音乐、喜欢的电影、喜欢的运动、欣赏的人和其它兴趣爱好，输入您需要填写的信息，点击"保存"，修改个人信息便完成了。通过填写详细的个人信息，您可以寻找到更多和您志同道合的人，同时，会让更多的人关注到您。
                     </div>
                 </Card>
             </Col>
@@ -311,6 +326,30 @@ export default {
                     { validator: valideEmail }
                 ]
             },
+            personalInfoForm: {
+                name: '',
+                sex: '0',
+                age: '',
+                defaultSelect: '1', // 默认选中学生
+                schoolName: '',
+                schoolAddress: '',
+                income: '',
+                companyName: '',
+                department: '',
+                occupation: '',
+                selfDescription: '',
+            },
+            personalInfoValidate: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ],
+                sex: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ],
+                age: [
+                    { required: true, message: '请输入年龄', trigger: 'blur' }
+                ],
+            },
             cascaderData:[{
                 value: 'beijing',
                 label: '北京',
@@ -377,6 +416,10 @@ export default {
                 {url:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2792416421,2006182417&fm=26&gp=0.jpg'},
                 {url:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1435973750,3806331976&fm=26&gp=0.jpg'},
             ],
+            isStudent: true,   // 是否学生
+            isStaff: false,     // 是否员工
+            isOther: false,     // 是否其他
+            isIncome: false,    // 收入
             securityCode: '', // 验证码
             phoneHasChanged: false, // 是否编辑了手机
             save_loading: false,
@@ -553,6 +596,22 @@ export default {
                 .catch(function (error) {
                     $util.httpErrorMsg(_this, error.data);
                 });
+        },
+        jobInfoSwitch (){
+            this.isStudent = false;   // 是否学生
+            this.isStaff = false;     // 是否员工
+            this.isOther = false;     // 是否其他
+            this.isIncome = false;    // 收入
+            if(this.personalInfoForm.defaultSelect == '1'){
+                this.isStudent = true;
+            }else if(this.personalInfoForm.defaultSelect == '2'){
+                this.isStaff = true;
+                this.isIncome = true;
+            }else if(this.personalInfoForm.defaultSelect == '0'){
+                this.isOther = true;
+                this.isIncome = true;
+            }
+            //console.info(this.personalInfoForm.defaultSelect);
         },
         init () {
             this.basicForm.nickname = 'Lison';
