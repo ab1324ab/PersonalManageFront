@@ -3,6 +3,9 @@
     .cropper-bg{
         width: auto !important;
     }
+    .ivu-form-item-error-tip{
+        left: 10% !important;
+    }
 </style>
 
 <template>
@@ -23,7 +26,7 @@
                 </FormItem>
             </Form>
             <div slot="footer">
-                <Button type="text" @click="cancelEditPass">取消</Button>
+                <Button type="text" @click="editPasswordModal = false">取消</Button>
                 <Button type="primary" :loading="savePassLoading" @click="saveEditPass">保存</Button>
             </div>
         </Modal>
@@ -68,6 +71,20 @@
             <div slot="footer">
                 <Button type="text" @click="isShowHeadPortrait = false">取消</Button>
                 <Button type="primary" @click="saveHeadPortrait">保存</Button>
+            </div>
+        </Modal>
+        <Modal v-model="bindingModal" :mask-closable='false' :width="500">
+            <h3 slot="header">
+                绑定{{bindingModalTitle}}
+            </h3>
+            <div>
+                <div style="width: 200px;margin: 0 auto">
+                    <div id="binding"></div>
+                    <div style="margin: 0 auto;width: 170px;margin-top: 10px;">请使用<b style="color: #ff000075">{{bindingModalTitle}}APP</b>扫码绑定账号</div>
+                </div>
+            </div>
+            <div slot="footer">
+                <Button type="text" @click="bindingModal = false">关闭</Button>
             </div>
         </Modal>
         <Row :gutter="10">
@@ -123,38 +140,38 @@
                                     </FormItem>
                                     <FormItem>
                                         <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;" :loading="save_loading" @click="saveEdit">保存</Button>
+                                        <Button type="primary" style="width: 100px;" :loading="save_loading" @click="saveBasic">保存</Button>
                                     </FormItem>
                                 </Form>
                             </TabPane>
                             <TabPane label="联系信息" name="contactInfo">
-                                <Form class="form-width" ref="contactInfoForm" :model="contactInfoForm" :label-width="100"  label-position="right"  ><!--:rules="contactInfoValidate"-->
-                                    <FormItem label="联系人：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                <Form class="form-width" ref="contactInfoForm" :model="contactInfoForm" :label-width="100"  label-position="right" :rules="contactInfoValidate" >
+                                    <FormItem label="联系人：" prop="contacts">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contacts" ></Input>
                                     </FormItem>
-                                    <FormItem label="联系电话：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                    <FormItem label="联系电话：" prop="contactsPhone">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsPhone"></Input>
                                     </FormItem>
-                                    <FormItem label="联系手机：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                    <FormItem label="联系手机：" prop="contactsMobile">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsMobile"></Input>
                                     </FormItem>
                                     <FormItem label="支付宝：">
-                                        <Button style="margin-left: 10%" type="dashed" size="small" @click="showEditPassword">未绑定</Button>
+                                        <Button style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('zfb')">未绑定</Button>
                                     </FormItem>
                                     <FormItem label="微信：">
-                                        <Button style="margin-left: 10%" type="dashed" size="small" @click="showEditPassword">未绑定</Button>
+                                        <Button style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('wx')">未绑定</Button>
                                     </FormItem>
-                                    <FormItem label="联系邮箱：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                    <FormItem label="联系邮箱：" prop="contactsEmail">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsEmail"></Input>
                                     </FormItem>
-                                    <FormItem label="联系QQ：">
-                                        <Input style="width: 200px;margin-left: 10%" ></Input>
+                                    <FormItem label="联系QQ：" prop="contactsQQ">
+                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsQQ"></Input>
                                     </FormItem>
-                                    <FormItem label="联系地址：">
-                                        <Cascader style="width: 200px;margin-left: 10%" :data="cascaderData"  ></Cascader>
+                                    <FormItem label="联系地址：" prop="contactsAddress">
+                                        <Cascader style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsAddress" :data="cascaderData"  ></Cascader>
                                     </FormItem>
                                     <FormItem>
-                                        <Button type="dashed" style="width: 100px;">取消</Button>
+                                        <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
                                         <Button type="primary" style="width: 100px;">保存</Button>
                                     </FormItem>
                                 </Form>
@@ -228,6 +245,7 @@
 <script>
     import Cropper from 'cropperjs';
     import $util from '@/libs/util.js';
+    import QRCode from 'qrcodejs2';
 
 export default {
     name: 'ownspace_index',
@@ -239,6 +257,14 @@ export default {
             } else {
                 callback();
             }
+        };
+        const valideEmail = (rule, value, callback) => {
+                var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                if (!re.test(value)) {
+                    callback(new Error('请输入正确格式邮箱号'));
+                } else {
+                    callback();
+                }
         };
         const valideRePassword = (rule, value, callback) => {
             if (value !== this.editPasswordForm.newPass) {
@@ -265,7 +291,25 @@ export default {
                 ]
             },
             contactInfoForm:{
-
+                contacts: '',
+                contactsPhone: '',
+                contactsMobile: '',
+                contactsEmail: '',
+                contactsQQ: '',
+                contactsAddress: [],
+            },
+            contactInfoValidate: {
+                contacts: [
+                    { required: true, message: '请输入联系人名称', trigger: 'blur' }
+                ],
+                contactsMobile: [
+                    { required: true, message: '请输入手机号码' },
+                    { validator: validePhone }
+                ],
+                contactsEmail: [
+                    { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+                    { validator: valideEmail }
+                ]
             },
             cascaderData:[{
                 value: 'beijing',
@@ -315,6 +359,8 @@ export default {
                 ],
             }],
             isShowHeadPortrait: false, // 用户头像对话框显示
+            bindingModal: false, // 绑定移动端对话框显示
+            bindingModalTitle:'', // 绑定对话框标题
             editIcon: false, // 头像编辑显示
             cropper:{}, //头像编辑框
             headPortraitList:[
@@ -444,7 +490,7 @@ export default {
                 name: lastPageName
             });
         },
-        saveEdit () {
+        saveBasic () {
             this.$refs['basicForm'].validate((valid) => {
                 if (valid) {
                     if (this.phoneHasChanged && this.basicForm.cellphone !== this.initPhone) { // 手机号码修改过了而且修改之后的手机号和原来的不一样
@@ -463,9 +509,6 @@ export default {
                 }
             });
         },
-        cancelEditPass () {
-            this.editPasswordModal = false;
-        },
         saveEditPass () {
             this.$refs['editPasswordForm'].validate((valid) => {
                 if (valid) {
@@ -473,6 +516,43 @@ export default {
                     // you can write ajax request here
                 }
             });
+        },
+        showBindingModal(data){
+            let url;
+            let title;
+            if(data == 'wx'){
+                title = '微信';
+                url = 'getAlipayLoginPath';
+            }else if(data == 'zfb'){
+                title = '支付宝';
+                url = 'getAlipayLoginPath';
+            }
+            let _this = this;
+            $util.post(url, {})
+                .then(function (response) {
+                    if (response.status == 200) {
+                        if (response.data.statusCode == '10000') {
+                            let path = response.data.data;
+                            var div = document.getElementById('binding');
+                            div.innerHTML = "";
+                            let qrcode = new QRCode('binding', {
+                                width: 200,
+                                height: 200, // 高度
+                                text: path // 二维码内容
+                            });
+                            div.title = "请使用手机"+title+"APP扫描二维码";
+                            _this.bindingModalTitle = title;
+                            _this.bindingModal = true;
+                        } else {
+                            $util.responseMsg(_this, response.data);
+                        }
+                    } else {
+                        $util.httpErrorMsg(_this, response.data);
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this, error.data);
+                });
         },
         init () {
             this.basicForm.nickname = 'Lison';
