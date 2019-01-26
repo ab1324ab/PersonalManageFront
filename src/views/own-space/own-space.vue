@@ -101,7 +101,7 @@
                                     <FormItem label="昵称：" prop="nickname">
                                         <Input style="width: 200px;margin-left: 10%" v-model="basicForm.nickname"></Input>
                                     </FormItem>
-                                    <FormItem label="用户头像：" prop="headPortrait">
+                                    <FormItem label="头像：" prop="headPortrait">
                                         <div class="form-width-headPortrait" @click="showHeadPortrait" @mouseenter="editIcon = true" @mouseleave="editIcon = false">
                                             <span class="form-width-headPortrait-span" title="点击更换头像" v-show="editIcon">
                                                 <Icon type="md-refresh-circle" class="form-width-headPortrait-span-icon"/>
@@ -110,7 +110,7 @@
                                             <Input style="display: none" v-model="basicForm.headPortrait"/>
                                         </div>
                                     </FormItem>
-                                    <FormItem label="用户手机：" prop="cellphone" >
+                                    <FormItem label="手机：" prop="cellphone" >
                                         <Row style="margin-left: 8%" :gutter="10">
                                             <Col :sm="14" :xs="24">
                                                 <Input v-model="basicForm.cellphone" style="width: 200px;" @on-keydown="hasChangePhone"></Input>
@@ -128,6 +128,9 @@
                                                 </div>
                                             </Col>
                                         </Row>
+                                    </FormItem>
+                                    <FormItem label="状态：">
+                                        <span style="margin-left: 10%">{{basicForm.status}}</span>
                                     </FormItem>
                                     <FormItem label="登录次数：">
                                         <span style="margin-left: 10%">{{basicForm.loginCount}}</span>
@@ -172,24 +175,23 @@
                                     </FormItem>
                                     <FormItem>
                                         <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;">保存</Button>
+                                        <Button type="primary" style="width: 100px;" @click="saveContactInfo">保存</Button>
                                     </FormItem>
                                 </Form>
                             </TabPane>
-                            <TabPane label="个人信息" name="name3">
+                            <TabPane label="个人信息" name="personalInfo">
                                 <Form class="form-width" ref="personalInfoForm" :model="personalInfoForm" :label-width="100"  label-position="right" :rules="personalInfoValidate">
                                     <FormItem label="姓名：" prop="name">
                                         <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.name"></Input>
                                     </FormItem>
                                     <FormItem label="性别：" prop="sex">
                                         <Select  style="width:200px;margin-left: 10%" v-model="personalInfoForm.sex">
-                                            <Option value="0" key="0">请选择</Option>
                                             <Option value="2" key="2">男</Option>
                                             <Option value="1" key="1">女</Option>
                                         </Select>
                                     </FormItem>
                                     <FormItem label="年龄：" prop="age">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.age"></Input>
+                                        <Input style="width: 200px;margin-left: 10%" :maxlength="3" v-model="personalInfoForm.age"></Input>
                                     </FormItem>
                                     <FormItem label="职业信息：" prop="defaultSelect">
                                         <RadioGroup style="margin-left: 10%" v-model="personalInfoForm.defaultSelect" @on-change="jobInfoSwitch">
@@ -220,8 +222,8 @@
                                         <FormItem label="公司名称：" prop="companyName">
                                             <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.companyName"></Input>
                                         </FormItem>
-                                        <FormItem label="部门：" prop="'department">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.department"></Input>
+                                        <FormItem label="部门名称：" prop="departments">
+                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.departments"></Input>
                                         </FormItem>
                                     </div>
                                     <div v-show="isOther">
@@ -234,7 +236,7 @@
                                     </FormItem>
                                     <FormItem>
                                         <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;">保存</Button>
+                                        <Button type="primary" style="width: 100px;" @click="savePersonalInfo">保存</Button>
                                     </FormItem>
                                 </Form>
                             </TabPane>
@@ -281,6 +283,93 @@ export default {
                     callback();
                 }
         };
+        const sexValide = (rule, value, callback) => {
+            if(this.personalInfoForm.sex == null || this.personalInfoForm.sex == ''){
+                callback(new Error('请选择性别'));
+            }else{
+                callback();
+            }
+        };
+        const ageValide = (rule, value, callback) => {
+            var re = /^[0-9]*$/;
+            if(!re.test(value)){
+                callback(new Error('年龄为数字，请输入数字'));
+            }else {
+                callback();
+            }
+        };
+        const schoolNameValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '1') {
+                if(this.personalInfoForm.schoolName == null || this.personalInfoForm.schoolName == ''){
+                    callback(new Error('请输入学校名称'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
+        const schoolAddressValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '1') {
+                if(this.personalInfoForm.schoolAddress == null || this.personalInfoForm.schoolAddress == ''){
+                    callback(new Error('请输入学校地址'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
+        const incomeValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '2' || re == '0' ) {
+                if(this.personalInfoForm.income == null || this.personalInfoForm.income == ''){
+                    callback(new Error('请选择收入信息'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
+        const companyNameValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '2') {
+                if(this.personalInfoForm.companyName == null || this.personalInfoForm.companyName == ''){
+                    callback(new Error('请输入公司名称'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
+        const departmentValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '2') {
+                if(this.personalInfoForm.departments == null || this.personalInfoForm.departments == ''){
+                    callback(new Error('请输入部门名称'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
+        const occupationValide = (rule, value, callback) => {
+            var re = this.personalInfoForm.defaultSelect;
+            if (re == '0') {
+                if(this.personalInfoForm.occupation == null || this.personalInfoForm.occupation == ''){
+                    callback(new Error('请输入职业'));
+                }else{
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
         const valideRePassword = (rule, value, callback) => {
             if (value !== this.editPasswordForm.newPass) {
                 callback(new Error('两次输入密码不一致'));
@@ -294,6 +383,7 @@ export default {
                 cellphone: '',
                 loginCount:'10',
                 creationTime:'2018-01-02',
+                status: '手机未验证',
                 headPortrait:localStorage.avatorImgPath,
             },
             basicValidate: {
@@ -328,14 +418,14 @@ export default {
             },
             personalInfoForm: {
                 name: '',
-                sex: '0',
+                sex: '',
                 age: '',
                 defaultSelect: '1', // 默认选中学生
                 schoolName: '',
                 schoolAddress: '',
                 income: '',
                 companyName: '',
-                department: '',
+                departments: '',
                 occupation: '',
                 selfDescription: '',
             },
@@ -344,11 +434,30 @@ export default {
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ],
                 sex: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                    { validator: sexValide }
                 ],
                 age: [
-                    { required: true, message: '请输入年龄', trigger: 'blur' }
+                    { required: true, message: '请输入年龄', trigger: 'blur' },
+                    { validator: ageValide }
                 ],
+                schoolName:[
+                    { validator: schoolNameValide }
+                ],
+                schoolAddress:[
+                    { validator: schoolAddressValide }
+                ],
+                income:[
+                    { validator: incomeValide }
+                ],
+                departments: [
+                    { validator: departmentValide }
+                ],
+                companyName: [
+                    { validator: companyNameValide }
+                ],
+                occupation: [
+                    { validator: occupationValide }
+                ]
             },
             cascaderData:[{
                 value: 'beijing',
@@ -597,6 +706,14 @@ export default {
                     $util.httpErrorMsg(_this, error.data);
                 });
         },
+        saveContactInfo (){
+            this.$refs['contactInfoForm'].validate((valid) => {
+                if (valid) {
+                    // this.savePassLoading = true;
+                    // you can write ajax request here
+                }
+            });
+        },
         jobInfoSwitch (){
             this.isStudent = false;   // 是否学生
             this.isStaff = false;     // 是否员工
@@ -613,10 +730,18 @@ export default {
             }
             //console.info(this.personalInfoForm.defaultSelect);
         },
+        savePersonalInfo (){
+            this.$refs['personalInfoForm'].validate((valid) => {
+                if (valid) {
+                    // this.savePassLoading = true;
+                    // you can write ajax request here
+                }
+            });
+        },
         init () {
-            this.basicForm.nickname = 'Lison';
-            this.basicForm.cellphone = '17712345678';
-            this.initPhone = '17712345678';
+            this.basicForm.nickname = '';
+            this.basicForm.cellphone = '';
+            this.initPhone = '';
             //this.basicForm.company = 'TalkingData';
            // this.basicForm.department = '可视化部门';
         },
