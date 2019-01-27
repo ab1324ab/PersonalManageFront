@@ -738,12 +738,27 @@ export default {
                 }
             });
         },
-        init () {
-            this.basicForm.nickname = '';
-            this.basicForm.cellphone = '';
-            this.initPhone = '';
-            //this.basicForm.company = 'TalkingData';
-           // this.basicForm.department = '可视化部门';
+        initPersonalCenter () {
+            return;
+            let url = '';
+            let _this = this;
+            $util.post(url, {})
+                .then(function (response) {
+                    if (response.status == 200) {
+                        if (response.data.statusCode == '10000') {
+                            _this.basicForm = '';
+                            _this.contactInfoForm = '';
+                            _this.personalInfoForm = '';
+                        } else {
+                            $util.responseMsg(_this, response.data);
+                        }
+                    } else {
+                        $util.httpErrorMsg(_this, response.data);
+                    }
+                })
+                .catch(function (error) {
+                    $util.httpErrorMsg(_this, error.data);
+                });
         },
         cancelInputCodeBox () {
             this.inputCodeVisible = false;
@@ -776,7 +791,7 @@ export default {
         }
     },
     mounted () {
-        this.init();
+        this.initPersonalCenter();
     }
 };
 </script>
