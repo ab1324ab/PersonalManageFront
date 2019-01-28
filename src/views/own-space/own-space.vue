@@ -130,7 +130,7 @@
                                         </Row>
                                     </FormItem>
                                     <FormItem label="状态：">
-                                        <span style="margin-left: 10%">{{basicForm.status}}</span>
+                                        <span style="margin-left: 10%" v-text="mobileStatusText"></span>
                                     </FormItem>
                                     <FormItem label="登录次数：">
                                         <span style="margin-left: 10%">{{basicForm.loginCount}}</span>
@@ -267,531 +267,515 @@
 export default {
     name: 'ownspace_index',
     data () {
-        const validePhone = (rule, value, callback) => {
-            var re = /^1[0-9]{10}$/;
-            if (!re.test(value)) {
-                callback(new Error('请输入正确格式的手机号'));
-            } else {
-                callback();
-            }
-        };
-        const valideEmail = (rule, value, callback) => {
+            const validePhone = (rule, value, callback) => {
+                var re = /^1[0-9]{10}$/;
+                if (!re.test(value)) {
+                    callback(new Error('请输入正确格式的手机号'));
+                } else {
+                    callback();
+                }
+            };
+            const valideEmail = (rule, value, callback) => {
                 var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
                 if (!re.test(value)) {
                     callback(new Error('请输入正确格式邮箱号'));
                 } else {
                     callback();
                 }
-        };
-        const sexValide = (rule, value, callback) => {
-            if(this.personalInfoForm.sex == null || this.personalInfoForm.sex == ''){
-                callback(new Error('请选择性别'));
+            };
+            const sexValide = (rule, value, callback) => {
+                if (this.personalInfoForm.sex == null || this.personalInfoForm.sex == '') {
+                    callback(new Error('请选择性别'));
+                } else {
+                    callback();
+                }
+            };
+            const ageValide = (rule, value, callback) => {
+                var re = /^[0-9]*$/;
+                if (!re.test(value)) {
+                    callback(new Error('年龄为数字，请输入数字'));
+                } else {
+                    callback();
+                }
+            };
+            const schoolNameValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '1') {
+                    if (this.personalInfoForm.schoolName == null || this.personalInfoForm.schoolName == '') {
+                        callback(new Error('请输入学校名称'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const schoolAddressValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '1') {
+                    if (this.personalInfoForm.schoolAddress == null || this.personalInfoForm.schoolAddress == '') {
+                        callback(new Error('请输入学校地址'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const incomeValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '2' || re == '0') {
+                    if (this.personalInfoForm.income == null || this.personalInfoForm.income == '') {
+                        callback(new Error('请选择收入信息'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const companyNameValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '2') {
+                    if (this.personalInfoForm.companyName == null || this.personalInfoForm.companyName == '') {
+                        callback(new Error('请输入公司名称'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const departmentValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '2') {
+                    if (this.personalInfoForm.departments == null || this.personalInfoForm.departments == '') {
+                        callback(new Error('请输入部门名称'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const occupationValide = (rule, value, callback) => {
+                var re = this.personalInfoForm.defaultSelect;
+                if (re == '0') {
+                    if (this.personalInfoForm.occupation == null || this.personalInfoForm.occupation == '') {
+                        callback(new Error('请输入职业'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+            const valideRePassword = (rule, value, callback) => {
+                if (value !== this.editPasswordForm.newPass) {
+                    callback(new Error('两次输入密码不一致'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                basicForm: {
+                    nickname: '',
+                    cellphone: '',
+                    loginCount: '10',
+                    creationTime: '2018-01-02',
+                    mobileStatus: '0',
+                    headPortrait: localStorage.avatorImgPath
+                },
+                basicValidate: {
+                    nickname: [
+                        { required: true, message: '请输入昵称', trigger: 'blur' }
+                    ],
+                    cellphone: [
+                        { required: true, message: '请输入手机号码' },
+                        { validator: validePhone }
+                    ]
+                },
+                contactInfoForm: {
+                    contacts: '',
+                    contactsPhone: '',
+                    contactsMobile: '',
+                    contactsEmail: '',
+                    contactsQQ: '',
+                    contactsAddress: []
+                },
+                contactInfoValidate: {
+                    contacts: [
+                        { required: true, message: '请输入联系人名称', trigger: 'blur' }
+                    ],
+                    contactsMobile: [
+                        { required: true, message: '请输入手机号码' },
+                        { validator: validePhone }
+                    ],
+                    contactsEmail: [
+                        { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+                        { validator: valideEmail }
+                    ]
+                },
+                personalInfoForm: {
+                    name: '',
+                    sex: '',
+                    age: '',
+                    defaultSelect: '1', // 默认选中学生
+                    schoolName: '',
+                    schoolAddress: '',
+                    income: '',
+                    companyName: '',
+                    departments: '',
+                    occupation: '',
+                    selfDescription: ''
+                },
+                personalInfoValidate: {
+                    name: [
+                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                    ],
+                    sex: [
+                        { validator: sexValide }
+                    ],
+                    age: [
+                        { required: true, message: '请输入年龄', trigger: 'blur' },
+                        { validator: ageValide }
+                    ],
+                    schoolName: [
+                        { validator: schoolNameValide }
+                    ],
+                    schoolAddress: [
+                        { validator: schoolAddressValide }
+                    ],
+                    income: [
+                        { validator: incomeValide }
+                    ],
+                    departments: [
+                        { validator: departmentValide }
+                    ],
+                    companyName: [
+                        { validator: companyNameValide }
+                    ],
+                    occupation: [
+                        { validator: occupationValide }
+                    ]
+                },
+                cascaderData: [],
+                isShowHeadPortrait: false, // 用户头像对话框显示
+                bindingModal: false, // 绑定移动端对话框显示
+                bindingModalTitle: '', // 绑定对话框标题
+                editIcon: false, // 头像编辑显示
+                cropper: {}, // 头像编辑框
+                headPortraitList: [
+                    {url: 'http://img0.imgtn.bdimg.com/it/u=3486208998,2229578290&fm=26&gp=0.jpg'},
+                    {url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3858484478,3500660839&fm=26&gp=0.jpg'},
+                    {url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1002919774,3906438198&fm=26&gp=0.jpg'},
+                    {url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2344723972,1134179580&fm=26&gp=0.jpg'},
+                    {url: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1324198412,330510552&fm=26&gp=0.jpg'},
+                    {url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=22502317,212960811&fm=26&gp=0.jpg'},
+                    {url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548320869342&di=3213aecf3f0838fd471dffd784aa057d&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0132255a604c8da80120121f36db45.gif'},
+                    {url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1134728469,27057145&fm=26&gp=0.jpg'},
+                    {url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1028410452,465459249&fm=26&gp=0.jpg'},
+                    {url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=101925125,1677893626&fm=26&gp=0.jpg'},
+                    {url: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2792416421,2006182417&fm=26&gp=0.jpg'},
+                    {url: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1435973750,3806331976&fm=26&gp=0.jpg'}
+                ],
+                isStudent: true, // 是否学生
+                isStaff: false, // 是否员工
+                isOther: false, // 是否其他
+                isIncome: false, // 收入
+                securityCode: '', // 验证码
+                phoneHasChanged: false, // 是否编辑了手机
+                save_loading: false,
+                identifyError: '', // 验证码错误
+                editPasswordModal: false, // 修改密码模态框显示
+                savePassLoading: false,
+                oldPassError: '',
+                identifyCodeRight: false, // 验证码是否正确
+                hasGetIdentifyCode: false, // 是否点了获取验证码
+                canGetIdentifyCode: false, // 是否可点获取验证码
+                checkIdentifyCodeLoading: false,
+                editPasswordForm: {
+                    oldPass: '',
+                    newPass: '',
+                    rePass: ''
+                },
+                passwordValidate: {
+                    oldPass: [
+                        { required: true, message: '请输入原密码', trigger: 'blur' }
+                    ],
+                    newPass: [
+                        { required: true, message: '请输入新密码', trigger: 'blur' },
+                        { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
+                        { max: 32, message: '最多输入32个字符', trigger: 'blur' }
+                    ],
+                    rePass: [
+                        { required: true, message: '请再次输入新密码', trigger: 'blur' },
+                        { validator: valideRePassword, trigger: 'blur' }
+                    ]
+                },
+                inputCodeVisible: false, // 显示填写验证码box
+                initPhone: '',
+                gettingIdentifyCodeBtnContent: '获取验证码' // “获取验证码”按钮的文字
+            };
+    },
+    computed:{
+        mobileStatusText(){
+            if(this.basicForm.mobileStatus == '0'){
+                return '手机未绑定'
             }else{
-                callback();
+                return '手机已绑定'
             }
-        };
-        const ageValide = (rule, value, callback) => {
-            var re = /^[0-9]*$/;
-            if(!re.test(value)){
-                callback(new Error('年龄为数字，请输入数字'));
-            }else {
-                callback();
-            }
-        };
-        const schoolNameValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '1') {
-                if(this.personalInfoForm.schoolName == null || this.personalInfoForm.schoolName == ''){
-                    callback(new Error('请输入学校名称'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const schoolAddressValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '1') {
-                if(this.personalInfoForm.schoolAddress == null || this.personalInfoForm.schoolAddress == ''){
-                    callback(new Error('请输入学校地址'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const incomeValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '2' || re == '0' ) {
-                if(this.personalInfoForm.income == null || this.personalInfoForm.income == ''){
-                    callback(new Error('请选择收入信息'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const companyNameValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '2') {
-                if(this.personalInfoForm.companyName == null || this.personalInfoForm.companyName == ''){
-                    callback(new Error('请输入公司名称'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const departmentValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '2') {
-                if(this.personalInfoForm.departments == null || this.personalInfoForm.departments == ''){
-                    callback(new Error('请输入部门名称'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const occupationValide = (rule, value, callback) => {
-            var re = this.personalInfoForm.defaultSelect;
-            if (re == '0') {
-                if(this.personalInfoForm.occupation == null || this.personalInfoForm.occupation == ''){
-                    callback(new Error('请输入职业'));
-                }else{
-                    callback();
-                }
-            } else {
-                callback();
-            }
-        };
-        const valideRePassword = (rule, value, callback) => {
-            if (value !== this.editPasswordForm.newPass) {
-                callback(new Error('两次输入密码不一致'));
-            } else {
-                callback();
-            }
-        };
-        return {
-            basicForm: {
-                nickname: '',
-                cellphone: '',
-                loginCount:'10',
-                creationTime:'2018-01-02',
-                status: '手机未验证',
-                headPortrait:localStorage.avatorImgPath,
-            },
-            basicValidate: {
-                nickname: [
-                    { required: true, message: '请输入昵称', trigger: 'blur' }
-                ],
-                cellphone: [
-                    { required: true, message: '请输入手机号码' },
-                    { validator: validePhone }
-                ]
-            },
-            contactInfoForm:{
-                contacts: '',
-                contactsPhone: '',
-                contactsMobile: '',
-                contactsEmail: '',
-                contactsQQ: '',
-                contactsAddress: [],
-            },
-            contactInfoValidate: {
-                contacts: [
-                    { required: true, message: '请输入联系人名称', trigger: 'blur' }
-                ],
-                contactsMobile: [
-                    { required: true, message: '请输入手机号码' },
-                    { validator: validePhone }
-                ],
-                contactsEmail: [
-                    { required: true, message: '请输入联系邮箱', trigger: 'blur' },
-                    { validator: valideEmail }
-                ]
-            },
-            personalInfoForm: {
-                name: '',
-                sex: '',
-                age: '',
-                defaultSelect: '1', // 默认选中学生
-                schoolName: '',
-                schoolAddress: '',
-                income: '',
-                companyName: '',
-                departments: '',
-                occupation: '',
-                selfDescription: '',
-            },
-            personalInfoValidate: {
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ],
-                sex: [
-                    { validator: sexValide }
-                ],
-                age: [
-                    { required: true, message: '请输入年龄', trigger: 'blur' },
-                    { validator: ageValide }
-                ],
-                schoolName:[
-                    { validator: schoolNameValide }
-                ],
-                schoolAddress:[
-                    { validator: schoolAddressValide }
-                ],
-                income:[
-                    { validator: incomeValide }
-                ],
-                departments: [
-                    { validator: departmentValide }
-                ],
-                companyName: [
-                    { validator: companyNameValide }
-                ],
-                occupation: [
-                    { validator: occupationValide }
-                ]
-            },
-            cascaderData:[{
-                value: 'beijing',
-                label: '北京',
-                children: [
-                    {
-                        value: 'gugong',
-                        label: '故宫'
-                    },
-                    {
-                        value: 'tiantan',
-                        label: '天坛'
-                    },
-                    {
-                        value: 'wangfujing',
-                        label: '王府井'
-                    }
-                ]
-            }, {
-                value: 'jiangsu',
-                label: '江苏',
-                children: [
-                    {
-                        value: 'nanjing',
-                        label: '南京',
-                        children: [
-                            {
-                                value: 'fuzimiao',
-                                label: '夫子庙',
-                            }
-                        ]
-                    },
-                    {
-                        value: 'suzhou',
-                        label: '苏州',
-                        children: [
-                            {
-                                value: 'zhuozhengyuan',
-                                label: '拙政园',
-                            },
-                            {
-                                value: 'shizilin',
-                                label: '狮子林',
-                            }
-                        ]
-                    }
-                ],
-            }],
-            isShowHeadPortrait: false, // 用户头像对话框显示
-            bindingModal: false, // 绑定移动端对话框显示
-            bindingModalTitle:'', // 绑定对话框标题
-            editIcon: false, // 头像编辑显示
-            cropper:{}, //头像编辑框
-            headPortraitList:[
-                {url:'http://img0.imgtn.bdimg.com/it/u=3486208998,2229578290&fm=26&gp=0.jpg'},
-                {url:'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3858484478,3500660839&fm=26&gp=0.jpg'},
-                {url:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1002919774,3906438198&fm=26&gp=0.jpg'},
-                {url:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2344723972,1134179580&fm=26&gp=0.jpg'},
-                {url:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1324198412,330510552&fm=26&gp=0.jpg'},
-                {url:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=22502317,212960811&fm=26&gp=0.jpg'},
-                {url:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548320869342&di=3213aecf3f0838fd471dffd784aa057d&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0132255a604c8da80120121f36db45.gif'},
-                {url:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1134728469,27057145&fm=26&gp=0.jpg'},
-                {url:'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1028410452,465459249&fm=26&gp=0.jpg'},
-                {url:'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=101925125,1677893626&fm=26&gp=0.jpg'},
-                {url:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2792416421,2006182417&fm=26&gp=0.jpg'},
-                {url:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1435973750,3806331976&fm=26&gp=0.jpg'},
-            ],
-            isStudent: true,   // 是否学生
-            isStaff: false,     // 是否员工
-            isOther: false,     // 是否其他
-            isIncome: false,    // 收入
-            securityCode: '', // 验证码
-            phoneHasChanged: false, // 是否编辑了手机
-            save_loading: false,
-            identifyError: '', // 验证码错误
-            editPasswordModal: false, // 修改密码模态框显示
-            savePassLoading: false,
-            oldPassError: '',
-            identifyCodeRight: false, // 验证码是否正确
-            hasGetIdentifyCode: false, // 是否点了获取验证码
-            canGetIdentifyCode: false, // 是否可点获取验证码
-            checkIdentifyCodeLoading: false,
-            editPasswordForm: {
-                oldPass: '',
-                newPass: '',
-                rePass: ''
-            },
-            passwordValidate: {
-                oldPass: [
-                    { required: true, message: '请输入原密码', trigger: 'blur' }
-                ],
-                newPass: [
-                    { required: true, message: '请输入新密码', trigger: 'blur' },
-                    { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
-                    { max: 32, message: '最多输入32个字符', trigger: 'blur' }
-                ],
-                rePass: [
-                    { required: true, message: '请再次输入新密码', trigger: 'blur' },
-                    { validator: valideRePassword, trigger: 'blur' }
-                ]
-            },
-            inputCodeVisible: false, // 显示填写验证码box
-            initPhone: '',
-            gettingIdentifyCodeBtnContent: '获取验证码' // “获取验证码”按钮的文字
-        };
+        },
+
     },
     methods: {
-        getIdentifyCode () {
-            this.hasGetIdentifyCode = true;
-            this.$refs['basicForm'].validate((valid) => {
-                if (valid) {
-                    this.canGetIdentifyCode = true;
-                    let timeLast = 60;
-                    let timer = setInterval(() => {
-                        if (timeLast >= 0) {
-                            this.gettingIdentifyCodeBtnContent = timeLast + '秒后重试';
-                            timeLast -= 1;
-                        } else {
-                            clearInterval(timer);
-                            this.gettingIdentifyCodeBtnContent = '获取验证码';
-                            this.canGetIdentifyCode = false;
-                        }
-                    }, 1000);
-                    this.inputCodeVisible = true;
-                    // you can write ajax request here
-                }
-            });
-        },
-        showEditPassword () {
-            this.editPasswordModal = true;
-        },
-        showHeadPortrait () {
-            this.isShowHeadPortrait = true;
-            let img = document.getElementById('cropimg');
-            this.cropper = new Cropper(img, {
-                dragMode: 'move',    // 定义cropper的拖拽模式。
-                preview: '#preview', // 添加额外的元素(容器)以供预览。
-                guides:true,         // 显示在裁剪框上方的虚线。
-                autoCropArea:0.5,    // 定义自动裁剪面积大小(百分比)和图片进行对比。
-                restore: true,       // 在调整窗口大小后恢复裁剪的区域。
-                center: true,        // 裁剪框在图片正中心。
-                movable:true,       // 是否允许可以移动后面的图片
-                highlight: false,    // 在裁剪框上方显示白色的区域(突出裁剪框)。
-                cropBoxMovable: true,// 是否通过拖拽来移动剪裁框。
-                zoomOnWheel:false,   // 是否可以通过移动鼠标来放大图像。
-                toggleDragModeOnDblclick: true, // 当点击两次时可以在“crop”和“move”之间切换拖拽模式。
-            });
-        },
-        headPortraitstatus (){
-            this.cropper.destroy();
-        },
-        handleChange(e) {
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            reader.onload = () => {
-                this.cropper.replace(reader.result);
-                reader.onload = null;
-            };
-            reader.readAsDataURL(file);
-        },
-        lookHeadPortrait(data){
-            this.cropper.load(data);
-        },
-        saveHeadPortrait(){
-            let file = this.cropper.getCroppedCanvas().toDataURL();
-            let upFile = $util.base64toFile(file,'headPortrait');
-            // TODO 图片上传
-            console.info(this.basicForm.headPortrait);
-            this.basicForm.headPortrait = file;
-            this.isShowHeadPortrait = false;
-        },
-        cancelEditUserInfor () {
-            this.$store.commit('removeTag', 'ownspace_index');
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
-            let lastPageName = '';
-            if (this.$store.state.app.pageOpenedList.length > 1) {
-                lastPageName = this.$store.state.app.pageOpenedList[1].name;
-            } else {
-                lastPageName = this.$store.state.app.pageOpenedList[0].name;
-            }
-            this.$router.push({
-                name: lastPageName
-            });
-        },
-        saveBasic () {
-            this.$refs['basicForm'].validate((valid) => {
-                if (valid) {
-                    if (this.phoneHasChanged && this.basicForm.cellphone !== this.initPhone) { // 手机号码修改过了而且修改之后的手机号和原来的不一样
-                        if (this.hasGetIdentifyCode) { // 判断是否点了获取验证码
-                            if (this.identifyCodeRight) { // 判断验证码是否正确
-                                this.saveInfoAjax();
+            getIdentifyCode () {
+                this.hasGetIdentifyCode = true;
+                this.$refs['basicForm'].validate((valid) => {
+                    if (valid) {
+                        this.canGetIdentifyCode = true;
+                        let timeLast = 60;
+                        let timer = setInterval(() => {
+                            if (timeLast >= 0) {
+                                this.gettingIdentifyCodeBtnContent = timeLast + '秒后重试';
+                                timeLast -= 1;
                             } else {
-                                this.$Message.error('验证码错误，请重新输入');
+                                clearInterval(timer);
+                                this.gettingIdentifyCodeBtnContent = '获取验证码';
+                                this.canGetIdentifyCode = false;
+                            }
+                        }, 1000);
+                        this.inputCodeVisible = true;
+                    // you can write ajax request here
+                    }
+                });
+            },
+            showEditPassword () {
+                this.editPasswordModal = true;
+            },
+            showHeadPortrait () {
+                this.isShowHeadPortrait = true;
+                let img = document.getElementById('cropimg');
+                this.cropper = new Cropper(img, {
+                    dragMode: 'move', // 定义cropper的拖拽模式。
+                    preview: '#preview', // 添加额外的元素(容器)以供预览。
+                    guides: true, // 显示在裁剪框上方的虚线。
+                    autoCropArea: 0.5, // 定义自动裁剪面积大小(百分比)和图片进行对比。
+                    restore: true, // 在调整窗口大小后恢复裁剪的区域。
+                    center: true, // 裁剪框在图片正中心。
+                    movable: true, // 是否允许可以移动后面的图片
+                    highlight: false, // 在裁剪框上方显示白色的区域(突出裁剪框)。
+                    cropBoxMovable: true, // 是否通过拖拽来移动剪裁框。
+                    zoomOnWheel: false, // 是否可以通过移动鼠标来放大图像。
+                    toggleDragModeOnDblclick: true // 当点击两次时可以在“crop”和“move”之间切换拖拽模式。
+                });
+            },
+            headPortraitstatus () {
+                this.cropper.destroy();
+            },
+            handleChange (e) {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onload = () => {
+                    this.cropper.replace(reader.result);
+                    reader.onload = null;
+                };
+                reader.readAsDataURL(file);
+            },
+            lookHeadPortrait (data) {
+                this.cropper.load(data);
+            },
+            saveHeadPortrait () {
+                let file = this.cropper.getCroppedCanvas().toDataURL();
+                let upFile = $util.base64toFile(file, 'headPortrait');
+                // TODO 图片上传
+                console.info(this.basicForm.headPortrait);
+                this.basicForm.headPortrait = file;
+                this.isShowHeadPortrait = false;
+            },
+            cancelEditUserInfor () {
+                this.$store.commit('removeTag', 'ownspace_index');
+                localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
+                let lastPageName = '';
+                if (this.$store.state.app.pageOpenedList.length > 1) {
+                    lastPageName = this.$store.state.app.pageOpenedList[1].name;
+                } else {
+                    lastPageName = this.$store.state.app.pageOpenedList[0].name;
+                }
+                this.$router.push({
+                    name: lastPageName
+                });
+            },
+            saveBasic () {
+                this.$refs['basicForm'].validate((valid) => {
+                    if (valid) {
+                        if (this.phoneHasChanged && this.basicForm.cellphone !== this.initPhone) { // 手机号码修改过了而且修改之后的手机号和原来的不一样
+                            if (this.hasGetIdentifyCode) { // 判断是否点了获取验证码
+                                if (this.identifyCodeRight) { // 判断验证码是否正确
+                                    this.saveInfoAjax();
+                                } else {
+                                    this.$Message.error('验证码错误，请重新输入');
+                                }
+                            } else {
+                                this.$Message.warning('请先点击获取验证码');
                             }
                         } else {
-                            this.$Message.warning('请先点击获取验证码');
+                            this.saveInfoAjax();
                         }
-                    } else {
-                        this.saveInfoAjax();
                     }
-                }
-            });
-        },
-        saveEditPass () {
-            this.$refs['editPasswordForm'].validate((valid) => {
-                if (valid) {
-                    this.savePassLoading = true;
-                    // you can write ajax request here
-                }
-            });
-        },
-        showBindingModal(data){
-            let url;
-            let title;
-            if(data == 'wx'){
-                title = '微信';
-                url = 'getAlipayLoginPath';
-            }else if(data == 'zfb'){
-                title = '支付宝';
-                url = 'getAlipayLoginPath';
-            }
-            let _this = this;
-            $util.post(url, {})
-                .then(function (response) {
-                    if (response.status == 200) {
-                        if (response.data.statusCode == '10000') {
-                            let path = response.data.data;
-                            var div = document.getElementById('binding');
-                            div.innerHTML = "";
-                            let qrcode = new QRCode('binding', {
-                                width: 200,
-                                height: 200, // 高度
-                                text: path // 二维码内容
-                            });
-                            div.title = "请使用手机"+title+"APP扫描二维码";
-                            _this.bindingModalTitle = title;
-                            _this.bindingModal = true;
-                        } else {
-                            $util.responseMsg(_this, response.data);
-                        }
-                    } else {
-                        $util.httpErrorMsg(_this, response.data);
-                    }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this, error.data);
                 });
-        },
-        saveContactInfo (){
-            this.$refs['contactInfoForm'].validate((valid) => {
-                if (valid) {
+            },
+            saveEditPass () {
+                this.$refs['editPasswordForm'].validate((valid) => {
+                    if (valid) {
+                        this.savePassLoading = true;
+                    // you can write ajax request here
+                    }
+                });
+            },
+            showBindingModal (data) {
+                let url;
+                let title;
+                if (data == 'wx') {
+                    title = '微信';
+                    url = 'getAlipayLoginPath';
+                } else if (data == 'zfb') {
+                    title = '支付宝';
+                    url = 'getAlipayLoginPath';
+                }
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                let path = response.data.data;
+                                var div = document.getElementById('binding');
+                                div.innerHTML = '';
+                                let qrcode = new QRCode('binding', {
+                                    width: 200,
+                                    height: 200, // 高度
+                                    text: path // 二维码内容
+                                });
+                                div.title = '请使用手机' + title + 'APP扫描二维码';
+                                _this.bindingModalTitle = title;
+                                _this.bindingModal = true;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            saveContactInfo () {
+                this.$refs['contactInfoForm'].validate((valid) => {
+                    if (valid) {
                     // this.savePassLoading = true;
                     // you can write ajax request here
+                    }
+                });
+            },
+            jobInfoSwitch () {
+                this.isStudent = false; // 是否学生
+                this.isStaff = false; // 是否员工
+                this.isOther = false; // 是否其他
+                this.isIncome = false; // 收入
+                if (this.personalInfoForm.defaultSelect == '1') {
+                    this.isStudent = true;
+                } else if (this.personalInfoForm.defaultSelect == '2') {
+                    this.isStaff = true;
+                    this.isIncome = true;
+                } else if (this.personalInfoForm.defaultSelect == '0') {
+                    this.isOther = true;
+                    this.isIncome = true;
                 }
-            });
-        },
-        jobInfoSwitch (){
-            this.isStudent = false;   // 是否学生
-            this.isStaff = false;     // 是否员工
-            this.isOther = false;     // 是否其他
-            this.isIncome = false;    // 收入
-            if(this.personalInfoForm.defaultSelect == '1'){
-                this.isStudent = true;
-            }else if(this.personalInfoForm.defaultSelect == '2'){
-                this.isStaff = true;
-                this.isIncome = true;
-            }else if(this.personalInfoForm.defaultSelect == '0'){
-                this.isOther = true;
-                this.isIncome = true;
-            }
-            //console.info(this.personalInfoForm.defaultSelect);
-        },
-        savePersonalInfo (){
-            this.$refs['personalInfoForm'].validate((valid) => {
-                if (valid) {
+            // console.info(this.personalInfoForm.defaultSelect);
+            },
+            savePersonalInfo () {
+                this.$refs['personalInfoForm'].validate((valid) => {
+                    if (valid) {
                     // this.savePassLoading = true;
                     // you can write ajax request here
-                }
-            });
-        },
-        initPersonalCenter () {
-            return;
-            let url = '';
-            let _this = this;
-            $util.post(url, {})
-                .then(function (response) {
-                    if (response.status == 200) {
-                        if (response.data.statusCode == '10000') {
-                            _this.basicForm = '';
-                            _this.contactInfoForm = '';
-                            _this.personalInfoForm = '';
-                        } else {
-                            $util.responseMsg(_this, response.data);
-                        }
-                    } else {
-                        $util.httpErrorMsg(_this, response.data);
                     }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this, error.data);
                 });
-        },
-        cancelInputCodeBox () {
-            this.inputCodeVisible = false;
-            this.basicForm.cellphone = this.initPhone;
-        },
-        submitCode () {
-            let vm = this;
-            vm.checkIdentifyCodeLoading = true;
-            if (this.securityCode.length === 0) {
-                this.$Message.error('请填写短信验证码');
-            } else {
+            },
+            initPersonalCenter () {
+                let url = 'initPersonalCenter';
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                _this.basicForm = response.data.data.basicForm;
+                               // _this.contactInfoForm = response.data.data.contactInfoForm;
+                                _this.contactInfoForm = response.data.data.contactInfoForm;
+                                //_this.personalInfoForm = '';
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            initQueryAddress(){
+                let url = 'queryAddress';
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                _this.cascaderData = response.data.data;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            cancelInputCodeBox () {
+                this.inputCodeVisible = false;
+                this.basicForm.cellphone = this.initPhone;
+            },
+            submitCode () {
+                let vm = this;
+                vm.checkIdentifyCodeLoading = true;
+                if (this.securityCode.length === 0) {
+                    this.$Message.error('请填写短信验证码');
+                } else {
+                    setTimeout(() => {
+                        this.$Message.success('验证码正确');
+                        this.inputCodeVisible = false;
+                        this.checkIdentifyCodeLoading = false;
+                    }, 1000);
+                }
+            },
+            hasChangePhone () {
+                this.phoneHasChanged = true;
+                this.hasGetIdentifyCode = false;
+                this.identifyCodeRight = false;
+            },
+            saveInfoAjax () {
+                this.save_loading = true;
                 setTimeout(() => {
-                    this.$Message.success('验证码正确');
-                    this.inputCodeVisible = false;
-                    this.checkIdentifyCodeLoading = false;
+                    this.$Message.success('保存成功');
+                    this.save_loading = false;
                 }, 1000);
             }
-        },
-        hasChangePhone () {
-            this.phoneHasChanged = true;
-            this.hasGetIdentifyCode = false;
-            this.identifyCodeRight = false;
-        },
-        saveInfoAjax () {
-            this.save_loading = true;
-            setTimeout(() => {
-                this.$Message.success('保存成功');
-                this.save_loading = false;
-            }, 1000);
-        }
     },
     mounted () {
-        this.initPersonalCenter();
+            this.initPersonalCenter();
+            this.initQueryAddress();
     }
 };
 </script>
