@@ -96,11 +96,35 @@
             <div>
                 <div style="width: 200px;margin: 0 auto">
                     <div id="binding"></div>
-                    <div style="margin: 0 auto;width: 170px;margin-top: 10px;">请使用<b style="color: #ff000075">{{bindingModalTitle}}APP</b>扫码绑定账号</div>
+                    <div style="margin: 0 auto;width: 170px;margin-top: 10px;">请使用<b style="color: red">{{bindingModalTitle}}APP</b>扫码绑定账号</div>
                 </div>
             </div>
             <div slot="footer">
                 <Button type="text" @click="bindingModal = false">关闭</Button>
+            </div>
+        </Modal>
+        <Modal v-model="untieModal"
+               :mask-closable='false'
+               :width="400">
+            <h3 slot="header">
+                是否解绑{{untieModalTitle}}？
+            </h3>
+            <div>
+                <Form :label-width="80">
+                    <div style="width: 215px; margin: 0px auto 24px;">App扫码解绑请输入<b style="color: red" title="手机必须已绑定">已绑定手机</b>的验证码</div>
+                    <FormItem label="手机号">
+                        <span v-if="basicForm.mobileStatus == '0'" style="color: red">请先绑定手机号</span>
+                        <span v-if="basicForm.mobileStatus == '1'">{{basicForm.cellphone}}</span>
+                    </FormItem>
+                    <FormItem label="验证码">
+                        <Input style="width: 145px;"></Input>
+                        <Button style="margin-left: 10px">获取验证码</Button>
+                    </FormItem>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="text" @click="untieModal = false">取消</Button>
+                <Button type="primary" @click="untieModal = false">确定</Button>
             </div>
         </Modal>
         <Row :gutter="10">
@@ -136,7 +160,7 @@
                                                 <Button v-if="basicForm.mobileStatus == '1'" @click="getUntieCode" :disabled="untieDisabled">{{untieContent}}</Button>
                                                 <div class="own-space-input-identifycode-con" v-if="showInputCodeDiv">
                                                     <div style="background-color:white;margin:10px;">
-                                                        <Input v-model="securityCode" placeholder="请填写短信验证码" ></Input>
+                                                        <Input v-model="securityCode" maxlength="6" placeholder="请填写短信验证码" ></Input>
                                                         <div style="margin-top:10px;text-align:right">
                                                             <Button type="text" @click="showInputCodeDiv = false">取消</Button>
                                                             <Button v-if="basicForm.mobileStatus == '0'" type="primary" @click="submitBindingCode" :loading="checkBindingLoading">确定绑定</Button>
@@ -177,12 +201,12 @@
                                         <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsMobile"></Input>
                                     </FormItem>
                                     <FormItem label="支付宝：">
-                                        <Button v-if="isAlipayBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('zfb')">未绑定</Button>
-                                        <Button v-if="isAlipayBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('zfb')">已绑定</Button>
+                                        <Button v-if="contactInfoForm.isAlipayBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('zfb')">未绑定</Button>
+                                        <Button v-if="contactInfoForm.isAlipayBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showUntieModal('zfb')">已绑定</Button>
                                     </FormItem>
                                     <FormItem label="微信：">
-                                        <Button v-if="isWxBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('wx')">未绑定</Button>
-                                        <Button v-if="isWxBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('wx')">已绑定</Button>
+                                        <Button v-if="contactInfoForm.isWxBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('wx')">未绑定</Button>
+                                        <Button v-if="contactInfoForm.isWxBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showUntieModal('wx')">已绑定</Button>
                                     </FormItem>
                                     <FormItem label="联系邮箱：" prop="contactsEmail">
                                         <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsEmail"></Input>
@@ -291,7 +315,7 @@ export default {
     data () {
             const validePhone = (rule, value, callback) => {
                 var re = /^1[0-9]{10}$/;
-                if (!re.test(value)) {
+                if (!re.test(value) && this.basicForm.mobileStatus == '0') {
                     callback(new Error('请输入正确格式的手机号'));
                 } else {
                     callback();
@@ -504,10 +528,11 @@ export default {
                 isShowHeadPortrait: false, // 用户头像对话框显示
                 bindingModal: false, // 绑定移动app端对话框显示
                 bindingModalTitle: '', // 绑定对话框标题
+                untieModal: false, // 解绑移动app端对话框显示
+                untieModalTitle: '', // 解绑对话框标题
                 editIcon: false, // 头像编辑显示
                 cropper: {}, // 头像编辑框
                 headPortraitList: [
-                    {url: 'http://img0.imgtn.bdimg.com/it/u=3486208998,2229578290&fm=26&gp=0.jpg'},
                     {url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3858484478,3500660839&fm=26&gp=0.jpg'},
                     {url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1002919774,3906438198&fm=26&gp=0.jpg'},
                     {url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2344723972,1134179580&fm=26&gp=0.jpg'},
@@ -682,6 +707,18 @@ export default {
                                 _this.showInputCodeDiv = false;
                                 _this.securityCode = '';
                                 _this.basicForm.mobileStatus = '1';
+                                let cellphone = _this.basicForm.cellphone;
+                                let hideString = "";
+                                let substring = "";
+                                if (cellphone.length < 6) {
+                                    substring = cellphone.substring(cellphone.length / 2, cellphone.length);
+                                } else {
+                                    substring = cellphone.substring(3, cellphone.length - 3);
+                                }
+                                for (var i = 0; i < substring.length; i++) {
+                                    hideString += "*";
+                                }
+                                _this.basicForm.cellphone = cellphone.replace(substring, hideString);
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }
@@ -737,7 +774,6 @@ export default {
             } else {
                 let url = 'validateUntieCode';
                 let data = qs.stringify({
-                    'recipient':this.basicForm.cellphone,
                     'validateCode':this.securityCode
                 });
                 $util.post(url,data)
@@ -750,6 +786,7 @@ export default {
                                 _this.showInputCodeDiv = false;
                                 _this.securityCode = '';
                                 _this.basicForm.mobileStatus = '0';
+                                _this.basicForm.cellphone = '';
                             } else {
                                 $util.responseMsg(_this, response.data);
                             }
@@ -955,7 +992,7 @@ export default {
             let url;
             let title;
             if (data == 'wx') {
-                $util.frontErrMsg(this,2,'程序员小哥哥正在加紧开发中....')
+                $util.frontErrMsg(this,2,'暂不支持微信，程序员小哥哥正在加紧开发中....')
                 return;
                 title = '微信';
                 url = 'getAlipayLoginPath';
@@ -996,6 +1033,14 @@ export default {
                 .catch(function (error) {
                     $util.httpErrorMsg(_this, error.data);
                 });
+        },
+        showUntieModal(data){
+            if(data == 'zfb'){
+                this.untieModalTitle = '支付宝';
+            }else if(data == 'wx'){
+                this.untieModalTitle = '微信';
+            }
+            this.untieModal = true;
         },
         websocketonopen () {
             console.log('服务器连接成功！');

@@ -21,7 +21,7 @@
                         <div v-show="!isSuccess" id="qrcode"></div>
                     </div>
                     <p style="margin-top: 10px;" class="login-tip">
-                        请使用新版 <b style="color: #ff000075">支付宝APP</b> 扫码完成登录
+                        请使用新版 <b style="color: red">支付宝APP</b> 扫码完成登录
                     </p>
                 </div>
                 <div v-if="!isQrcodelogin" class="form-con">
