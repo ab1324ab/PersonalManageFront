@@ -3,41 +3,40 @@
     .cropper-bg{
         width: auto !important;
     }
-    .ivu-form-item-error-tip{
-        left: 10% !important;
-    }
 </style>
 
 <template>
     <div>
-        <Modal v-model="editPasswordModal" :mask-closable='false' :width="500">
+        <Modal v-model="editPasswordModal" :mask-closable='false' :width="400">
             <h3 slot="header">
                 修改密码
             </h3>
-            <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
-                <FormItem label="原密码：" prop="oldPass">
-                    <Input id="oldPassInput" style="margin-left: 10%;width: 80%" type="password" v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码" >
+            <div style="width: 310px;margin: 0 auto">
+                <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
+                    <FormItem label="原密码" prop="oldPass">
+                        <Input id="oldPassInput" style="width: 200px" type="password" v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码" >
                         <Icon v-if="!oldPassIcon" type="md-eye-off" slot="suffix" @click="showPasswordInput('oldPassInput')" />
                         <Icon v-if="oldPassIcon" type="md-eye" slot="suffix" @click="showPasswordInput('oldPassInput')" />
-                    </Input>
-                </FormItem>
-                <FormItem label="新密码：" prop="newPass">
-                    <Input id="newPassInput" style="margin-left: 10%;width: 80%" type="password" v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" >
+                        </Input>
+                    </FormItem>
+                    <FormItem label="新密码" prop="newPass">
+                        <Input id="newPassInput" style="width: 200px" type="password" v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" >
                         <Icon v-if="!newPassIcon" type="md-eye-off" slot="suffix" @click="showPasswordInput('newPassInput')" />
                         <Icon v-if="newPassIcon" type="md-eye" slot="suffix" @click="showPasswordInput('newPassInput')" />
-                    </Input>
-                </FormItem>
-                <FormItem label="确认新密码：" prop="rePass">
-                    <Input id="rePassInput" style="margin-left: 10%;width: 80%" type="password" v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" >
+                        </Input>
+                    </FormItem>
+                    <FormItem label="确认新密码" prop="rePass">
+                        <Input id="rePassInput" style="width: 200px" type="password" v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" >
                         <Icon v-if="!rePassIcon" type="md-eye-off" slot="suffix" @click="showPasswordInput('rePassInput')" />
                         <Icon v-if="rePassIcon" type="md-eye" slot="suffix" @click="showPasswordInput('rePassInput')" />
-                    </Input>
-                </FormItem>
-                <FormItem label="手机验证码：" prop="modifyCode">
-                    <Input style="margin-left: 10%;width: 50%;margin-right: 10px" type="text" :maxlength="6" v-model="editPasswordForm.modifyCode" placeholder="请输入6位验证码" ></Input>
-                    <Button @click="getModifyCode" :disabled="modifyDisabled">{{modifyContent}}</Button>
-                </FormItem>
-            </Form>
+                        </Input>
+                    </FormItem>
+                    <FormItem label="手机验证码" prop="modifyCode">
+                        <Input style="width: 100px;margin-right: 5px" type="text" :maxlength="6" v-model="editPasswordForm.modifyCode" placeholder="请输入验证码" ></Input>
+                        <Button @click="getModifyCode" :disabled="modifyDisabled">{{modifyContent}}</Button>
+                    </FormItem>
+                </Form>
+            </div>
             <div slot="footer">
                 <Button type="text" @click="editPasswordModal = false">取消</Button>
                 <Button type="primary" :loading="savePassLoading" @click="saveEditPass">修改</Button>
@@ -58,12 +57,12 @@
                     </Col>
                     <Col :sm="9" :xs="24">
                         <Row :gutter="10">
-                            <Col :sm="24">
-                                <div id="preview"  style="height: 170px;width: 170px;border: 1px solid #c1c1c1;overflow: hidden"></div>
+                            <Col :sm="24" style="height: 170px;width: 170px;margin:0 auto;">
+                                <div id="preview"  style="height: 170px;border: 1px solid #c1c1c1;overflow: hidden"></div>
                             </Col>
                             <Col :sm="24">
                                 <div style="line-height: 38px;margin-top: 10px;">
-                                    <label class="headFileLabel" style="padding: 0px 15px;height: 32px;width: 123px;line-height: 32px;" for="fileinput" @click="isShowFile = true">
+                                    <label class="headFileLabel" for="fileinput" @click="isShowFile = true">
                                         <input type="file" v-if="isShowFile" icon="image" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange" id="fileinput" style="display: none"/>
                                         <Icon style="margin-right: 5px" type="md-cloud-upload"></Icon>上传本地图片
                                     </label>
@@ -109,7 +108,7 @@
             <h3 slot="header">
                 是否解绑{{untieModalTitle}}？
             </h3>
-            <div>
+            <div style="width: 300px;margin: 0 auto;">
                 <Form :label-width="80">
                     <div style="width: 215px; margin: 0px auto 24px;">App扫码解绑请输入<b style="color: red" title="手机必须已绑定">已绑定手机</b>的验证码</div>
                     <FormItem label="手机号">
@@ -117,8 +116,8 @@
                         <span v-if="basicForm.mobileStatus == '1'">{{basicForm.cellphone}}</span>
                     </FormItem>
                     <FormItem label="验证码">
-                        <Input style="width: 145px;"></Input>
-                        <Button style="margin-left: 10px">获取验证码</Button>
+                        <Input style="width: 40%;margin-right: 5px" :maxlength="6" placeholder="请输入验证码"></Input>
+                        <Button>获取验证码</Button>
                     </FormItem>
                 </Form>
             </div>
@@ -135,155 +134,161 @@
                         个人中心
                     </p>
                     <div>
-                        <Tabs value="userBasic">
+                        <Tabs value="userBasic" >
                             <TabPane label="基本信息" name="userBasic">
-                                <Form class="form-width" ref="basicForm" :model="basicForm" :label-width="100"  label-position="right" :rules="basicValidate" >
-                                    <FormItem label="昵称：" prop="nickname">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="basicForm.nickname"></Input>
-                                    </FormItem>
-                                    <FormItem label="头像：" prop="headPortrait">
-                                        <div class="form-width-headPortrait" @click="showHeadPortrait" @mouseenter="editIcon = true" @mouseleave="editIcon = false">
-                                            <span class="form-width-headPortrait-span" title="点击更换头像" v-show="editIcon">
-                                                <Icon type="md-refresh-circle" class="form-width-headPortrait-span-icon"/>
-                                            </span>
-                                            <img :src="basicForm.headPortrait" width="169px" height="169px" />
-                                            <Input style="display: none" v-model="basicForm.headPortrait"/>
-                                        </div>
-                                    </FormItem>
-                                    <FormItem label="手机：" prop="cellphone" >
-                                        <Row style="margin-left: 8%" :gutter="10">
-                                            <Col :sm="14" :xs="24">
-                                                <Input v-model="basicForm.cellphone" style="width: 200px;" :disabled="basicForm.mobileStatus == '1'" ></Input>
-                                            </Col>
-                                            <Col :sm="4" :xs="24">
-                                                <Button v-if="basicForm.mobileStatus == '0'" @click="getBindingCode" :disabled="bindingDisabled">{{bindingContent}}</Button>
-                                                <Button v-if="basicForm.mobileStatus == '1'" @click="getUntieCode" :disabled="untieDisabled">{{untieContent}}</Button>
-                                                <div class="own-space-input-identifycode-con" v-if="showInputCodeDiv">
-                                                    <div style="background-color:white;margin:10px;">
-                                                        <Input v-model="securityCode" maxlength="6" placeholder="请填写短信验证码" ></Input>
-                                                        <div style="margin-top:10px;text-align:right">
-                                                            <Button type="text" @click="showInputCodeDiv = false">取消</Button>
-                                                            <Button v-if="basicForm.mobileStatus == '0'" type="primary" @click="submitBindingCode" :loading="checkBindingLoading">确定绑定</Button>
-                                                            <Button v-if="basicForm.mobileStatus == '1'" type="primary" @click="submitUntieCode" :loading="checkUntieLoading">确定解绑</Button>
+                                <Card style="height: 100%">
+                                    <Form class="form-width" ref="basicForm" :model="basicForm" :label-width="80"  label-position="right" :rules="basicValidate" >
+                                        <FormItem label="昵称：" prop="nickname">
+                                            <Input class="form-width-input" v-model="basicForm.nickname" placeholder="请输入昵称"></Input>
+                                        </FormItem>
+                                        <FormItem label="头像：" prop="headPortrait">
+                                            <div class="form-width-headPortrait" @click="showHeadPortrait" @mouseenter="editIcon = true" @mouseleave="editIcon = false">
+                                                <span class="form-width-headPortrait-span" title="点击更换头像" v-show="editIcon">
+                                                    <Icon type="md-refresh-circle" class="form-width-headPortrait-span-icon"/>
+                                                </span>
+                                                <img :src="basicForm.headPortrait" width="169px" height="169px" />
+                                                <Input style="display: none" v-model="basicForm.headPortrait"/>
+                                            </div>
+                                        </FormItem>
+                                        <FormItem label="手机：" prop="cellphone" >
+                                            <Row>
+                                                <Col :xs="24" :sm="12">
+                                                    <Input v-model="basicForm.cellphone" style="width: 90%;" :disabled="basicForm.mobileStatus == '1'" placeholder="请输入手机号"></Input>
+                                                </Col>
+                                                <Col :xs="10" :sm="12">
+                                                    <Button v-if="basicForm.mobileStatus == '0'" @click="getBindingCode" :disabled="bindingDisabled">{{bindingContent}}</Button>
+                                                    <Button v-if="basicForm.mobileStatus == '1'" @click="getUntieCode" :disabled="untieDisabled">{{untieContent}}</Button>
+                                                    <div class="own-space-input-identifycode-con" v-if="showInputCodeDiv">
+                                                        <div style="background-color:white;margin:10px;">
+                                                            <Input v-model="securityCode" :maxlength="6" placeholder="请输入验证码" ></Input>
+                                                            <div style="margin-top:10px;text-align:right">
+                                                                <Button type="text" @click="showInputCodeDiv = false">取消</Button>
+                                                                <Button v-if="basicForm.mobileStatus == '0'" type="primary" @click="submitBindingCode" :loading="checkBindingLoading">确定绑定</Button>
+                                                                <Button v-if="basicForm.mobileStatus == '1'" type="primary" @click="submitUntieCode" :loading="checkUntieLoading">确定解绑</Button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </FormItem>
-                                    <FormItem label="状态：">
-                                        <span style="margin-left: 10%" v-text="mobileStatusText"></span>
-                                    </FormItem>
-                                    <FormItem label="登录次数：">
-                                        <span style="margin-left: 10%">{{basicForm.loginCount}}</span>
-                                    </FormItem>
-                                    <FormItem label="创建时间：">
-                                        <span style="margin-left: 10%">{{basicForm.creationTime}}</span>
-                                    </FormItem>
-                                    <FormItem label="登录密码：">
-                                        <Button style="margin-left: 10%" type="dashed" size="small" @click="showEditPassword">修改密码</Button>
-                                    </FormItem>
-                                    <FormItem>
-                                        <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;" :loading="userBasicloading" @click="saveBasic">保存</Button>
-                                    </FormItem>
-                                </Form>
+                                                </Col>
+                                            </Row>
+                                        </FormItem>
+                                        <FormItem label="状态：">
+                                            <span  v-text="mobileStatusText"></span>
+                                        </FormItem>
+                                        <FormItem label="登录次数：">
+                                            <span>{{basicForm.loginCount}}</span>
+                                        </FormItem>
+                                        <FormItem label="创建时间：">
+                                            <span>{{basicForm.creationTime}}</span>
+                                        </FormItem>
+                                        <FormItem label="登录密码：">
+                                            <Button type="dashed" size="small" @click="showEditPassword">修改密码</Button>
+                                        </FormItem>
+                                        <div style="width: 210px;margin: 0 auto;">
+                                            <Button type="dashed" style="width: 100px;margin-right: 5px" @click="cancelEditUserInfor">取消</Button>
+                                            <Button type="primary" style="width: 100px;" :loading="userBasicloading" @click="saveBasic">保存</Button>
+                                        </div>
+                                    </Form>
+                                </Card>
                             </TabPane>
                             <TabPane label="联系信息" name="contactInfo">
-                                <Form class="form-width" ref="contactInfoForm" :model="contactInfoForm" :label-width="100"  label-position="right" :rules="contactInfoValidate" >
-                                    <FormItem label="联系人：" prop="contacts">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contacts" ></Input>
-                                    </FormItem>
-                                    <FormItem label="联系电话：" prop="contactsPhone">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsPhone"></Input>
-                                    </FormItem>
-                                    <FormItem label="联系手机：" prop="contactsMobile">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsMobile"></Input>
-                                    </FormItem>
-                                    <FormItem label="支付宝：">
-                                        <Button v-if="contactInfoForm.isAlipayBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('zfb')">未绑定</Button>
-                                        <Button v-if="contactInfoForm.isAlipayBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showUntieModal('zfb')">已绑定</Button>
-                                    </FormItem>
-                                    <FormItem label="微信：">
-                                        <Button v-if="contactInfoForm.isWxBinding == '0'" style="margin-left: 10%" type="dashed" size="small" @click="showBindingModal('wx')">未绑定</Button>
-                                        <Button v-if="contactInfoForm.isWxBinding == '1'" style="margin-left: 10%" type="dashed" size="small" @click="showUntieModal('wx')">已绑定</Button>
-                                    </FormItem>
-                                    <FormItem label="联系邮箱：" prop="contactsEmail">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsEmail"></Input>
-                                    </FormItem>
-                                    <FormItem label="联系QQ：" prop="contactsQQ">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsQQ"></Input>
-                                    </FormItem>
-                                    <FormItem label="联系地址：" prop="contactsAddress">
-                                        <Cascader style="width: 200px;margin-left: 10%" v-model="contactInfoForm.contactsAddress" :data="cascaderData"  ></Cascader>
-                                    </FormItem>
-                                    <FormItem>
-                                        <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;" :loading="contactInfoloading"  @click="saveContactInfo">保存</Button>
-                                    </FormItem>
-                                </Form>
+                                <Card style="height: 100%">
+                                    <Form class="form-width" ref="contactInfoForm" :model="contactInfoForm" :label-width="100"  label-position="right" :rules="contactInfoValidate" >
+                                        <FormItem label="联系人：" prop="contacts">
+                                            <Input class="form-width-input"  v-model="contactInfoForm.contacts" placeholder="请输入联系人"></Input>
+                                        </FormItem>
+                                        <FormItem label="联系电话：" prop="contactsPhone">
+                                            <Input class="form-width-input" v-model="contactInfoForm.contactsPhone" placeholder="请输入联系电话号码"></Input>
+                                        </FormItem>
+                                        <FormItem label="联系手机：" prop="contactsMobile">
+                                            <Input class="form-width-input" v-model="contactInfoForm.contactsMobile" placeholder="请输入联系手机号"></Input>
+                                        </FormItem>
+                                        <FormItem label="支付宝：">
+                                            <Button v-if="contactInfoForm.isAlipayBinding == '0'" type="dashed" size="small" @click="showBindingModal('zfb')">未绑定</Button>
+                                            <Button v-if="contactInfoForm.isAlipayBinding == '1'" type="dashed" size="small" @click="showUntieModal('zfb')">已绑定</Button>
+                                        </FormItem>
+                                        <FormItem label="微信：">
+                                            <Button v-if="contactInfoForm.isWxBinding == '0'" type="dashed" size="small" @click="showBindingModal('wx')">未绑定</Button>
+                                            <Button v-if="contactInfoForm.isWxBinding == '1'" type="dashed" size="small" @click="showUntieModal('wx')">已绑定</Button>
+                                        </FormItem>
+                                        <FormItem label="联系邮箱：" prop="contactsEmail">
+                                            <Input class="form-width-input" v-model="contactInfoForm.contactsEmail" placeholder="请输入联系邮箱地址"></Input>
+                                        </FormItem>
+                                        <FormItem label="联系QQ：" prop="contactsQQ">
+                                            <Input class="form-width-input" v-model="contactInfoForm.contactsQQ" placeholder="请输入联系QQ"></Input>
+                                        </FormItem>
+                                        <FormItem label="联系地址：" prop="contactsAddress">
+                                            <Cascader style="width: 90%" v-model="contactInfoForm.contactsAddress" :data="cascaderData"  ></Cascader>
+                                        </FormItem>
+                                        <div style="width: 210px;margin: 0 auto">
+                                            <Button type="dashed" style="width: 100px;margin-right: 5px" @click="cancelEditUserInfor">取消</Button>
+                                            <Button type="primary" style="width: 100px;" :loading="contactInfoloading"  @click="saveContactInfo">保存</Button>
+                                        </div>
+                                    </Form>
+                                </Card>
                             </TabPane>
                             <TabPane label="个人信息" name="personalInfo">
-                                <Form class="form-width" ref="personalInfoForm" :model="personalInfoForm" :label-width="100"  label-position="right" :rules="personalInfoValidate">
-                                    <FormItem label="姓名：" prop="name">
-                                        <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.name"></Input>
-                                    </FormItem>
-                                    <FormItem label="性别：" prop="sex">
-                                        <Select  style="width:200px;margin-left: 10%" v-model="personalInfoForm.sex">
-                                            <Option value="0" key="0">保密</Option>
-                                            <Option value="1" key="1">女</Option>
-                                            <Option value="2" key="2">男</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem label="年龄：" prop="age">
-                                        <Input style="width: 200px;margin-left: 10%" :maxlength="3" v-model="personalInfoForm.age"></Input>
-                                    </FormItem>
-                                    <FormItem label="职业信息：" prop="defaultSelect">
-                                        <RadioGroup style="margin-left: 10%" v-model="personalInfoForm.defaultSelect" @on-change="jobInfoSwitch">
-                                            <Radio label="1">学生</Radio>
-                                            <Radio label="2">上班族</Radio>
-                                            <Radio label="0">其他</Radio>
-                                        </RadioGroup>
-                                    </FormItem>
-                                    <div v-show="isStudent">
-                                        <FormItem label="学校名称：" prop="schoolName">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.schoolName"></Input>
+                                <Card style="height: 100%">
+                                    <Form class="form-width" ref="personalInfoForm" :model="personalInfoForm" :label-width="80"  label-position="right" :rules="personalInfoValidate">
+                                        <FormItem label="姓名：" prop="name">
+                                            <Input class="form-width-input" v-model="personalInfoForm.name" placeholder="请输入个人姓名"></Input>
                                         </FormItem>
-                                        <FormItem label="学校地址：" prop="schoolAddress">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.schoolAddress"></Input>
-                                        </FormItem>
-                                    </div>
-                                    <div v-show="isIncome">
-                                        <FormItem label="收入：" prop="income">
-                                            <Select  style="width:200px;margin-left: 10%" v-model="personalInfoForm.income">
-                                                <Option  value="0" key="0"><2000</Option>
-                                                <Option  value="1" key="1">2000~5000</Option>
-                                                <Option  value="2" key="2">5000~10000</Option>
-                                                <Option  value="3" key="3">>10000</Option>
+                                        <FormItem label="性别：" prop="sex">
+                                            <Select class="form-width-input" v-model="personalInfoForm.sex">
+                                                <Option value="0" key="0">保密</Option>
+                                                <Option value="1" key="1">女</Option>
+                                                <Option value="2" key="2">男</Option>
                                             </Select>
                                         </FormItem>
-                                    </div>
-                                    <div v-show="isStaff">
-                                        <FormItem label="公司名称：" prop="companyName">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.companyName"></Input>
+                                        <FormItem label="年龄：" prop="age">
+                                            <Input class="form-width-input" :maxlength="3" v-model="personalInfoForm.age" placeholder="请输入年龄"></Input>
                                         </FormItem>
-                                        <FormItem label="部门名称：" prop="departments">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.departments"></Input>
+                                        <FormItem label="职业信息：" prop="defaultSelect">
+                                            <RadioGroup v-model="personalInfoForm.defaultSelect" @on-change="jobInfoSwitch">
+                                                <Radio label="1">学生</Radio>
+                                                <Radio label="2">上班族</Radio>
+                                                <Radio label="0">其他</Radio>
+                                            </RadioGroup>
                                         </FormItem>
-                                    </div>
-                                    <div v-show="isOther">
-                                        <FormItem label="职业名称：" prop="occupation">
-                                            <Input style="width: 200px;margin-left: 10%" v-model="personalInfoForm.occupation"></Input>
+                                        <div v-show="isStudent">
+                                            <FormItem label="学校名称：" prop="schoolName">
+                                                <Input class="form-width-input" v-model="personalInfoForm.schoolName" placeholder="请输入学校名称"></Input>
+                                            </FormItem>
+                                            <FormItem label="学校地址：" prop="schoolAddress">
+                                                <Input class="form-width-input" v-model="personalInfoForm.schoolAddress" placeholder="请输入学校地址"></Input>
+                                            </FormItem>
+                                        </div>
+                                        <div v-show="isIncome">
+                                            <FormItem label="收入：" prop="income">
+                                                <Select  class="form-width-input" v-model="personalInfoForm.income">
+                                                    <Option  value="0" key="0"><2000</Option>
+                                                    <Option  value="1" key="1">2000~5000</Option>
+                                                    <Option  value="2" key="2">5000~10000</Option>
+                                                    <Option  value="3" key="3">>10000</Option>
+                                                </Select>
+                                            </FormItem>
+                                        </div>
+                                        <div v-show="isStaff">
+                                            <FormItem label="公司名称：" prop="companyName">
+                                                <Input class="form-width-input" v-model="personalInfoForm.companyName" placeholder="请输入公司名称"></Input>
+                                            </FormItem>
+                                            <FormItem label="部门名称：" prop="departments">
+                                                <Input class="form-width-input" v-model="personalInfoForm.departments" placeholder="请输入部门名称"></Input>
+                                            </FormItem>
+                                        </div>
+                                        <div v-show="isOther">
+                                            <FormItem label="职业名称：" prop="occupation">
+                                                <Input class="form-width-input" v-model="personalInfoForm.occupation" placeholder="请输入职业名称"></Input>
+                                            </FormItem>
+                                        </div>
+                                        <FormItem label="自我描述：" prop="selfDescription">
+                                            <Input class="form-width-input"  type="textarea" :rows="4" v-model="personalInfoForm.selfDescription" placeholder="请输入自我描述..." />
                                         </FormItem>
-                                    </div>
-                                    <FormItem label="自我描述：" prop="selfDescription">
-                                        <Input style="margin-left: 10%;width: 200px"  type="textarea" :rows="4" v-model="personalInfoForm.selfDescription" placeholder="请输入自我描述..." />
-                                    </FormItem>
-                                    <FormItem>
-                                        <Button type="dashed" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                                        <Button type="primary" style="width: 100px;" :loading="personalInfoloading" @click="savePersonalInfo">保存</Button>
-                                    </FormItem>
-                                </Form>
+                                        <div style="width: 210px;margin: 0 auto">
+                                            <Button type="dashed" style="width: 100px;margin-right: 5px" @click="cancelEditUserInfor">取消</Button>
+                                            <Button type="primary" style="width: 100px;" :loading="personalInfoloading" @click="savePersonalInfo">保存</Button>
+                                        </div>
+                                    </Form>
+                                </Card>
                             </TabPane>
                         </Tabs>
                     </div>
@@ -452,6 +457,9 @@ export default {
                     cellphone: [
                         { required: true, message: '请输入手机号码' },
                         { validator: validePhone }
+                    ],
+                    nickname:[
+                        { required: true, message: '请输入昵称' },
                     ]
                 },
                 contactInfoForm: {
@@ -476,8 +484,8 @@ export default {
                         { required: true, message: '请输入联系邮箱', trigger: 'blur' },
                         { validator: valideEmail }
                     ],
-                    contactsQQ:[
-                        { validator: valideQQ ,trigger: 'blur' }
+                    contactsQQ: [
+                        { validator: valideQQ, trigger: 'blur' }
                     ]
                 },
                 personalInfoForm: {
@@ -550,7 +558,7 @@ export default {
                 isStaff: false, // 是否员工
                 isOther: false, // 是否其他
                 isIncome: false, // 收入
-                securityCode: '', // 验证码
+                securityCode: "", // 验证码
                 userBasicloading: false,
                 editPasswordModal: false, // 修改密码模态框显示
                 savePassLoading: false,
@@ -561,7 +569,7 @@ export default {
                     oldPass: '',
                     newPass: '',
                     rePass: '',
-                    modifyCode:''
+                    modifyCode: ''
                 },
                 passwordValidate: {
                     oldPass: [
@@ -576,574 +584,574 @@ export default {
                         { required: true, message: '请再次输入新密码', trigger: 'blur' },
                         { validator: valideRePassword, trigger: 'blur' }
                     ],
-                    modifyCode:[
+                    modifyCode: [
                         { required: true, message: '请输入短信验证码', trigger: 'blur' },
                         { validator: codeValide, trigger: 'blur' }
                     ]
                 },
-                rePassIcon: false,  // 再次输入密码显示图标
+                rePassIcon: false, // 再次输入密码显示图标
                 oldPassIcon: false, // 原密码显示图标
                 newPassIcon: false, // 新密码显示图标
                 showInputCodeDiv: false, // 显示填写验证码div
-                bindingContent: '获取验证码', // “获取验证码”按钮的文字
-                untieContent: '获取解绑验证码',
+                bindingContent: '绑定验证码', // “获取验证码”按钮的文字
+                untieContent: '解绑验证码',
                 untieDisabled: false,
                 modifyContent: '获取验证码',
                 modifyDisabled: false,
                 contactInfoloading: false,
-                personalInfoloading: false,
+                personalInfoloading: false
             };
     },
-    computed:{
-        mobileStatusText(){
-            if(this.basicForm.mobileStatus == '0'){
-                return '手机未绑定'
-            }else{
-                return '手机已绑定'
+    computed: {
+            mobileStatusText () {
+                if (this.basicForm.mobileStatus == '0') {
+                    return '手机未绑定';
+                } else {
+                    return '手机已绑定';
+                }
             }
-        },
     },
     methods: {
-        initQueryAddress () {
-            let url = 'queryAddress';
-            let _this = this;
-            $util.post(url, {})
-                .then(function (response) {
-                    if (response.status == 200) {
-                        if (response.data.statusCode == '10000') {
-                            _this.cascaderData = response.data.data;
+            initQueryAddress () {
+                let url = 'queryAddress';
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                _this.cascaderData = response.data.data;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
                         } else {
-                            $util.responseMsg(_this, response.data);
+                            $util.httpErrorMsg(_this, response.data);
                         }
-                    } else {
-                        $util.httpErrorMsg(_this, response.data);
-                    }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this, error.data);
-                });
-        },
-        initPersonalCenter () {
-            let url = 'initPersonalCenter';
-            let _this = this;
-            $util.post(url, {})
-                .then(function (response) {
-                    if (response.status == 200) {
-                        if (response.data.statusCode == '10000') {
-                            _this.basicForm = response.data.data.basicForm;
-                            _this.contactInfoForm = response.data.data.contactInfoForm;
-                            _this.personalInfoForm = response.data.data.personalInfoForm;
-                            _this.jobInfoSwitch();
-                        } else {
-                            $util.responseMsg(_this, response.data);
-                        }
-                    } else {
-                        $util.httpErrorMsg(_this, response.data);
-                    }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this, error.data);
-                });
-        },
-        getBindingCode () {
-            this.$refs['basicForm'].validate((valid) => {
-                if (valid) {
-                    this.bindingDisabled = true;
-                    let url = "getSMSCode";
-                    let _this = this;
-                    let data = qs.stringify({
-                        "recipient":this.basicForm.cellphone,
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
                     });
-                    $util.post(url,data)
-                        .then(function (response) {
-                            if(response.status == 200){
-                                if(response.data.statusCode == "10000"){
-                                    let timeLast = 120;
-                                    let timer = setInterval(() => {
-                                        if (timeLast >= 0) {
-                                            _this.bindingContent = timeLast + '秒后重试';
-                                            timeLast -= 1;
-                                        } else {
-                                            clearInterval(timer);
-                                            _this.bindingContent = '重新获取';
-                                            _this.bindingDisabled = false;
-                                        }
-                                    }, 1000);
-                                    _this.showInputCodeDiv = true;
-                                }else {
+            },
+            initPersonalCenter () {
+                let url = 'initPersonalCenter';
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                _this.basicForm = response.data.data.basicForm;
+                                _this.contactInfoForm = response.data.data.contactInfoForm;
+                                _this.personalInfoForm = response.data.data.personalInfoForm;
+                                _this.jobInfoSwitch();
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            getBindingCode () {
+                this.$refs['basicForm'].validate((valid) => {
+                    if (valid) {
+                        this.bindingDisabled = true;
+                        let url = 'getSMSCode';
+                        let _this = this;
+                        let data = qs.stringify({
+                            'recipient': this.basicForm.cellphone
+                        });
+                        $util.post(url, data)
+                            .then(function (response) {
+                                if (response.status == 200) {
+                                    if (response.data.statusCode == '10000') {
+                                        let timeLast = 120;
+                                        let timer = setInterval(() => {
+                                            if (timeLast >= 0) {
+                                                _this.bindingContent = timeLast + '秒后重试';
+                                                timeLast -= 1;
+                                            } else {
+                                                clearInterval(timer);
+                                                _this.bindingContent = '重新获取';
+                                                _this.bindingDisabled = false;
+                                            }
+                                        }, 1000);
+                                        _this.showInputCodeDiv = true;
+                                    } else {
+                                        _this.bindingDisabled = false;
+                                        $util.responseMsg(_this, response.data);
+                                    }
+                                } else {
                                     _this.bindingDisabled = false;
-                                    $util.responseMsg(_this,response.data);
+                                    $util.httpErrorMsg(_this, response.data);
                                 }
-                            }else{
+                            })
+                            .catch(function (error) {
                                 _this.bindingDisabled = false;
-                                $util.httpErrorMsg(_this,response.data)
+                                $util.httpErrorMsg(_this, error.data);
+                            });
+                    }
+                });
+            },
+            submitBindingCode () {
+                let _this = this;
+                _this.checkBindingLoading = true;
+                if (this.securityCode.length === 0) {
+                    $util.frontErrMsg(_this, 2, '请填写短信验证码');
+                } else {
+                    let url = 'validateBindingCode';
+                    let data = qs.stringify({
+                        'recipient': this.basicForm.cellphone,
+                        'validateCode': this.securityCode
+                    });
+                    $util.post(url, data)
+                        .then(function (response) {
+                            _this.checkBindingLoading = false;
+                            if (response.status == 200) {
+                                if (response.data.statusCode == '10000') {
+                                    $util.frontSuccMsg(_this, 2, '操作成功');
+                                    _this.untieContent = '获取解绑验证码';
+                                    _this.showInputCodeDiv = false;
+                                    _this.securityCode = '';
+                                    _this.basicForm.mobileStatus = '1';
+                                    let cellphone = _this.basicForm.cellphone;
+                                    let hideString = '';
+                                    let substring = '';
+                                    if (cellphone.length < 6) {
+                                        substring = cellphone.substring(cellphone.length / 2, cellphone.length);
+                                    } else {
+                                        substring = cellphone.substring(3, cellphone.length - 3);
+                                    }
+                                    for (var i = 0; i < substring.length; i++) {
+                                        hideString += '*';
+                                    }
+                                    _this.basicForm.cellphone = cellphone.replace(substring, hideString);
+                                } else {
+                                    $util.responseMsg(_this, response.data);
+                                }
+                            } else {
+                                $util.httpErrorMsg(_this, response.data);
                             }
                         })
                         .catch(function (error) {
-                            _this.bindingDisabled = false;
-                            $util.httpErrorMsg(_this,error.data)
+                            _this.checkBindingLoading = false;
+                            $util.httpErrorMsg(_this, error.data);
                         });
                 }
-            });
-        },
-        submitBindingCode () {
-            let _this = this;
-            _this.checkBindingLoading = true;
-            if (this.securityCode.length === 0) {
-                $util.frontErrMsg(_this,2,"请填写短信验证码")
-            } else {
-                let url = 'validateBindingCode';
-                let data = qs.stringify({
-                    'recipient':this.basicForm.cellphone,
-                    'validateCode':this.securityCode
-                });
-                $util.post(url,data)
+            },
+            getUntieCode () {
+                let url = 'getUntieCode';
+                let _this = this;
+                $util.post(url, {})
                     .then(function (response) {
-                        _this.checkBindingLoading = false;
+                        _this.untieDisabled = true;
                         if (response.status == 200) {
                             if (response.data.statusCode == '10000') {
-                                $util.frontSuccMsg(_this,2,"操作成功");
-                                _this.untieContent = '获取解绑验证码';
-                                _this.showInputCodeDiv = false;
-                                _this.securityCode = '';
-                                _this.basicForm.mobileStatus = '1';
-                                let cellphone = _this.basicForm.cellphone;
-                                let hideString = "";
-                                let substring = "";
-                                if (cellphone.length < 6) {
-                                    substring = cellphone.substring(cellphone.length / 2, cellphone.length);
-                                } else {
-                                    substring = cellphone.substring(3, cellphone.length - 3);
-                                }
-                                for (var i = 0; i < substring.length; i++) {
-                                    hideString += "*";
-                                }
-                                _this.basicForm.cellphone = cellphone.replace(substring, hideString);
+                                let timeLast = 120;
+                                let timer = setInterval(() => {
+                                    if (timeLast >= 0) {
+                                        _this.untieContent = timeLast + '秒后重试';
+                                        timeLast -= 1;
+                                    } else {
+                                        clearInterval(timer);
+                                        _this.untieContent = '重新获取';
+                                        _this.untieDisabled = false;
+                                    }
+                                }, 1000);
+                                _this.showInputCodeDiv = true;
                             } else {
+                                _this.untieDisabled = false;
                                 $util.responseMsg(_this, response.data);
                             }
                         } else {
-                            $util.httpErrorMsg(_this, response.data);
-                        }
-                    })
-                    .catch(function (error) {
-                        _this.checkBindingLoading = false;
-                        $util.httpErrorMsg(_this, error.data);
-                    });
-            }
-        },
-        getUntieCode () {
-            let url = "getUntieCode";
-            let _this = this;
-            $util.post(url,{})
-                .then(function (response) {
-                    _this.untieDisabled = true;
-                    if(response.status == 200){
-                        if(response.data.statusCode == "10000"){
-                            let timeLast = 120;
-                            let timer = setInterval(() => {
-                                if (timeLast >= 0) {
-                                    _this.untieContent = timeLast + '秒后重试';
-                                    timeLast -= 1;
-                                } else {
-                                    clearInterval(timer);
-                                    _this.untieContent = '重新获取';
-                                    _this.untieDisabled = false;
-                                }
-                            }, 1000);
-                            _this.showInputCodeDiv = true;
-                        }else {
                             _this.untieDisabled = false;
-                            $util.responseMsg(_this,response.data);
-                        }
-                    }else{
-                        _this.untieDisabled = false;
-                        $util.httpErrorMsg(_this,response.data)
-                    }
-                })
-                .catch(function (error) {
-                    _this.untieDisabled = false;
-                    $util.httpErrorMsg(_this,error.data)
-                });
-        },
-        submitUntieCode () {
-            let _this = this;
-            _this.checkUntieLoading = true;
-            if (this.securityCode.length === 0) {
-                $util.frontErrMsg(_this,2,"请填写短信验证码")
-            } else {
-                let url = 'validateUntieCode';
-                let data = qs.stringify({
-                    'validateCode':this.securityCode
-                });
-                $util.post(url,data)
-                    .then(function (response) {
-                        _this.checkUntieLoading = false;
-                        if (response.status == 200) {
-                            if (response.data.statusCode == '10000') {
-                                $util.frontSuccMsg(_this,2,"操作成功");
-                                _this.bindingContent = '获取验证码';
-                                _this.showInputCodeDiv = false;
-                                _this.securityCode = '';
-                                _this.basicForm.mobileStatus = '0';
-                                _this.basicForm.cellphone = '';
-                            } else {
-                                $util.responseMsg(_this, response.data);
-                            }
-                        } else {
                             $util.httpErrorMsg(_this, response.data);
                         }
                     })
                     .catch(function (error) {
-                        _this.checkUntieLoading = false;
+                        _this.untieDisabled = false;
                         $util.httpErrorMsg(_this, error.data);
                     });
-            }
-        },
-        showEditPassword () {
-            this.editPasswordModal = true;
-        },
-        showPasswordInput (data) {
-            let input = document.getElementById(data);
-            if(input.children[2].type == "text"){
-                input.children[2].type = "password";
-                if(data == 'oldPassInput'){
-                    this.oldPassIcon = false;
-                }else if (data == 'newPassInput'){
-                    this.newPassIcon = false;
-                }else if (data == 'rePassInput'){
-                    this.rePassIcon = false;
-                }
-            }else{
-                input.children[2].type = "text";
-                if(data == 'oldPassInput'){
-                    this.oldPassIcon = true;
-                }else if (data == 'newPassInput'){
-                    this.newPassIcon = true;
-                }else if (data == 'rePassInput'){
-                    this.rePassIcon = true;
-                }
-            }
-        },
-        getModifyCode () {
-            let url = "getModifyCode";
-            let _this = this;
-            $util.post(url,{})
-                .then(function (response) {
-                    _this.modifyDisabled = true;
-                    if(response.status == 200){
-                        if(response.data.statusCode == "10000"){
-                            let timeLast = 120;
-                            let timer = setInterval(() => {
-                                if (timeLast >= 0) {
-                                    _this.modifyContent = timeLast + '秒后重试';
-                                    timeLast -= 1;
+            },
+            submitUntieCode () {
+                let _this = this;
+                _this.checkUntieLoading = true;
+                if (this.securityCode.length === 0) {
+                    $util.frontErrMsg(_this, 2, '请填写短信验证码');
+                } else {
+                    let url = 'validateUntieCode';
+                    let data = qs.stringify({
+                        'validateCode': this.securityCode
+                    });
+                    $util.post(url, data)
+                        .then(function (response) {
+                            _this.checkUntieLoading = false;
+                            if (response.status == 200) {
+                                if (response.data.statusCode == '10000') {
+                                    $util.frontSuccMsg(_this, 2, '操作成功');
+                                    _this.bindingContent = '获取验证码';
+                                    _this.showInputCodeDiv = false;
+                                    _this.securityCode = '';
+                                    _this.basicForm.mobileStatus = '0';
+                                    _this.basicForm.cellphone = '';
                                 } else {
-                                    clearInterval(timer);
-                                    _this.modifyContent = '重新获取';
-                                    _this.modifyDisabled = false;
+                                    $util.responseMsg(_this, response.data);
                                 }
-                            }, 1000);
-                        }else {
-                            _this.modifyDisabled = false;
-                            $util.responseMsg(_this,response.data);
-                        }
-                    }else{
-                        _this.modifyDisabled = false;
-                        $util.httpErrorMsg(_this,response.data)
+                            } else {
+                                $util.httpErrorMsg(_this, response.data);
+                            }
+                        })
+                        .catch(function (error) {
+                            _this.checkUntieLoading = false;
+                            $util.httpErrorMsg(_this, error.data);
+                        });
+                }
+            },
+            showEditPassword () {
+                this.editPasswordModal = true;
+            },
+            showPasswordInput (data) {
+                let input = document.getElementById(data);
+                if (input.children[2].type == 'text') {
+                    input.children[2].type = 'password';
+                    if (data == 'oldPassInput') {
+                        this.oldPassIcon = false;
+                    } else if (data == 'newPassInput') {
+                        this.newPassIcon = false;
+                    } else if (data == 'rePassInput') {
+                        this.rePassIcon = false;
                     }
-                })
-                .catch(function (error) {
-                    _this.modifyDisabled = false;
-                    $util.httpErrorMsg(_this,error.data)
+                } else {
+                    input.children[2].type = 'text';
+                    if (data == 'oldPassInput') {
+                        this.oldPassIcon = true;
+                    } else if (data == 'newPassInput') {
+                        this.newPassIcon = true;
+                    } else if (data == 'rePassInput') {
+                        this.rePassIcon = true;
+                    }
+                }
+            },
+            getModifyCode () {
+                let url = 'getModifyCode';
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        _this.modifyDisabled = true;
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                let timeLast = 120;
+                                let timer = setInterval(() => {
+                                    if (timeLast >= 0) {
+                                        _this.modifyContent = timeLast + '秒后重试';
+                                        timeLast -= 1;
+                                    } else {
+                                        clearInterval(timer);
+                                        _this.modifyContent = '重新获取';
+                                        _this.modifyDisabled = false;
+                                    }
+                                }, 1000);
+                            } else {
+                                _this.modifyDisabled = false;
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            _this.modifyDisabled = false;
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        _this.modifyDisabled = false;
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            showHeadPortrait () {
+                this.isShowHeadPortrait = true;
+                let img = document.getElementById('cropimg');
+                this.cropper = new Cropper(img, {
+                    dragMode: 'move', // 定义cropper的拖拽模式。
+                    preview: '#preview', // 添加额外的元素(容器)以供预览。
+                    guides: true, // 显示在裁剪框上方的虚线。
+                    autoCropArea: 0.5, // 定义自动裁剪面积大小(百分比)和图片进行对比。
+                    restore: true, // 在调整窗口大小后恢复裁剪的区域。
+                    center: true, // 裁剪框在图片正中心。
+                    movable: true, // 是否允许可以移动后面的图片
+                    highlight: false, // 在裁剪框上方显示白色的区域(突出裁剪框)。
+                    cropBoxMovable: true, // 是否通过拖拽来移动剪裁框。
+                    zoomOnWheel: false, // 是否可以通过移动鼠标来放大图像。
+                    toggleDragModeOnDblclick: true // 当点击两次时可以在“crop”和“move”之间切换拖拽模式。
                 });
-        },
-        showHeadPortrait () {
-            this.isShowHeadPortrait = true;
-            let img = document.getElementById('cropimg');
-            this.cropper = new Cropper(img, {
-                dragMode: 'move', // 定义cropper的拖拽模式。
-                preview: '#preview', // 添加额外的元素(容器)以供预览。
-                guides: true, // 显示在裁剪框上方的虚线。
-                autoCropArea: 0.5, // 定义自动裁剪面积大小(百分比)和图片进行对比。
-                restore: true, // 在调整窗口大小后恢复裁剪的区域。
-                center: true, // 裁剪框在图片正中心。
-                movable: true, // 是否允许可以移动后面的图片
-                highlight: false, // 在裁剪框上方显示白色的区域(突出裁剪框)。
-                cropBoxMovable: true, // 是否通过拖拽来移动剪裁框。
-                zoomOnWheel: false, // 是否可以通过移动鼠标来放大图像。
-                toggleDragModeOnDblclick: true // 当点击两次时可以在“crop”和“move”之间切换拖拽模式。
-            });
-        },
-        headPortraitstatus () {
-            this.cropper.destroy();
-        },
-        handleChange (e) {
-            this.isShowFile = false;
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            reader.onload = () => {
-                this.cropper.replace(reader.result);
-                reader.onload = null;
-            };
-            reader.readAsDataURL(file);
-        },
-        lookHeadPortrait (data) {
-            this.cropper.load(data);
-        },
-        saveHeadPortrait () {
-            let file = this.cropper.getCroppedCanvas().toDataURL();
-            let upFile = $util.base64toFile(file, 'headPortrait');
-            let url = "upload";
-            let _this = this;
-            let param = new window.FormData();
-            param.append('file', upFile);
-            $util.post(url,param,{
+            },
+            headPortraitstatus () {
+                this.cropper.destroy();
+            },
+            handleChange (e) {
+                this.isShowFile = false;
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onload = () => {
+                    this.cropper.replace(reader.result);
+                    reader.onload = null;
+                };
+                reader.readAsDataURL(file);
+            },
+            lookHeadPortrait (data) {
+                this.cropper.load(data);
+            },
+            saveHeadPortrait () {
+                let file = this.cropper.getCroppedCanvas().toDataURL();
+                let upFile = $util.base64toFile(file, 'headPortrait');
+                let url = 'upload';
+                let _this = this;
+                let param = new window.FormData();
+                param.append('file', upFile);
+                $util.post(url, param, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
-                .then(function (response) {
-                    if(response.status == 200){
-                        if(response.data.statusCode == "10000"){
-                            _this.basicForm.headPortrait = $util.getWebUrl() +'/'+ response.data.data;
-                            _this.isShowHeadPortrait = false;
-                        }else {
-                            $util.responseMsg(_this,response.data);
-                        }
-                    }else{
-                        $util.httpErrorMsg(_this,response.data)
-                    }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this,error.data)
-                });
-        },
-        cancelEditUserInfor () {
-            this.$store.commit('removeTag', 'ownspace_index');
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
-            let lastPageName = '';
-            if (this.$store.state.app.pageOpenedList.length > 1) {
-                lastPageName = this.$store.state.app.pageOpenedList[1].name;
-            } else {
-                lastPageName = this.$store.state.app.pageOpenedList[0].name;
-            }
-            this.$router.push({
-                name: lastPageName
-            });
-        },
-        saveEditPass () {
-            this.$refs['editPasswordForm'].validate((valid) => {
-                if (valid) {
-                    let url = 'modifyPassword';
-                    let _this = this;
-                    $util.post(url,this.editPasswordForm)
-                        .then(function (response) {
-                            if (response.status == 200) {
-                                if (response.data.statusCode == '10000') {
-                                    _this.savePassLoading = true;
-                                    _this.editPasswordModal = false;
-                                    $util.frontSuccMsg(_this,2,"操作成功");
-                                } else {
-                                    $util.responseMsg(_this, response.data);
-                                }
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                _this.basicForm.headPortrait = $util.getWebUrl() + '/' + response.data.data;
+                                _this.isShowHeadPortrait = false;
                             } else {
-                                $util.httpErrorMsg(_this, response.data);
+                                $util.responseMsg(_this, response.data);
                             }
-                        })
-                        .catch(function (error) {
-                            $util.httpErrorMsg(_this, error.data);
-                        })
-                }
-            });
-        },
-        saveBasic () {
-            this.$refs['basicForm'].validate((valid) => {
-                if (valid) {
-                    let url = 'saveUserBasic';
-                    let _this = this;
-                    _this.userBasicloading = true;
-                    let data = qs.stringify();
-                    $util.post(url,{"userName":this.basicForm.nickname, "userHeadUrl":this.basicForm.headPortrait})
-                        .then(function (response) {
-                            if (response.status == 200) {
-                                if (response.data.statusCode == '10000') {
-                                    $util.frontSuccMsg(_this,2,"操作成功");
-                                    _this.$store.commit('setAvator', _this.basicForm.headPortrait);
-                                    localStorage.setItem('nickname', _this.basicForm.nickname);
-                                    _this.userBasicloading = false;
-                                } else {
-                                    _this.userBasicloading = false;
-                                    $util.responseMsg(_this, response.data);
-                                }
-                            } else {
-                                _this.userBasicloading = false;
-                                $util.httpErrorMsg(_this, response.data);
-                            }
-                        })
-                        .catch(function (error) {
-                            _this.userBasicloading = false;
-                            $util.httpErrorMsg(_this, error.data);
-                        })
-                }
-            });
-        },
-        showBindingModal (data) {
-            let url;
-            let title;
-            if (data == 'wx') {
-                $util.frontErrMsg(this,2,'暂不支持微信，程序员小哥哥正在加紧开发中....')
-                return;
-                title = '微信';
-                url = 'getAlipayLoginPath';
-            } else if (data == 'zfb') {
-                title = '支付宝';
-                url = 'getAlipayBindingPath';
-            }
-            let _this = this;
-            $util.post(url, {})
-                .then(function (response) {
-                    if (response.status == 200) {
-                        if (response.data.statusCode == '10000') {
-                            let url = $util.getWebUrl().replace("http://","");
-                            const wsuri = 'ws://'+url+'/webMessage';// ws地址
-                            window.websock = new WebSocket(wsuri);
-                            websock.onopen = _this.websocketonopen;
-                            websock.onerror = _this.websocketonerror;
-                            websock.onmessage = _this.websocketonmessage;
-                            websock.onclose = _this.websocketclose;
-                            let path = response.data.data;
-                            var div = document.getElementById('binding');
-                            div.innerHTML = '';
-                            let qrcode = new QRCode('binding', {
-                                width: 200,
-                                height: 200, // 高度
-                                text: path // 二维码内容
-                            });
-                            div.title = '请使用手机' + title + 'APP扫描二维码';
-                            _this.bindingModalTitle = title;
-                            _this.bindingModal = true;
                         } else {
-                            $util.responseMsg(_this, response.data);
+                            $util.httpErrorMsg(_this, response.data);
                         }
-                    } else {
-                        $util.httpErrorMsg(_this, response.data);
-                    }
-                })
-                .catch(function (error) {
-                    $util.httpErrorMsg(_this, error.data);
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            cancelEditUserInfor () {
+                this.$store.commit('removeTag', 'ownspace_index');
+                localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
+                let lastPageName = '';
+                if (this.$store.state.app.pageOpenedList.length > 1) {
+                    lastPageName = this.$store.state.app.pageOpenedList[1].name;
+                } else {
+                    lastPageName = this.$store.state.app.pageOpenedList[0].name;
+                }
+                this.$router.push({
+                    name: lastPageName
                 });
-        },
-        showUntieModal(data){
-            if(data == 'zfb'){
-                this.untieModalTitle = '支付宝';
-            }else if(data == 'wx'){
-                this.untieModalTitle = '微信';
-            }
-            this.untieModal = true;
-        },
-        websocketonopen () {
-            console.log('服务器连接成功！');
-        },
-        websocketonerror (e) { // 错误
-            $util.frontErrMsg(this, 2, '服务器连接异常');
-        },
-        websocketonmessage (e) { // 数据接收
-            const data = JSON.parse(e.data);
-            if (data.code != '10000') {
-                $util.frontErrMsg(this,2,data.msg)
-            } else {
-                this.bindingModal = false;
-                this.isAlipayBinding = '1'; // 已绑定
-                $util.frontSuccMsg(this,2,"账号绑定成功")
-            }
-        },
-        websocketsend (agentData) { // 数据发送
-            websock.send(agentData);
-        },
-        websocketclose (e) { // 关闭
-            try {
-                websock.close();
-            }catch (e) {}
-        },
-        bindingModalClose(){
-            this.websocketclose();
-        },
-        saveContactInfo () {
-            this.$refs['contactInfoForm'].validate((valid) => {
-                if (valid) {
-                    this.contactInfoloading = true;
-                    let url = 'saveContactInfo';
-                    let _this = this;
-                    $util.post(url,this.contactInfoForm)
-                        .then(function (response) {
-                            if (response.status == 200) {
-                                if (response.data.statusCode == '10000') {
-                                    _this.contactInfoloading = false;
-                                    $util.frontSuccMsg(_this,2,"操作成功")
+            },
+            saveEditPass () {
+                this.$refs['editPasswordForm'].validate((valid) => {
+                    if (valid) {
+                        let url = 'modifyPassword';
+                        let _this = this;
+                        $util.post(url, this.editPasswordForm)
+                            .then(function (response) {
+                                if (response.status == 200) {
+                                    if (response.data.statusCode == '10000') {
+                                        _this.savePassLoading = true;
+                                        _this.editPasswordModal = false;
+                                        $util.frontSuccMsg(_this, 2, '操作成功');
+                                    } else {
+                                        $util.responseMsg(_this, response.data);
+                                    }
+                                } else {
+                                    $util.httpErrorMsg(_this, response.data);
+                                }
+                            })
+                            .catch(function (error) {
+                                $util.httpErrorMsg(_this, error.data);
+                            });
+                    }
+                });
+            },
+            saveBasic () {
+                this.$refs['basicForm'].validate((valid) => {
+                    if (valid) {
+                        let url = 'saveUserBasic';
+                        let _this = this;
+                        _this.userBasicloading = true;
+                        let data = qs.stringify();
+                        $util.post(url, {'userName': this.basicForm.nickname, 'userHeadUrl': this.basicForm.headPortrait})
+                            .then(function (response) {
+                                if (response.status == 200) {
+                                    if (response.data.statusCode == '10000') {
+                                        $util.frontSuccMsg(_this, 2, '操作成功');
+                                        _this.$store.commit('setAvator', _this.basicForm.headPortrait);
+                                        localStorage.setItem('nickname', _this.basicForm.nickname);
+                                        _this.userBasicloading = false;
+                                    } else {
+                                        _this.userBasicloading = false;
+                                        $util.responseMsg(_this, response.data);
+                                    }
+                                } else {
+                                    _this.userBasicloading = false;
+                                    $util.httpErrorMsg(_this, response.data);
+                                }
+                            })
+                            .catch(function (error) {
+                                _this.userBasicloading = false;
+                                $util.httpErrorMsg(_this, error.data);
+                            });
+                    }
+                });
+            },
+            showBindingModal (data) {
+                let url;
+                let title;
+                if (data == 'wx') {
+                    /*$util.frontErrMsg(this, 2, '暂不支持微信，程序员小哥哥正在加紧开发中....');
+                    return;*/
+                    title = '微信';
+                    url = 'getAlipayLoginPath';
+                } else if (data == 'zfb') {
+                    title = '支付宝';
+                    url = 'getAlipayBindingPath';
+                }
+                let _this = this;
+                $util.post(url, {})
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.statusCode == '10000') {
+                                let url = $util.getWebUrl().replace('http://', '');
+                                const wsuri = 'ws://' + url + '/webMessage';// ws地址
+                                window.websock = new WebSocket(wsuri);
+                                websock.onopen = _this.websocketonopen;
+                                websock.onerror = _this.websocketonerror;
+                                websock.onmessage = _this.websocketonmessage;
+                                websock.onclose = _this.websocketclose;
+                                let path = response.data.data;
+                                var div = document.getElementById('binding');
+                                div.innerHTML = '';
+                                let qrcode = new QRCode('binding', {
+                                    width: 200,
+                                    height: 200, // 高度
+                                    text: path // 二维码内容
+                                });
+                                div.title = '请使用手机' + title + 'APP扫描二维码';
+                                _this.bindingModalTitle = title;
+                                _this.bindingModal = true;
+                            } else {
+                                $util.responseMsg(_this, response.data);
+                            }
+                        } else {
+                            $util.httpErrorMsg(_this, response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        $util.httpErrorMsg(_this, error.data);
+                    });
+            },
+            showUntieModal (data) {
+                if (data == 'zfb') {
+                    this.untieModalTitle = '支付宝';
+                } else if (data == 'wx') {
+                    this.untieModalTitle = '微信';
+                }
+                this.untieModal = true;
+            },
+            websocketonopen () {
+                console.log('服务器连接成功！');
+            },
+            websocketonerror (e) { // 错误
+                $util.frontErrMsg(this, 2, '服务器连接异常');
+            },
+            websocketonmessage (e) { // 数据接收
+                const data = JSON.parse(e.data);
+                if (data.code != '10000') {
+                    $util.frontErrMsg(this, 2, data.msg);
+                } else {
+                    this.bindingModal = false;
+                    this.isAlipayBinding = '1'; // 已绑定
+                    $util.frontSuccMsg(this, 2, '账号绑定成功');
+                }
+            },
+            websocketsend (agentData) { // 数据发送
+                websock.send(agentData);
+            },
+            websocketclose (e) { // 关闭
+                try {
+                    websock.close();
+                } catch (e) {}
+            },
+            bindingModalClose () {
+                this.websocketclose();
+            },
+            saveContactInfo () {
+                this.$refs['contactInfoForm'].validate((valid) => {
+                    if (valid) {
+                        this.contactInfoloading = true;
+                        let url = 'saveContactInfo';
+                        let _this = this;
+                        $util.post(url, this.contactInfoForm)
+                            .then(function (response) {
+                                if (response.status == 200) {
+                                    if (response.data.statusCode == '10000') {
+                                        _this.contactInfoloading = false;
+                                        $util.frontSuccMsg(_this, 2, '操作成功');
+                                    } else {
+                                        _this.contactInfoloading = false;
+                                        $util.responseMsg(_this, response.data);
+                                    }
                                 } else {
                                     _this.contactInfoloading = false;
-                                    $util.responseMsg(_this, response.data);
+                                    $util.httpErrorMsg(_this, response.data);
                                 }
-                            } else {
+                            })
+                            .catch(function (error) {
                                 _this.contactInfoloading = false;
-                                $util.httpErrorMsg(_this, response.data);
-                            }
-                        })
-                        .catch(function (error) {
-                            _this.contactInfoloading = false;
-                            $util.httpErrorMsg(_this, error.data);
-                        })
+                                $util.httpErrorMsg(_this, error.data);
+                            });
+                    }
+                });
+            },
+            jobInfoSwitch () {
+                this.isStudent = false; // 是否学生
+                this.isStaff = false; // 是否员工
+                this.isOther = false; // 是否其他
+                this.isIncome = false; // 收入
+                if (this.personalInfoForm.defaultSelect == '1') {
+                    this.isStudent = true;
+                } else if (this.personalInfoForm.defaultSelect == '2') {
+                    this.isStaff = true;
+                    this.isIncome = true;
+                } else if (this.personalInfoForm.defaultSelect == '0') {
+                    this.isOther = true;
+                    this.isIncome = true;
                 }
-            });
-        },
-        jobInfoSwitch () {
-            this.isStudent = false; // 是否学生
-            this.isStaff = false; // 是否员工
-            this.isOther = false; // 是否其他
-            this.isIncome = false; // 收入
-            if (this.personalInfoForm.defaultSelect == '1') {
-                this.isStudent = true;
-            } else if (this.personalInfoForm.defaultSelect == '2') {
-                this.isStaff = true;
-                this.isIncome = true;
-            } else if (this.personalInfoForm.defaultSelect == '0') {
-                this.isOther = true;
-                this.isIncome = true;
-            }
-        },
-        savePersonalInfo () {
-            this.$refs['personalInfoForm'].validate((valid) => {
-                if (valid) {
-                    this.personalInfoloading = true;
-                    let url = 'savePersonalInfo';
-                    let _this = this;
-                    $util.post(url,this.personalInfoForm)
-                        .then(function (response) {
-                            if (response.status == 200) {
-                                if (response.data.statusCode == '10000') {
-                                    _this.personalInfoloading = false;
-                                    $util.frontSuccMsg(_this,2,"操作成功")
+            },
+            savePersonalInfo () {
+                this.$refs['personalInfoForm'].validate((valid) => {
+                    if (valid) {
+                        this.personalInfoloading = true;
+                        let url = 'savePersonalInfo';
+                        let _this = this;
+                        $util.post(url, this.personalInfoForm)
+                            .then(function (response) {
+                                if (response.status == 200) {
+                                    if (response.data.statusCode == '10000') {
+                                        _this.personalInfoloading = false;
+                                        $util.frontSuccMsg(_this, 2, '操作成功');
+                                    } else {
+                                        _this.personalInfoloading = false;
+                                        $util.responseMsg(_this, response.data);
+                                    }
                                 } else {
                                     _this.personalInfoloading = false;
-                                    $util.responseMsg(_this, response.data);
+                                    $util.httpErrorMsg(_this, response.data);
                                 }
-                            } else {
+                            })
+                            .catch(function (error) {
                                 _this.personalInfoloading = false;
-                                $util.httpErrorMsg(_this, response.data);
-                            }
-                        })
-                        .catch(function (error) {
-                            _this.personalInfoloading = false;
-                            $util.httpErrorMsg(_this, error.data);
-                        })
-                }
-            });
-        },
+                                $util.httpErrorMsg(_this, error.data);
+                            });
+                    }
+                });
+            }
     },
     mounted () {
-        this.initPersonalCenter();
-        this.initQueryAddress();
+            this.initPersonalCenter();
+            this.initQueryAddress();
     }
 };
 </script>
