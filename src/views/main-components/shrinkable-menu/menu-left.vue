@@ -168,6 +168,14 @@
         },
         mounted () {
             this.init();
+            window.onresize = () => {
+                return (() => {
+                    var docWidth = document.body.scrollWidth;
+                    if(docWidth < 500){
+                        window.location.reload();
+                    }
+                })()
+            };
         },
         created () {
             // 显示打开的页面的列表

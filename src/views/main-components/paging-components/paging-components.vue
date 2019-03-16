@@ -33,8 +33,8 @@
                         </Dropdown>
                     </span>
                 </li>
-                <li><span class="pages"> {{ tableData.paging.current }} / {{ page }} 页 </span></li>
-                <li><span class="pages"> 共 {{ tableData.paging.total }}  条 </span></li>
+                <li><span class="pages">{{ tableData.paging.current }}/{{ page }}页</span></li>
+                <li><span class="pages">共{{ tableData.paging.total }}条</span></li>
             </ul>
         </nav>
     </div>

@@ -2,7 +2,7 @@
     <div style="display:inline-block;padding:0 6px;">
         <Dropdown trigger="click" @on-click="windowSwitch">
                 <a href="javascript:void(0)">
-                    <Icon :style="{ verticalAlign: 'middle'}" type="logo-windows" :size="23" color="#657180"></Icon>
+                    <Icon :style="{ verticalAlign: 'middle'}" type="ios-photos" :size="23" color="#657180"></Icon>
                     <Icon type="md-arrow-dropdown"></Icon>
                 </a>
             <DropdownMenu slot="list">

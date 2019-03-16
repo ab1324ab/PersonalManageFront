@@ -1000,8 +1000,8 @@ export default {
                 let url;
                 let title;
                 if (data == 'wx') {
-                    /*$util.frontErrMsg(this, 2, '暂不支持微信，程序员小哥哥正在加紧开发中....');
-                    return;*/
+                    $util.frontErrMsg(this, 2, '暂不支持微信，程序员小哥哥正在加紧开发中....');
+                    return;
                     title = '微信';
                     url = 'getAlipayLoginPath';
                 } else if (data == 'zfb') {

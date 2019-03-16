@@ -5,7 +5,7 @@
     <div class="main" :class="{'main-hide-text': shrink}">
         <div class="main-header-con-top">
             <div class="main-header">
-                <shrinkable-menu-top v-if="!menuIsMin"
+                <shrinkable-menu-top v-if="!minNeum"
                         :shrink="shrink"
                         @on-change="handleSubmenuChange"
                         :theme="menuTheme"
@@ -24,8 +24,8 @@
                         <user-head></user-head>
                     </div>
                 </shrinkable-menu-top>
-                <shrinkable-menu-min v-if="menuIsMin"
-                         :shrink="menuIsMin"
+                <shrinkable-menu-min v-if="minNeum"
+                         :shrink="minNeum"
                          @on-change="handleSubmenuChange"
                          :theme="menuTheme"
                          :before-push="beforePush"
@@ -89,7 +89,8 @@
             return {
                 shrink: false,
                 isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+                minNeum: false,
             };
         },
         computed: {
@@ -114,14 +115,6 @@
             mesCount () {
                 return this.$store.state.app.messageCount;
             },
-            menuIsMin(){
-                var docWidth = document.body.scrollWidth;
-                if(docWidth< 500){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
         },
         methods: {
             init () {
@@ -164,6 +157,14 @@
             },
             mainWindowSwitch (style) {
                 this.$emit('mainWindowSwitch', style);
+            },
+            menuIsMin(){
+                var docWidth = document.body.scrollWidth;
+                if(docWidth< 500){
+                    this.minNeum = true;
+                }else{
+                    this.minNeum = false;
+                }
             }
         },
         watch: {
@@ -184,10 +185,17 @@
         },
         mounted () {
             this.init();
+            this.menuIsMin();
+            window.onresize = () => {
+                return (() => {
+                    this.menuIsMin();
+                })()
+            };
         },
         created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
+
         }
     };
 </script>

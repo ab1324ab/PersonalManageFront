@@ -92,8 +92,16 @@
         fullscreenChange (isFullScreen) {
             // console.log(isFullScreen);
         },
-        created () {
+        mounted(){
             this.menuFlag();
+            window.onresize = () => {
+                return (() => {
+                    this.menuFlag();
+                })()
+            };
+        },
+        created () {
+
         }
     };
 </script>
