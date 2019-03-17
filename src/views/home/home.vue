@@ -318,8 +318,10 @@ export default {
                             _this.count.wordCount = parseInt(response.data.data.wordCount);
                             _this.count.planCount = parseInt(response.data.data.planCount);
                             _this.toDoList = response.data.data.todoList;
-                            _this.$refs.visiteVolume.hideLoading();
-                            _this.$refs.dataSourcePie.hideLoading();
+                            try {
+                                _this.$refs.visiteVolume.hideLoading();
+                                _this.$refs.dataSourcePie.hideLoading();
+                            }catch (e) {}
                         }else {
                             $util.responseMsg(_this,response.data);
                         }
@@ -344,13 +346,14 @@ export default {
     },
     mounted () {
         this.toDoListCon();
-    },
-    created () {
         this.loginObj.oldIp = localStorage.getItem("oldIp");
         this.loginObj.oldIpAddress = localStorage.getItem("oldIpAddress");
         this.loginObj.oldLoginTime = localStorage.getItem("oldLoginTime");
         this.loginObj.nickname = localStorage.getItem("nickname");
         this.init();
+    },
+    created () {
+
     }
 };
 </script>

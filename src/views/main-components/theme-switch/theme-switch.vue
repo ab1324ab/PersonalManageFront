@@ -163,7 +163,7 @@ export default {
             this.$store.commit('changeMainTheme', 'b');
         }
         // 根据用户设置主题
-        if (this.$store.state.app.themeColor !== 'b') {
+        if (this.$store.state.app.themeColor !== 'b' && this.$store.state.app.themeColor != undefined) {
             let stylesheetPath = path + this.$store.state.app.themeColor + '.css';
             let themeLink = document.querySelector('link[name="theme"]');
             themeLink.setAttribute('href', stylesheetPath);
