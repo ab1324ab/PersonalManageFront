@@ -914,7 +914,7 @@ export default {
                     .then(function (response) {
                         if (response.status == 200) {
                             if (response.data.statusCode == '10000') {
-                                _this.basicForm.headPortrait = $util.getWebUrl() + '/' + response.data.data;
+                                _this.basicForm.headPortrait = '/' + response.data.data;
                                 _this.isShowHeadPortrait = false;
                             } else {
                                 $util.responseMsg(_this, response.data);
