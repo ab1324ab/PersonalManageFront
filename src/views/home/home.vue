@@ -212,15 +212,11 @@
 </template>
 
 <script>
-import cityData from './map-data/get-city-value.js';
-import homeMap from './components/map.vue';
+
 import dataSourcePie from './components/dataSourcePie.vue';
 import visiteVolume from './components/visiteVolume.vue';
-import serviceRequests from './components/serviceRequests.vue';
-import userFlow from './components/userFlow.vue';
 import countUp from './components/countUp.vue';
 import inforCard from './components/inforCard.vue';
-import mapDataTable from './components/mapDataTable.vue';
 import toDoListItem from './components/toDoListItem.vue';
 import $util from '@/libs/util.js';
 var qs = require('qs');
@@ -228,14 +224,10 @@ var qs = require('qs');
 export default {
     name: 'home',
     components: {
-        homeMap,
         dataSourcePie,
         visiteVolume,
-        serviceRequests,
-        userFlow,
         countUp,
         inforCard,
-        mapDataTable,
         toDoListItem
     },
     data () {
@@ -253,7 +245,6 @@ export default {
                 imgCount: 0,
                 planCount: 0,
             },
-            cityData: cityData,
             showAddNewTodo: false,
             newToDoItemValue: '',
             toDoListConH:'0px'

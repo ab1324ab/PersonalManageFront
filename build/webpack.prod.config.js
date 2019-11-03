@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
 const os = require('os');
@@ -46,15 +45,6 @@ module.exports = merge(webpackBaseConfig, {
                 warnings: false
             }
         }),
-        // new UglifyJsParallelPlugin({
-        //     workers: os.cpus().length,
-        //     mangle: true,
-        //     compressor: {
-        //       warnings: false,
-        //       drop_console: true,
-        //       drop_debugger: true
-        //      }
-        // }),
         new CopyWebpackPlugin([
             {
                 from: 'td_icon.ico'
@@ -65,13 +55,10 @@ module.exports = merge(webpackBaseConfig, {
             },
             {
                 from: 'src/views/main-components/theme-switch/theme'
-            },
-            {
-                from: 'src/views/my-components/text-editor/tinymce'
             }
         ], {
             ignore: [
-                'text-editor.vue'
+
             ]
         }),
         new HtmlWebpackPlugin({

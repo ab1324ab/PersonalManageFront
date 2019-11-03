@@ -1,5 +1,5 @@
-<style>
-    @import './vtable.css';
+<style lang="less">
+    @import './vtable.less';
 </style>
 
 <template id="vtable">
