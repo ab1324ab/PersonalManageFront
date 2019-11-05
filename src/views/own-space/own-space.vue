@@ -13,12 +13,6 @@
             </h3>
             <div style="width: 310px;margin: 0 auto">
                 <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
-                    <FormItem label="原密码" prop="oldPass">
-                        <Input id="oldPassInput" style="width: 200px" type="password" v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码" >
-                        <Icon v-if="!oldPassIcon" type="md-eye-off" slot="suffix" @click="showPasswordInput('oldPassInput')" />
-                        <Icon v-if="oldPassIcon" type="md-eye" slot="suffix" @click="showPasswordInput('oldPassInput')" />
-                        </Input>
-                    </FormItem>
                     <FormItem label="新密码" prop="newPass">
                         <Input id="newPassInput" style="width: 200px" type="password" v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" >
                         <Icon v-if="!newPassIcon" type="md-eye-off" slot="suffix" @click="showPasswordInput('newPassInput')" />
@@ -566,15 +560,11 @@ export default {
                 checkBindingLoading: false,
                 checkUntieLoading: false,
                 editPasswordForm: {
-                    oldPass: '',
                     newPass: '',
                     rePass: '',
                     modifyCode: ''
                 },
                 passwordValidate: {
-                    oldPass: [
-                        { required: true, message: '请输入原密码', trigger: 'blur' }
-                    ],
                     newPass: [
                         { required: true, message: '请输入新密码', trigger: 'blur' },
                         { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
@@ -590,7 +580,6 @@ export default {
                     ]
                 },
                 rePassIcon: false, // 再次输入密码显示图标
-                oldPassIcon: false, // 原密码显示图标
                 newPassIcon: false, // 新密码显示图标
                 showInputCodeDiv: false, // 显示填写验证码div
                 bindingContent: '绑定验证码', // “获取验证码”按钮的文字
@@ -815,18 +804,14 @@ export default {
                 let input = document.getElementById(data);
                 if (input.children[2].type == 'text') {
                     input.children[2].type = 'password';
-                    if (data == 'oldPassInput') {
-                        this.oldPassIcon = false;
-                    } else if (data == 'newPassInput') {
+                    if (data == 'newPassInput') {
                         this.newPassIcon = false;
                     } else if (data == 'rePassInput') {
                         this.rePassIcon = false;
                     }
                 } else {
                     input.children[2].type = 'text';
-                    if (data == 'oldPassInput') {
-                        this.oldPassIcon = true;
-                    } else if (data == 'newPassInput') {
+                    if (data == 'newPassInput') {
                         this.newPassIcon = true;
                     } else if (data == 'rePassInput') {
                         this.rePassIcon = true;
