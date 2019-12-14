@@ -35,7 +35,7 @@
                 </span>
                 <Form ref="formInline" inline :label-width='60' v-model="resourceListFrom">
                     <FormItem label="" prop="fileName">
-                        <Input placeholder="搜索文件" style="width: 300px;" v-model="resourceListFrom.name">
+                        <Input placeholder="搜索文件" v-model="resourceListFrom.name">
                             <Select v-model="resourceListFrom.type" slot="prepend" style="width: 63px" placeholder="类型">
                                 <Option v-for="item in typeList" :value="item.typeValue" :key="item.typeValue">
                                     {{ item.typeName }}

@@ -92,6 +92,16 @@ export const appRouter = [
             { path: 'recordation',icon: 'ios-create-outline' ,title: '工作记录列表', name: 'recordation', component: () => import('@/views/work-sheet/recordation.vue') },
         ]
     },
+    {
+        path: '/recycler',
+        icon: 'ios-create-outline',
+        title: '回收站',
+        name: 'recycle bin',
+        component: Main,
+        children: [
+            { path: 'cleaner',icon: 'ios-create-outline' ,title: '回收站', name: 'cleaner', component: () => import('@/views/recycler/cleaner.vue') },
+        ]
+    },
     // {
     //     path: '/port-routing',
     //     icon: 'ios-pulse',
