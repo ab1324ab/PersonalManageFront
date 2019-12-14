@@ -1,9 +1,14 @@
+<style>
+    .ivu-input-suffix {
+        z-index: 10;
+    }
+</style>
 <template>
     <div style="height: 600px" @keydown.enter="initResourceList">
         <Modal width="60%"
                v-model="detailedInfoModal.modalShow"
                :mask-closable="false"
-               >
+        >
             <p slot="header">
                 <Icon type="ios-information-circle"></Icon>
                 <span>{{detailedInfoModal.modalName}}</span>
@@ -23,30 +28,26 @@
             </div>
         </Modal>
         <Card>
-            <p slot="title">
-                <Icon type="ios-list-box-outline"></Icon>
-                文档列表
-            </p>
-            <Form ref="formInline" inline :label-width='60' v-model="resourceListFrom">
-                <FormItem label="文档名称" prop="fileName">
-                    <Input placeholder="文件名称" style="width: 200px;" v-model="resourceListFrom.name"></Input>
-                </FormItem>
-                <FormItem label="创建日期" prop="creationTime">
-                    <DatePicker :editable="false" v-model="resourceListFrom.creationTime" type="date" placement="bottom-end" placeholder="选择日期" style="width: 200px"></DatePicker>
-                </FormItem>
-                <FormItem label="文档类型" prop="fileType">
-                    <Select v-model="resourceListFrom.type" style="width:200px">
-                        <Option v-for="item in typeList" :value="item.typeValue" :key="item.typeValue">
-                            {{ item.typeName }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" @click="initResourceList">搜索文档</Button>
-                </FormItem>
-            </Form>
-            <div>
-                <paging-components :tableData="tableData" @pagechange="pagechange" @showDisplay="showDisplay" @detailedInfo="detailedInfo"></paging-components>
+            <div style="text-align: left">
+                <span style="position: absolute;line-height: 32px">
+                    <icon size="20" type="ios-apps"></icon>
+                    <icon size="20" type="md-download"></icon>
+                </span>
+                <Form ref="formInline" inline :label-width='60' v-model="resourceListFrom">
+                    <FormItem label="" prop="fileName">
+                        <Input placeholder="搜索文件" style="width: 300px;" v-model="resourceListFrom.name">
+                            <Select v-model="resourceListFrom.type" slot="prepend" style="width: 63px" placeholder="类型">
+                                <Option v-for="item in typeList" :value="item.typeValue" :key="item.typeValue">
+                                    {{ item.typeName }}
+                                </Option>
+                            </Select>
+                            <Icon type="ios-search" style="z-index: 10" slot="suffix" @click="initResourceList"></Icon>
+                        </Input>
+                    </FormItem>
+                </Form>
+                <div>
+                    <paging-components :tableData="tableData" @pagechange="pagechange" @showDisplay="showDisplay" @detailedInfo="detailedInfo"></paging-components>
+                </div>
             </div>
         </Card>
     </div>
@@ -157,24 +158,23 @@
                 },
                 resourceListFrom: {
                     type: '',
-                    creationTime: '',
                     name: '',
                 },
                 typeList: [
                     {
-                        typeName: '全部类型',
+                        typeName: '全部',
                         typeValue: ''
                     },
                     {
-                        typeName: 'Excel文档',
+                        typeName: 'Excel',
                         typeValue: 'excel'
                     },
                     {
-                        typeName: 'Word文档',
+                        typeName: 'Word',
                         typeValue: 'word'
                     },
                     {
-                        typeName: 'Img图片',
+                        typeName: 'Img',
                         typeValue: 'img'
                     }
                 ]
@@ -183,9 +183,6 @@
         methods: {
             initResourceList() {
                 var pageVo = JSON.stringify(this.tableData.paging);
-                if(this.resourceListFrom.creationTime != ''){
-                    this.resourceListFrom.creationTime = $util.addDateDay(this.resourceListFrom.creationTime)
-                }
                 var fileQueryFrom = JSON.stringify(this.resourceListFrom);
                 var readyData = qs.stringify({
                     pageVoc: pageVo,

@@ -444,7 +444,7 @@ util.base64toFile = function(base64Data,fileName){
     return file;
 };
 
-util.addDateDay = function (date){
+util.formatDateToString = function (date){
     var date = new Date(date);
     var month = date.getMonth() + 1;
     var day = date.getDate();

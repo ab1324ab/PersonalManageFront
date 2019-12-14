@@ -53,14 +53,10 @@
                     </div>
                     <div slot="footer">
                         <Button type="text" @click="detailedInfoModal.newWordModal = false">取消</Button>
-                        <Button type="primary" @click="addWordPlan">保存</Button>
+                        <Button type="primary" @click="addWorkPlan">保存</Button>
                     </div>
                 </Modal>
                 <Card>
-                    <p slot="title">
-                        <Icon type="ios-create-outline"></Icon>
-                        工作记录
-                    </p>
                     <Form ref="formInline" v-model="wordListFrom" inline :label-width='60'>
                         <FormItem label="文档名称" prop="name">
                             <Input style="width: 200px" v-model="wordListFrom.name" placeholder="文件名称"></Input>
@@ -113,7 +109,7 @@
 
 <script>
     import pagingComponents from '../main-components/paging-components/paging-components';
-    import vtable from '../main-components/my-vtable/vtable';
+    import vtable from './singlesheet/vtable';
     import $util from '@/libs/util.js';
     var qs = require('qs');
 
@@ -222,7 +218,7 @@
                                                     title: '消息',
                                                     content: '<p>是否删除？'+params.row.name+'</p>',
                                                     onOk: () => {
-                                                        this.delWordPlan(params.row.id);
+                                                        this.delWorkPlan(params.row.id);
                                                     },
                                                     onCancel: () => {
                                                         //this.$Message.info('Clicked cancel');
@@ -284,7 +280,7 @@
             initWordPlan() {
                 var pageVo = JSON.stringify(this.tableData.paging);
                 if(this.wordListFrom.creationTime != ''){
-                    this.wordListFrom.creationTime = $util.addDateDay(this.wordListFrom.creationTime)
+                    this.wordListFrom.creationTime = $util.formatDateToString(this.wordListFrom.creationTime)
                 }
                 var fileQueryFrom = JSON.stringify(this.wordListFrom);
                 var readyData = qs.stringify({
@@ -292,7 +288,7 @@
                     fileQueryFromc: fileQueryFrom
                 });
                 this.tableData.loading = true;
-                let url = 'initUserWordResourceList';
+                let url = 'initUserWorkResourceList';
                 let _this = this;
                 $util.post(url, readyData)
                     .then(function (response) {
@@ -317,7 +313,7 @@
             },
             initWordPlanSetting(){
                 let _this = this;
-                let url = 'queryWordSetting';
+                let url = 'queryWorkSetting';
                 $util.post(url, {})
                     .then(function (response) {
                         if (response.status == 200) {
@@ -365,7 +361,7 @@
                     return;
                 }
                 let _this = this;
-                let url = 'updateWordSetting';
+                let url = 'updateWorkSetting';
                 $util.post(url, this.createWordSetting)
                     .then(function (response) {
                         if (response.status == 200) {
@@ -384,7 +380,7 @@
             },
             showUpdateWorkInfo(id) {
                 let _this = this;
-                let url = 'queryWordPlanContent';
+                let url = 'queryWorkPlanContent';
                 let queryData = qs.stringify({
                     'id' : id,
                 });
@@ -410,12 +406,12 @@
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-                this.workData.startTime = $util.addDateDay(this.workData.startTime);
-                this.workData.endTime = $util.addDateDay(this.workData.endTime);
-                this.workData.plannedDate = $util.addDateDay(this.workData.plannedDate);
-                this.workData.summaryDate = $util.addDateDay(this.workData.summaryDate);
+                this.workData.startTime = $util.formatDateToString(this.workData.startTime);
+                this.workData.endTime = $util.formatDateToString(this.workData.endTime);
+                this.workData.plannedDate = $util.formatDateToString(this.workData.plannedDate);
+                this.workData.summaryDate = $util.formatDateToString(this.workData.summaryDate);
                 let _this = this;
-                let url = 'updateWordPlanContent';
+                let url = 'updateWorkPlanContent';
                 $util.post(url, this.workData)
                     .then(function (response) {
                         if (response.status == 200) {
@@ -435,16 +431,16 @@
                     })
 
             },
-            addWordPlan() {
+            addWorkPlan() {
                 if (this.checkWordParam(this.workData)) {
                     return;
                 }
-                this.workData.startTime = $util.addDateDay(this.workData.startTime);
-                this.workData.endTime = $util.addDateDay(this.workData.endTime);
-                this.workData.plannedDate = $util.addDateDay(this.workData.plannedDate);
-                this.workData.summaryDate = $util.addDateDay(this.workData.summaryDate);
+                this.workData.startTime = $util.formatDateToString(this.workData.startTime);
+                this.workData.endTime = $util.formatDateToString(this.workData.endTime);
+                this.workData.plannedDate = $util.formatDateToString(this.workData.plannedDate);
+                this.workData.summaryDate = $util.formatDateToString(this.workData.summaryDate);
                 let _this = this;
-                let url = 'addWordPlan';
+                let url = 'addWorkPlan';
                 $util.post(url, this.workData)
                     .then(function (response) {
                         if (response.status == 200) {
@@ -463,9 +459,9 @@
                         $util.httpErrorMsg(_this, error.data)
                     })
             },
-            delWordPlan(id){
+            delWorkPlan(id){
                 let _this = this;
-                let url = 'delWordPlan';
+                let url = 'delWorkPlan';
                 let queryData = qs.stringify({
                     'id' : id,
                 });
@@ -501,7 +497,7 @@
                 };
                 this.workData = newWordData;
                 let _this = this;
-                let url = 'createWordConfig';
+                let url = 'createWorkConfig';
                 $util.post(url, {})
                     .then(function (response) {
                         if (response.status == 200) {

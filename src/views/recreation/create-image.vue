@@ -25,10 +25,6 @@
         <Row :gutter="10">
             <Col span="24">
                 <Card>
-                    <p slot="title">
-                        <Icon type="md-image"></Icon>
-                        图片编辑
-                    </p>
                     <Form inline v-model="imgObj">
                         <FormItem style="margin-bottom: 10px" :label-width='60' label="文件名称"  prop="name">
                             <Input placeholder="输入文件名称" style="width: 200px" v-model="imgObj.name"/>

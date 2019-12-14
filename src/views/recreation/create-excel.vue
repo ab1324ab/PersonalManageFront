@@ -7,10 +7,6 @@
         <Row :gutter="10">
             <Col :sm="20" :xs="24">
                 <Card style="">
-                    <p slot="title">
-                        <Icon type="md-grid"></Icon>
-                        新建表格文档
-                    </p>
                     <div>
                         <Form inline v-model="excelObj">
                             <FormItem :label-width='60' label="文件名称" prop="name">

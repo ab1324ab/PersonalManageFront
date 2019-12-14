@@ -42,7 +42,7 @@
                 :mask-closable='false'
                 :width="500">
             <h3 slot="header">
-                编辑头像
+                头像编辑
             </h3>
             <div>
                 <Row :gutter="10">
@@ -123,10 +123,6 @@
         <Row :gutter="10">
             <Col :sm="18" :xs="24">
                 <Card>
-                    <p slot="title">
-                        <Icon type="person"></Icon>
-                        个人中心
-                    </p>
                     <div>
                         <Tabs value="userBasic" >
                             <TabPane label="基本信息" name="userBasic">

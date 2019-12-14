@@ -14,10 +14,6 @@
         <Row :gutter="10">
             <Col :sm="20" :xs="24">
                 <Card>
-                    <p slot="title">
-                        <Icon type="logo-wordpress"></Icon>
-                        新建工作文档
-                    </p>
                     <div>
                         <Form inline :model="wordObj">
                                 <FormItem :label-width='60' label="文件名称"  prop="name">

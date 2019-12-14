@@ -70,26 +70,26 @@ export const appRouter = [
         ]
     },
     {
-        path: '/my-resources',
+        path: '/recreation',
         icon: 'md-list',
         title: '知识管理',
         name: 'resources',
         component: Main,
         children: [
-            { path: 'resource-list',icon: 'ios-paper', title: '文件列表', name: 'resource-list', component: () => import('@/views/my-resources/resource-list.vue') },
-            { path: 'create-word',icon: 'logo-wordpress', title: '创建文档', name: 'create-word', component: () => import('@/views/my-resources/create-word.vue') },
-            { path: 'create-excel',icon: 'md-grid', title: '创建表格', name: 'create-excel', component: () => import('@/views/my-resources/create-excel.vue') },
-            { path: 'create-image',icon: 'md-image', title: '创建图片', name: 'create-image', component: () => import('@/views/my-resources/create-image.vue') }
+            { path: 'resource-list',icon: 'ios-paper', title: '文件列表', name: 'resource-list', component: () => import('@/views/recreation/resource-list.vue') },
+            { path: 'create-word',icon: 'logo-wordpress', title: '创建文档', name: 'create-word', component: () => import('@/views/recreation/create-word.vue') },
+            { path: 'create-excel',icon: 'md-grid', title: '创建表格', name: 'create-excel', component: () => import('@/views/recreation/create-excel.vue') },
+            { path: 'create-image',icon: 'md-image', title: '创建图片', name: 'create-image', component: () => import('@/views/recreation/create-image.vue') }
         ]
     },
     {
-        path: '/work-record',
+        path: '/work-sheet',
         icon: 'ios-create-outline',
         title: '工作记录',
-        name: 'workRecord',
+        name: 'worksheet',
         component: Main,
         children: [
-            { path: 'workRecordList',icon: 'ios-create-outline' ,title: '工作记录列表', name: 'workRecordList', component: () => import('@/views/work-record/work-record.vue') },
+            { path: 'recordation',icon: 'ios-create-outline' ,title: '工作记录列表', name: 'recordation', component: () => import('@/views/work-sheet/recordation.vue') },
         ]
     },
     // {
