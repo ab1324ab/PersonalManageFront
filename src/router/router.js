@@ -70,16 +70,16 @@ export const appRouter = [
         ]
     },
     {
-        path: '/recreation',
+        path: '/repository',
         icon: 'md-list',
-        title: '知识管理',
+        title: '文件列表',
         name: 'resources',
         component: Main,
         children: [
-            { path: 'resource-list',icon: 'ios-paper', title: '文件列表', name: 'resource-list', component: () => import('@/views/recreation/resource-list.vue') },
-            { path: 'create-word',icon: 'logo-wordpress', title: '创建文档', name: 'create-word', component: () => import('@/views/recreation/create-word.vue') },
-            { path: 'create-excel',icon: 'md-grid', title: '创建表格', name: 'create-excel', component: () => import('@/views/recreation/create-excel.vue') },
-            { path: 'create-image',icon: 'md-image', title: '创建图片', name: 'create-image', component: () => import('@/views/recreation/create-image.vue') }
+            { path: 'resource-list',icon: 'ios-paper', title: '文件列表', name: 'resource-list', component: () => import('@/views/repository/resource-list.vue') },
+            { path: 'create-word',icon: 'logo-wordpress', title: '新建文档', name: 'create-word', component: () => import('@/views/repository/create-word.vue') },
+            { path: 'create-excel',icon: 'md-grid', title: '新建表格', name: 'create-excel', component: () => import('@/views/repository/create-excel.vue') },
+            { path: 'create-image',icon: 'md-image', title: '新建图片', name: 'create-image', component: () => import('@/views/repository/create-image.vue') }
         ]
     },
     {
@@ -89,17 +89,17 @@ export const appRouter = [
         name: 'worksheet',
         component: Main,
         children: [
-            { path: 'recordation',icon: 'ios-create-outline' ,title: '工作记录列表', name: 'recordation', component: () => import('@/views/work-sheet/recordation.vue') },
+            { path: 'recordation',icon: 'ios-create-outline' ,title: '工作记录', name: 'recordation', component: () => import('@/views/work-sheet/recordation.vue') },
         ]
     },
     {
         path: '/recycler',
-        icon: 'ios-create-outline',
+        icon: 'ios-trash-outline',
         title: '回收站',
         name: 'recycle bin',
         component: Main,
         children: [
-            { path: 'cleaner',icon: 'ios-create-outline' ,title: '回收站', name: 'cleaner', component: () => import('@/views/recycler/cleaner.vue') },
+            { path: 'cleaner',icon: 'ios-trash' ,title: '回收站', name: 'cleaner', component: () => import('@/views/recycler/cleaner.vue') },
         ]
     },
     // {

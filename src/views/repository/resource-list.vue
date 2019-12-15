@@ -14,10 +14,13 @@
                 <span>{{detailedInfoModal.modalName}}</span>
             </p>
             <div v-if="detailedInfoModal.excelShow">
-                <Table height="400" :columns="detailedInfoModal.excelData.columns" :data="detailedInfoModal.excelData.data"></Table>
+                <Table height="400" :columns="detailedInfoModal.excelData.columns"
+                       :data="detailedInfoModal.excelData.data"></Table>
             </div>
             <div v-if="detailedInfoModal.wordShow">
-                <div id="wordShow" style="margin: 0 auto;overflow:scroll;height:auto;min-height:100px;max-height:400px;overflow-x: hidden;overflow-y:auto" v-html="detailedInfoModal.wordData"></div>
+                <div id="wordShow"
+                     style="margin: 0 auto;overflow:scroll;height:auto;min-height:100px;max-height:400px;overflow-x: hidden;overflow-y:auto"
+                     v-html="detailedInfoModal.wordData"></div>
             </div>
             <div v-if="detailedInfoModal.imgShow" style="margin: 0 auto;width: 90%">
                 <img :src="detailedInfoModal.imgUrl" width="100%"/>
@@ -58,7 +61,6 @@
     import $util from '@/libs/util.js';
 
     var qs = require('qs');
-
     export default {
         name: 'resource-list',
         components: {
@@ -78,105 +80,36 @@
                     excelShow: false,
                     excelData: {
                         columns: [
-                            {
-                                title: 'Name',
-                                key: 'name'
-                            },
-                            {
-                                title: 'Age',
-                                key: 'age'
-                            },
-                            {
-                                title: 'Address',
-                                key: 'address'
-                            }
+                            {title: 'Name',key: 'name'},
+                            {title: 'Age',key: 'age'},
+                            {title: 'Address',key: 'address'}
                         ],
                         data: [
-                            {
-                                name: 'John Brown',
-                                age: 18,
-                                address: 'New York No. 1 Lake Park',
-                                date: '2016-10-03'
-                            },
-                            {
-                                name: 'Jim Green',
-                                age: 24,
-                                address: 'London No. 1 Lake Park',
-                                date: '2016-10-01'
-                            },
-                            {
-                                name: 'Joe Black',
-                                age: 30,
-                                address: 'Sydney No. 1 Lake Park',
-                                date: '2016-10-02'
-                            },
-                            {
-                                name: 'Jon Snow',
-                                age: 26,
-                                address: 'Ottawa No. 2 Lake Park',
-                                date: '2016-10-04'
-                            }
+                            {name: 'John Brown', age: 18, address: 'New York No. 1 Lake Park', date: '2016-10-03'},
+                            {name: 'Jim Green', age: 24, address: 'London No. 1 Lake Park', date: '2016-10-01'},
+                            {name: 'Joe Black', age: 30, address: 'Sydney No. 1 Lake Park', date: '2016-10-02'},
+                            {name: 'Jon Snow', age: 26, address: 'Ottawa No. 2 Lake Park', date: '2016-10-04'}
                         ]
                     }
                 },
                 tableData: {
                     loading: false,
                     columns: [
-                        {
-                            title: '名称',
-                            align: 'center',
-                            key: 'fileName'
-                        },
-                        {
-                            title: '类型',
-                            align: 'center',
-                            key: 'fileType'
-                        },
-                        {
-                            title: '大小',
-                            align: 'center',
-                            key: 'fileSize'
-                        },
-                        {
-                            title: '创建时间',
-                            align: 'center',
-                            key: 'creationTime'
-                        },
-                        {
-                            title: '描述',
-                            align: 'center',
-                            key: 'describe'
-                        }
+                        {title: '名称', align: 'center', key: 'fileName'},
+                        {title: '类型', align: 'center', key: 'fileType'},
+                        {title: '大小', align: 'center', key: 'fileSize'},
+                        {title: '创建时间', align: 'center', key: 'creationTime'},
+                        {title: '描述', align: 'center', key: 'describe'}
                     ],
                     data: [],
-                    paging: {
-                        total: 0,
-                        display: 10,
-                        current: 1,
-                        pagegroup: 5
-                    }
+                    paging: {total: 0, display: 10, current: 1, pagegroup: 5}
                 },
-                resourceListFrom: {
-                    type: '',
-                    name: '',
-                },
+                resourceListFrom: {type: '',name: '',},
                 typeList: [
-                    {
-                        typeName: '全部',
-                        typeValue: ''
-                    },
-                    {
-                        typeName: 'Excel',
-                        typeValue: 'excel'
-                    },
-                    {
-                        typeName: 'Word',
-                        typeValue: 'word'
-                    },
-                    {
-                        typeName: 'Img',
-                        typeValue: 'img'
-                    }
+                    {typeName: '全部',typeValue: ''},
+                    {typeName: 'Excel',typeValue: 'excel'},
+                    {typeName: 'Word',typeValue: 'word'},
+                    {typeName: 'Img',typeValue: 'img'}
                 ]
             };
         },
@@ -321,11 +254,9 @@
                     });
                 }
             }
-
         },
         created() {
             this.initResourceList();
         },
-
     };
 </script>

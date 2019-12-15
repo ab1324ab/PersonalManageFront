@@ -42,11 +42,15 @@
                         <table class="vtable">
                             <tr>
                                 <td>计划名称</td>
-                                <td ><Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;width: 100%"  placeholder="计划名称" /></td>
+                                <td><Input v-model="workData.name" style="border: 1px solid #a6dbff;border-radius: 5px;width: 100%" placeholder="计划名称"/></td>
                                 <td>开始时间</td>
-                                <td ><DatePicker :editable="false" v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker></td>
+                                <td>
+                                    <DatePicker :editable="false" v-model="workData.startTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker>
+                                </td>
                                 <td>结束时间</td>
-                                <td ><DatePicker :editable="false" v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker></td>
+                                <td>
+                                    <DatePicker :editable="false" v-model="workData.endTime" type="date" style="border: 1px solid #a6dbff;border-radius: 5px;" placeholder="选择日期"></DatePicker>
+                                </td>
                             </tr>
                         </table>
                         <vtable :workData="workData" :workColumns="workColumns"></vtable>
@@ -83,7 +87,8 @@
                     <div>
                         <Form v-model="createWordSetting">
                             <FormItem label="名称" prop="wordName">
-                                <Tooltip style="white-space: normal;" placement="bottom-end" content="字母代表可变值示例：%t周计划（%d - %n）">
+                                <Tooltip style="white-space: normal;" placement="bottom-end"
+                                         content="字母代表可变值示例：%t周计划（%d - %n）">
                                     <Input v-model="createWordSetting.wordName" icon="md-help-circle" placeholder="计划名称"></Input>
                                 </Tooltip>
                             </FormItem>
@@ -111,6 +116,7 @@
     import pagingComponents from '../main-components/paging-components/paging-components';
     import vtable from './singlesheet/vtable';
     import $util from '@/libs/util.js';
+
     var qs = require('qs');
 
     export default {
@@ -121,67 +127,35 @@
         },
         data() {
             return {
-                wordListFrom: {
-                    name: '',
-                    creationTime: ''
-                },
+                wordListFrom: {name: '', creationTime: ''},
                 tableData: {
                     loading: false,
                     columns: [
                         {
-                            title: '工作开始日期',
-                            align: 'center',
-                            key: 'start_time',
+                            title: '工作开始日期', align: 'center', key: 'start_time',
                             render: (h, params) => {
                                 return h('div', [
-                                    h('Icon', {
-                                        props: {
-                                            type: 'md-time'
-                                        },
-                                        style: {
-                                            marginRight: '5px',
-                                        }
-                                    }),
+                                    h('Icon', {props: {type: 'md-time'}, style: {marginRight: '5px',}}),
                                     h('span', params.row.start_time)
                                 ]);
                             }
                         },
                         {
-                            title: '工作结束日期',
-                            align: 'center',
-                            key: 'end_time',
+                            title: '工作结束日期', align: 'center', key: 'end_time',
                             render: (h, params) => {
                                 return h('div', [
-                                    h('Icon', {
-                                        props: {
-                                            type: 'md-time'
-                                        },
-                                        style: {
-                                            marginRight: '5px',
-                                        }
-                                    }),
+                                    h('Icon', {props: {type: 'md-time'}, style: {marginRight: '5px',}}),
                                     h('span', params.row.end_time)
                                 ]);
                             }
                         },
+                        {title: '计划名称', align: 'center', key: 'name'},
                         {
-                            title: '计划名称',
-                            align: 'center',
-                            key: 'name',
-                        },
-                        {
-                            title: '操作',
-                            align: 'center',
-                            key: 'operation',
+                            title: '操作', align: 'center', key: 'operation',
                             render: (h, params) => {
                                 return h('div', [
                                     h('Button', {
-                                        props: {
-                                            type: 'primary',
-                                        },
-                                        style: {
-                                            marginRight: '5px'
-                                        },
+                                        props: {type: 'primary'}, style: {marginRight: '5px'},
                                         on: {
                                             click: () => {
                                                 this.showUpdateWorkInfo(params.row.id);
@@ -189,34 +163,20 @@
                                         }
                                     }, '编辑'),
                                     h('Button', {
-                                        props: {
-                                            type: 'primary',
-                                        },
-                                        style: {
-                                            marginRight: '5px'
-                                        },
+                                        props: {type: 'primary'}, style: {marginRight: '5px'},
                                         on: {
                                             click: () => {
                                                 $util.frontErrMsg(this, 2, '生成文档功能未开启');
-                                                // this.$Modal.info({
-                                                //     title: 'User Info',
-                                                //     content: params.row.id
-                                                // })
                                             }
                                         }
                                     }, '生成'),
                                     h('Button', {
-                                        props: {
-                                            type: 'error',
-                                        },
-                                        style: {
-                                            marginRight: '5px'
-                                        },
+                                        props: {type: 'error',}, style: {marginRight: '5px'},
                                         on: {
                                             click: () => {
                                                 this.$Modal.confirm({
                                                     title: '消息',
-                                                    content: '<p>是否删除？'+params.row.name+'</p>',
+                                                    content: '<p>是否删除？' + params.row.name + '</p>',
                                                     onOk: () => {
                                                         this.delWorkPlan(params.row.id);
                                                     },
@@ -232,12 +192,7 @@
                         },
                     ],
                     data: [],
-                    paging: {
-                        total: 0,
-                        display: 10,
-                        current: 1,
-                        pagegroup: 5
-                    }
+                    paging: {total: 0, display: 10, current: 1, pagegroup: 5}
                 },
                 detailedInfoModal: {
                     modalShow: false,
@@ -267,19 +222,13 @@
                     //     {prop:'d',label:'表头4'}
                     // ]
                 ],
-                createWordSetting:{
-                    id:'',
-                    wordName:'',
-                    setName:'',
-                    setTime:'',
-                    setDept:''
-                }
+                createWordSetting: {id: '', wordName: '', setName: '', setTime: '', setDept: ''}
             }
         },
         methods: {
             initWordPlan() {
                 var pageVo = JSON.stringify(this.tableData.paging);
-                if(this.wordListFrom.creationTime != ''){
+                if (this.wordListFrom.creationTime != '') {
                     this.wordListFrom.creationTime = $util.formatDateToString(this.wordListFrom.creationTime)
                 }
                 var fileQueryFrom = JSON.stringify(this.wordListFrom);
@@ -311,7 +260,7 @@
                         $util.httpErrorMsg(_this, error.data)
                     })
             },
-            initWordPlanSetting(){
+            initWordPlanSetting() {
                 let _this = this;
                 let url = 'queryWorkSetting';
                 $util.post(url, {})
@@ -339,24 +288,24 @@
                 this.tableData.paging.display = number;
                 this.initWordPlan();
             },
-            saveWordSetting(){
+            saveWordSetting() {
                 console.info(this.createWordSetting);
-                if(this.createWordSetting.wordName == ""){
+                if (this.createWordSetting.wordName == "") {
                     $util.frontErrMsg(this, 2, '计划名称为空');
                     return;
-                }else if(this.createWordSetting.setDept == ""){
+                } else if (this.createWordSetting.setDept == "") {
                     $util.frontErrMsg(this, 2, '部门为空');
                     return;
-                }else if(this.createWordSetting.setName == ""){
+                } else if (this.createWordSetting.setName == "") {
                     $util.frontErrMsg(this, 2, '姓名为空');
                     return;
-                }else if(this.createWordSetting.setTime == ""){
+                } else if (this.createWordSetting.setTime == "") {
                     $util.frontErrMsg(this, 2, '时间格式为空');
                     return;
                 }
                 let time = this.createWordSetting.setTime;
                 var pattern = /(^y{1,4}[\-|\/|\.]M{1,2}[\-|\/|\.]d{1,2}$)|(^y{4}年M{1,2}月d{1,2}日$)/;
-                if(!pattern.test(time)){
+                if (!pattern.test(time)) {
                     $util.frontErrMsg(this, 2, '时间格式错误列如：yyyy-MM-dd或yyyy/MM/dd或yyyy|MM|dd或yyyy.MM.dd或yyyy年MM月dd日');
                     return;
                 }
@@ -382,7 +331,7 @@
                 let _this = this;
                 let url = 'queryWorkPlanContent';
                 let queryData = qs.stringify({
-                    'id' : id,
+                    'id': id,
                 });
                 $util.post(url, queryData)
                     .then(function (response) {
@@ -459,11 +408,11 @@
                         $util.httpErrorMsg(_this, error.data)
                     })
             },
-            delWorkPlan(id){
+            delWorkPlan(id) {
                 let _this = this;
                 let url = 'delWorkPlan';
                 let queryData = qs.stringify({
-                    'id' : id,
+                    'id': id,
                 });
                 $util.post(url, queryData)
                     .then(function (response) {
