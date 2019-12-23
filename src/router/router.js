@@ -51,9 +51,14 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [
-        { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') },
-        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: () => import('@/views/own-space/own-space.vue') },
-        { path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue') }
+        {path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue')},
+        {
+            path: 'ownspace',
+            title: '个人中心',
+            name: 'ownspace_index',
+            component: () => import('@/views/own-space/own-space.vue')
+        },
+        {path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue')}
     ]
 };
 
@@ -61,12 +66,18 @@ export const otherRouter = {
 export const appRouter = [
     {
         path: '/home',
-        icon:'ios-home-outline',
+        icon: 'ios-home-outline',
         title: {i18n: 'home'},
         name: 'home',
         component: Main,
-        children:[
-            { path: 'home',icon:'ios-home-outline', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') },
+        children: [
+            {
+                path: 'home',
+                icon: 'ios-home-outline',
+                title: {i18n: 'home'},
+                name: 'home_index',
+                component: () => import('@/views/home/home.vue')
+            },
         ]
     },
     {
@@ -76,10 +87,57 @@ export const appRouter = [
         name: 'resources',
         component: Main,
         children: [
-            { path: 'resource-list',icon: 'ios-paper', title: '文件列表', name: 'resource-list', component: () => import('@/views/repository/resource-list.vue') },
-            { path: 'create-word',icon: 'logo-wordpress', title: '新建文档', name: 'create-word', component: () => import('@/views/repository/create-word.vue') },
-            { path: 'create-excel',icon: 'md-grid', title: '新建表格', name: 'create-excel', component: () => import('@/views/repository/create-excel.vue') },
-            { path: 'create-image',icon: 'md-image', title: '新建图片', name: 'create-image', component: () => import('@/views/repository/create-image.vue') }
+            {
+                path: 'resource-list',
+                icon: 'ios-paper',
+                title: '文件列表',
+                name: 'resource-list',
+                component: () => import('@/views/repository/resource-list.vue')
+            },
+            {
+                path: 'create-word',
+                icon: 'logo-wordpress',
+                title: '新建文档',
+                name: 'create-word',
+                component: () => import('@/views/repository/create-word.vue')
+            },
+            {
+                path: 'create-excel',
+                icon: 'md-grid',
+                title: '新建表格',
+                name: 'create-excel',
+                component: () => import('@/views/repository/create-excel.vue')
+            },
+            {
+                path: 'create-image',
+                icon: 'md-image',
+                title: '新建图片',
+                name: 'create-image',
+                component: () => import('@/views/repository/create-image.vue')
+            }
+        ]
+    },
+    {
+        path: '/shopInformationRecord',
+        icon: 'ios-podium-outline',
+        title: '亚马逊信息收集',
+        name: 'recordset',
+        component: Main,
+        children: [
+            {
+                path: 'bestSellersRank',
+                icon: 'ios-funnel-outline',
+                title: '排名信息',
+                name: 'bestSellersRank',
+                component: () => import('@/views/shopInformationRecord/amazon/bestSellersRank.vue')
+            },
+            {
+                path: 'analyzeComments',
+                icon: 'ios-heart-outline',
+                title: '评论分析',
+                name: 'analyzeComments',
+                component: () => import('@/views/shopInformationRecord/amazon/analyzeComments.vue')
+            }
         ]
     },
     {
@@ -89,7 +147,13 @@ export const appRouter = [
         name: 'worksheet',
         component: Main,
         children: [
-            { path: 'recordation',icon: 'ios-create-outline' ,title: '工作记录', name: 'recordation', component: () => import('@/views/work-sheet/recordation.vue') },
+            {
+                path: 'recordation',
+                icon: 'ios-create-outline',
+                title: '工作记录',
+                name: 'recordation',
+                component: () => import('@/views/work-sheet/recordation.vue')
+            },
         ]
     },
     {
@@ -99,7 +163,13 @@ export const appRouter = [
         name: 'recycle bin',
         component: Main,
         children: [
-            { path: 'cleaner',icon: 'ios-trash' ,title: '回收站', name: 'cleaner', component: () => import('@/views/recycler/cleaner.vue') },
+            {
+                path: 'cleaner',
+                icon: 'ios-trash',
+                title: '回收站',
+                name: 'cleaner',
+                component: () => import('@/views/recycler/cleaner.vue')
+            },
         ]
     },
     // {
