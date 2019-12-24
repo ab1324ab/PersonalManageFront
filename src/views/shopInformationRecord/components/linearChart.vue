@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%;height:100%;" id="linear_chart_con"></div>
+    <div style="width:100%;height:100%;" :id="'linear_chart_con'+this.index"></div>
 </template>
 
 <script>
@@ -22,7 +22,8 @@
                     type: Array,
                     default: []
                 }
-            }
+            },
+            index: "",
         },
         data() {
             return {
@@ -36,35 +37,30 @@
         },
         mounted() {
             this.$nextTick(() => {
-                let lineChart = echarts.init(document.getElementById('linear_chart_con'));
+                let lineChart = echarts.init(document.getElementById('linear_chart_con'+this.index));
                 this.lineChart = lineChart;
+                //this.lineChart.showLoading();
                 lineChart.setOption({
                     title: {
-                        text: this.chart.title
+                        text: this.chart.name
                     },
                     legend: {
                         type: 'scroll',
                         orient: 'vertical',
-                        right: 15,
+                        right: 0,
                         top: 40,
                         bottom: 20,
-                        data: [
-                            // '销量', '销量1'
-                        ]
+                        data: this.chart.legendData
                     },
                     grid: {
-                        left: 30,
+                        left: 50,
                         bottom: 35,
-                        right: 100
+                        right: 130
                     },
                     toolbox: {
                         show: true,
                         right: 30,
                         feature: {
-                            // dataZoom: {
-                            //     yAxisIndex: 'none'
-                            // },
-                            // dataView: {readOnly: false},
                             magicType: {type: ['line', 'bar']},
                             restore: {},
                             saveAsImage: {}
@@ -73,26 +69,12 @@
                     tooltip: {
                         trigger: 'item',
                         formatter: 'ASIN : {a0}<br/>日期 : {b0}<br />排名 : {c0}',
-                        // formatter: function (params) {
-                        //     console.info(params)
-                        //     var str = ""
-                        //     for(var param in params){
-                        //         console.info(param)
-                        //         str+='ASIN : '+params[param].seriesName+'<br/>日期 : '+params[param].axisValueLabel+'<br />排名 : '+params[param].dataIndex+'<br/>'
-                        //     }
-                        //     return str
-                        // },
-                        //position: [10, 10],
                         confine: true,
                         axisPointer: {
                             type: 'cross',
                             snap: true,
                             label: {
                                 show: 'cross',
-                                // formatter:function (data) {
-                                //     console.info(data)
-                                //     //return "nihao xxxxx"
-                                // }
                             },
                             crossStyle: {
                                 type: 'dashed'
@@ -104,21 +86,10 @@
                     },
                     xAxis: {
                         boundaryGap: false,
-                        data: ['12-23', '12-24']
+                        data: this.chart.xAxisData
                     },
                     yAxis: {},
-                    series: [
-                        // {
-                        //     name: '销量',
-                        //     type: 'line',
-                        //     data: [5, 20, 36, 10, 10, 20]
-                        // },
-                        // {
-                        //     name: '销量1',
-                        //     type: 'line',
-                        //     data: [15, 20, 36, 10, 10, 20]
-                        // }
-                    ]
+                    series: this.chart.series
                 })
                 window.addEventListener('resize', function () {
                     lineChart.resize();
@@ -133,7 +104,7 @@
                 handler: function (val) {
                     this.lineChart.setOption({
                         title: {
-                            text: this.chart.title
+                            text: this.chart.name
                         },
                         legend: {
                             data: this.chart.legendData

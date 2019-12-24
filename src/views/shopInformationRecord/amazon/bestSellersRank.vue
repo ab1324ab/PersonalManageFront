@@ -1,14 +1,17 @@
 <template>
     <div>
-        <Row :gutter="10">
-            <Col :sm="24" :xs="24">
-                <Card>
-                    <div style="height: 300px;">
-                        <linear-chart :chart="chart"></linear-chart>
-                    </div>
-                </Card>
-            </Col>
-        </Row>
+        <Card>
+            <Row :gutter="10">
+                <Col v-for="(item, index) in chartArray" :sm="12" :xs="24">
+                    <Card>
+                        <div style="height: 300px;">
+                            <linear-chart :ref="'linearChart'+index" :chart="item" :index="index"></linear-chart>
+                        </div>
+                    </Card>
+                </Col>
+            </Row>
+            <Spin size="large" fix v-if="spinShow"></Spin>
+        </Card>
     </div>
 </template>
 
@@ -24,46 +27,38 @@
         },
         data() {
             return {
-                chart: {
-                    title: "",
-                    legendData:[],
-                    xAxisData:  [],
-                    series: []
-                }
+                chartArray: [
+                    {
+                        title: "",
+                        legendData: [],
+                        xAxisData: [],
+                        series: []
+                    }
+                ],
+                spinShow: true,
             }
         },
         methods: {
-            initAmazonInfoRecord(){
+            initAmazonInfoRecord() {
                 let _this = this;
                 //this.tableData.loading = true;
                 let url = "initAmazonInfoRecord";
-                $util.post(url,{})
+                $util.post(url, {})
                     .then(function (response) {
                         console.info(response);
                         //_this.tableData.loading = false;
                         if (response.status == 200) {
                             if (response.data.statusCode == "10000") {
-
-                                console.info(response.data.data[0]);
-                                var table = response.data.data[0];
-                                _this.chart.title = table.name;
-                                _this.chart.legendData = table.legendData;
-                                _this.chart.xAxisData = table.xAxisData;
-                                _this.chart.series = table.series
-                                // _this.tableData.data = response.data.data.data;
-                                // _this.tableData.paging.total = response.data.data.total;
-                                // _this.tableData.paging.display = response.data.data.display;
-                                // _this.tableData.paging.current = response.data.data.current;
-                                // _this.tableData.paging.pagegroup = response.data.data.pagegroup;
-                            }else{
+                                _this.chartArray = response.data.data;
+                                _this.spinShow = false;
+                            } else {
                                 $util.responseMsg(_this, response.data);
                             }
-                        }else{
+                        } else {
                             $util.responseMsg(_this, response.data);
                         }
                     })
                     .catch(function (error) {
-                        // _this.tableData.loading = false;
                         $util.httpErrorMsg(_this, error.data)
                     })
             }
