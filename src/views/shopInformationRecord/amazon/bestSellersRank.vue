@@ -3,7 +3,7 @@
         <Card>
             <Row :gutter="10">
                 <Col v-for="(item, index) in chartArray" :sm="12" :xs="24">
-                    <Card>
+                    <Card dis-hover>
                         <div style="height: 300px;">
                             <linear-chart :ref="'linearChart'+index" :chart="item" :index="index"></linear-chart>
                         </div>

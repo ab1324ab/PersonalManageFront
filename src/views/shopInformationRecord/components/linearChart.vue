@@ -37,7 +37,7 @@
         },
         mounted() {
             this.$nextTick(() => {
-                let lineChart = echarts.init(document.getElementById('linear_chart_con'+this.index));
+                let lineChart = echarts.init(document.getElementById('linear_chart_con' + this.index));
                 this.lineChart = lineChart;
                 //this.lineChart.showLoading();
                 lineChart.setOption({
@@ -61,10 +61,14 @@
                         show: true,
                         right: 30,
                         feature: {
+                            dataView: {
+                                show: true
+                            },
                             magicType: {type: ['line', 'bar']},
                             restore: {},
                             saveAsImage: {}
                         }
+
                     },
                     tooltip: {
                         trigger: 'item',
@@ -88,7 +92,9 @@
                         boundaryGap: false,
                         data: this.chart.xAxisData
                     },
-                    yAxis: {},
+                    yAxis: {
+                        inverse: true
+                    },
                     series: this.chart.series
                 })
                 window.addEventListener('resize', function () {
