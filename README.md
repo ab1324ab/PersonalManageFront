@@ -1,4 +1,4 @@
-EMO
+PersonalManagFront EMO
 ===========================
 
 ###########环境依赖
@@ -12,32 +12,31 @@ redIs ~
 
 3. npm build 打包
 
-4. 丢进支持html的容器就行列如 jboss ，tomcat ，nginx
+4. 丢进支持html的容器就行列如 jboss ，tomcat ，nginx <br/>
 
-
-###########目录结构描述
-├── Readme.md                   // help
-├── app                         // 
-├── config                      // 
-│   ├── default.json
-│   ├── dev.json                // 
-│   ├── experiment.json         // 
-│   ├── index.js                // 
-│   ├── local.json              // 
-│   ├── production.json         // 
-│   └── test.json               // 
-├── images
-├── libs                         // 
-├── locale
-├── router                    // 路由
-├── styles
-├── template                  // 模版
-├── vendors
-├── views                      // 视图文件
-└── main.js	                   // 主文件
-
+###########目录结构描述<br/>
+├── Readme.md                   // help<br/>
+├── app                         // <br/>
+├── config                      // <br/>
+│   ├── default.json  <br/>
+│   ├── dev.json                // <br/>
+│   ├── experiment.json         // <br/>
+│   ├── index.js                // <br/>
+│   ├── local.json              // <br/>
+│   ├── production.json         // <br/>
+│   └── test.json               // <br/>
+├── images  <br/>
+├── libs                         // <br/>
+├── locale  <br/>
+├── router                    // 路由<br/>
+├── styles  <br/>
+├── template                  // 模版<br/>
+├── vendors  <br/>
+├── views                      // 视图文件<br/>
+└── main.js	                   // 主文件<br/>
 
 
 
-###########V1.3.1 版本内容更新
+<br/>
+###########V1.3.1 版本内容更新<br/>
 1. 新功能     回收站
